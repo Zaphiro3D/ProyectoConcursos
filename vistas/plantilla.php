@@ -16,7 +16,7 @@ $url = ControladorPlantilla::url();
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="vistas/assets/images/favicon.ico">
 
         <!-- App css -->
         <link href="<?php echo $url; ?>vistas/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
@@ -55,9 +55,10 @@ $url = ControladorPlantilla::url();
 
                     if (isset($_GET["pagina"]))
                     {
-                        if ($rutas[0] == "categorias" ||                    
-                            $rutas[0] == "productos" ||
-                            $rutas[0] == "usuarios"
+                        if ($rutas[0] == "agentes" ||                    
+                            $rutas[0] == "instituciones" ||
+                            $rutas[0] == "zonasSupervision" ||
+                            $rutas[0] == "solicitudesSuplente"
                         ) {
                         include "vistas/modulos/" . $rutas[0] . ".php";
                         }
