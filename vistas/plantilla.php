@@ -9,7 +9,7 @@ $url = ControladorPlantilla::url();
     <head>
 
         <meta charset="utf-8" />
-        <title>Sistema Lab 4</title>
+        <title>Sistema de Gestión de Suplentes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc."/>
         <meta name="author" content="Zoyothemes"/>
@@ -108,6 +108,14 @@ $url = ControladorPlantilla::url();
         <!-- dataTables.bootstrap5 -->
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+
+        <!-- dataTable.responsive -->
+        <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+        
+        <!-- dataTables.select -->
+        <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+        <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/js/select.bootstrap5.min.js"></script>
 
         <!-- Datatable Demo App Js -->
         <script src="<?php echo $url; ?>vistas/assets/js/pages/datatable.init.js"></script>
