@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-10-2024 a las 20:36:23
+-- Tiempo de generación: 08-10-2024 a las 21:04:34
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `gestionsuplentes`
 --
-CREATE DATABASE IF NOT EXISTS `gestionsuplentes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `gestionsuplentes`;
 
 -- --------------------------------------------------------
 
@@ -34,8 +32,8 @@ CREATE TABLE `agentes` (
   `apellido` varchar(100) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `dni` int(11) NOT NULL,
-  `telefono` int(11) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
+  `telefono` bigint(20) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `usuario` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -217,9 +215,62 @@ CREATE TABLE `motivossuplencia` (
   `id_MotivoSuplencia` int(11) NOT NULL,
   `Motivo` varchar(100) NOT NULL,
   `Resolucion` varchar(100) NOT NULL,
-  `Articulo` smallint(6) NOT NULL,
+  `Articulo` smallint(6) DEFAULT NULL,
   `Insciso` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `motivossuplencia`
+--
+
+INSERT INTO `motivossuplencia` (`id_MotivoSuplencia`, `Motivo`, `Resolucion`, `Articulo`, `Insciso`) VALUES
+(1, 'Baja - Renuncia', '', NULL, ''),
+(2, 'Baja - Jubilación', '', NULL, ''),
+(3, 'Baja - Otro', '', NULL, ''),
+(4, 'Afectación', '', NULL, ''),
+(5, 'Adscripción', '', NULL, ''),
+(6, 'Sumario Administrativo', '', NULL, ''),
+(7, 'Casos Especiales', '', 9, ''),
+(8, 'Licencia Anual Ordinaria (LAO)', '', 11, ''),
+(9, 'Enfermedad Corto Tratamiento', '', 12, 'A'),
+(10, 'Enfermedad Largo Tratamiento', '', 12, 'B'),
+(11, 'Accidente de Trabajo', '', 12, 'C'),
+(12, 'Incapacidad', '', 12, 'D'),
+(13, 'Maternidad', '', 13, 'A'),
+(14, 'Paternidad', '', 13, 'B'),
+(15, 'Lactancia', '', 13, 'C'),
+(16, 'Adopción', '', 13, 'D'),
+(17, 'Atención de Hijo Menor', '', 13, 'E'),
+(18, 'Prof. Educ. Física', '', 13, 'F'),
+(19, 'Atención del Grupo Familiar', '', 14, ''),
+(20, 'Matrimonio del Agente', '', 16, 'A'),
+(21, 'Matrimonio de los hijos', '', 16, 'B'),
+(22, 'Exámen Prenupcial', '', 16, 'C'),
+(23, 'Duelo', '', 16, 'D'),
+(24, 'Donación de Sangre', '', 16, 'E'),
+(25, 'Donación de Órganos', '', 16, 'F'),
+(26, 'Mesas Examinadoras', '', 16, 'G'),
+(27, 'Mudanza', '', 16, 'H'),
+(28, 'Razones Personales', '', 16, 'I'),
+(29, 'Rendir Exámenes', '', 16, 'J'),
+(30, 'Perfeccionamiento Docente', '', 16, 'K'),
+(31, 'Actividades de Interés Público', '', 16, 'L'),
+(32, 'Licencia Deportiva', '', 16, 'M'),
+(33, 'Acompañar Delegaciones Escolares', '', 16, 'N'),
+(34, 'Intervención en Concursos', '', 16, 'Ñ'),
+(35, 'Razones Gremiales', '', 16, 'O'),
+(36, 'Postulación para Cargos Electivos', '', 16, 'P'),
+(37, 'Razones Particulares', '', 16, 'Q'),
+(38, 'Acompañar al Cónyuge', '', 16, 'R'),
+(39, 'Desempeños en Cargos Políticos', '', 16, 'S'),
+(40, 'Razones de Interés Pedagógico', '', 16, 'T'),
+(41, 'Mayor Jerarquía', '', 16, 'U'),
+(42, 'Comisión de Servicio', '', NULL, ''),
+(43, 'Amonestación', '1271/04', 8, ''),
+(44, 'Fenómenos Meteorológicos', '', 5, 'J'),
+(45, 'Día Religioso Dec. 1584/10', '', NULL, ''),
+(46, 'Día Religioso Ley 10224', '', NULL, ''),
+(47, 'Otro - Aclarar en Observaciones', '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -300,15 +351,15 @@ CREATE TABLE `zonassupervision` (
 
 INSERT INTO `zonassupervision` (`id_ZonaSupervision`, `nombre`, `id_Supervisor`) VALUES
 (1, 'Dirección Departamental de Escuelas de Concordia', 2),
-(2, 'Supervisor Escolar de Zona A', NULL),
-(3, 'Supervisor Escolar de Zona B', NULL),
-(4, 'Supervisor Escolar de Zona C', NULL),
-(5, 'Supervisor Escolar de Zona D', NULL),
-(6, 'Supervisor Escolar de Zona E', NULL),
-(7, 'Supervisor Escolar de Enseñanza Especial Zona C', NULL),
-(8, 'Supervisor Escolar de Jóvenes y Adultos Zona VI', NULL),
-(9, 'Supervisor Escolar de Nivel Inicial Zona V', NULL),
-(10, 'Supervisor Escolar de Nivel Inicial Zona XVI', NULL);
+(2, 'Supervisor Escolar de Zona A', 3),
+(3, 'Supervisor Escolar de Zona B', 4),
+(4, 'Supervisor Escolar de Zona C', 5),
+(5, 'Supervisor Escolar de Zona D', 6),
+(6, 'Supervisor Escolar de Zona E', 7),
+(7, 'Supervisor Escolar de Enseñanza Especial Zona C', 8),
+(8, 'Supervisor Escolar de Jóvenes y Adultos Zona VI', 9),
+(9, 'Supervisor Escolar de Nivel Inicial Zona V', 10),
+(10, 'Supervisor Escolar de Nivel Inicial Zona XVI', 11);
 
 --
 -- Índices para tablas volcadas
@@ -488,7 +539,7 @@ ALTER TABLE `jornadas`
 -- AUTO_INCREMENT de la tabla `motivossuplencia`
 --
 ALTER TABLE `motivossuplencia`
-  MODIFY `id_MotivoSuplencia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_MotivoSuplencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
