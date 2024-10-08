@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-10-2024 a las 01:54:35
+-- Tiempo de generación: 08-10-2024 a las 20:36:23
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -48,7 +48,16 @@ CREATE TABLE `agentes` (
 
 INSERT INTO `agentes` (`id_Agente`, `apellido`, `nombre`, `dni`, `telefono`, `direccion`, `email`, `usuario`, `password`, `id_Rol`) VALUES
 (1, 'Perez', 'Juan', 99999999, 234, 'Calle 13', 'nombre@mail.com', '', '', 4),
-(2, 'Barrios', 'Julio Ramon', 99999998, 234, 'Calle 13', 'nombre@mail.com', '', '', 1);
+(2, 'Barrios', 'Julio Ramon', 99999998, 234, 'Calle 13', 'nombre@mail.com', '', '', 1),
+(3, 'Super', 'Zona A', 11111111, 345, 'Calle 13', 'agente@mail.com', 'UsuarioZonaA', 'SupervisorA', 2),
+(4, 'Super', 'Zona B', 22222222, 345, 'Calle 13', 'agente@mail.com', 'UsuarioZonaB', 'SupervisorB', 2),
+(5, 'Super', 'Zona C', 33333333, 345, 'Calle 13', 'agente@mail.com', 'UsuarioZonaC', 'SupervisorC', 2),
+(6, 'Super', 'Zona D', 44444444, 345, 'Calle 13', 'agente@mail.com', 'UsuarioZonaD', 'SupervisorD', 2),
+(7, 'Super', 'Zona E', 55555555, 345, 'Calle 13', 'agente@mail.com', 'UsuarioZonaE', 'SupervisorE', 2),
+(8, 'Super', 'Especial Zona C', 66666666, 345, 'Calle 13', 'agente@mail.com', 'UsuarioEspecialC', 'SupervisorEspC', 2),
+(9, 'Super', 'Jóvenes y Adultos', 77777777, 345, 'Calle 13', 'agente@mail.com', 'UsuarioJyA', 'SupervisorJyA', 2),
+(10, 'Super', 'Nivel Inicial V', 88888888, 345, 'Calle 13', 'agente@mail.com', 'UsuarioNIV', 'SupervisorNIV', 2),
+(11, 'Super', 'Nivel Inicial XVI', 88888889, 345, 'Calle 13', 'agente@mail.com', 'UsuarioNIXVI', 'SupervisorNIXVI', 2);
 
 -- --------------------------------------------------------
 
@@ -91,6 +100,18 @@ CREATE TABLE `dias` (
   `nombre` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `dias`
+--
+
+INSERT INTO `dias` (`id_Dia`, `nombre`) VALUES
+(1, 'Lunes'),
+(2, 'Martes'),
+(3, 'Miércoles'),
+(4, 'Jueves'),
+(5, 'Viernes'),
+(6, 'Lu a Vi');
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +123,20 @@ CREATE TABLE `divisiones` (
   `division` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `divisiones`
+--
+
+INSERT INTO `divisiones` (`id_Division`, `division`) VALUES
+(1, '\"A\"'),
+(2, '\"B\"'),
+(3, '\"C\"'),
+(4, '\"D\"'),
+(5, '\"E\"'),
+(6, '\"F\"'),
+(7, '\"G\"'),
+(8, '\"U\"');
+
 -- --------------------------------------------------------
 
 --
@@ -112,6 +147,25 @@ CREATE TABLE `grados` (
   `id_Grado` tinyint(4) NOT NULL,
   `grado` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `grados`
+--
+
+INSERT INTO `grados` (`id_Grado`, `grado`) VALUES
+(1, '1°'),
+(2, '2°'),
+(3, '3°'),
+(4, '4°'),
+(5, '5°'),
+(6, '6°'),
+(7, 'Múltiple'),
+(8, 'Módulo I'),
+(9, 'Módulo II/III'),
+(10, 'Módulo IV'),
+(11, 'Plurigrado'),
+(12, '1° ciclo'),
+(13, '2° ciclo');
 
 -- --------------------------------------------------------
 
@@ -215,6 +269,19 @@ CREATE TABLE `turnos` (
   `turno` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `turnos`
+--
+
+INSERT INTO `turnos` (`id_Turno`, `turno`) VALUES
+(1, 'Mañana'),
+(2, 'Tarde'),
+(3, 'Rotativo'),
+(4, 'Completo'),
+(5, 'Dedicación Exclusiva'),
+(6, 'Vespertino'),
+(7, 'Noche');
+
 -- --------------------------------------------------------
 
 --
@@ -226,6 +293,22 @@ CREATE TABLE `zonassupervision` (
   `nombre` varchar(100) NOT NULL,
   `id_Supervisor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `zonassupervision`
+--
+
+INSERT INTO `zonassupervision` (`id_ZonaSupervision`, `nombre`, `id_Supervisor`) VALUES
+(1, 'Dirección Departamental de Escuelas de Concordia', 2),
+(2, 'Supervisor Escolar de Zona A', NULL),
+(3, 'Supervisor Escolar de Zona B', NULL),
+(4, 'Supervisor Escolar de Zona C', NULL),
+(5, 'Supervisor Escolar de Zona D', NULL),
+(6, 'Supervisor Escolar de Zona E', NULL),
+(7, 'Supervisor Escolar de Enseñanza Especial Zona C', NULL),
+(8, 'Supervisor Escolar de Jóvenes y Adultos Zona VI', NULL),
+(9, 'Supervisor Escolar de Nivel Inicial Zona V', NULL),
+(10, 'Supervisor Escolar de Nivel Inicial Zona XVI', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -351,7 +434,7 @@ ALTER TABLE `zonassupervision`
 -- AUTO_INCREMENT de la tabla `agentes`
 --
 ALTER TABLE `agentes`
-  MODIFY `id_Agente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_Agente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `cargos`
@@ -369,19 +452,19 @@ ALTER TABLE `cargo_institucion`
 -- AUTO_INCREMENT de la tabla `dias`
 --
 ALTER TABLE `dias`
-  MODIFY `id_Dia` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Dia` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `divisiones`
 --
 ALTER TABLE `divisiones`
-  MODIFY `id_Division` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Division` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `grados`
 --
 ALTER TABLE `grados`
-  MODIFY `id_Grado` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Grado` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `hssemanal`
@@ -423,13 +506,13 @@ ALTER TABLE `solicitudessuplente`
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `id_Turno` tinyint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Turno` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `zonassupervision`
 --
 ALTER TABLE `zonassupervision`
-  MODIFY `id_ZonaSupervision` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ZonaSupervision` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas
