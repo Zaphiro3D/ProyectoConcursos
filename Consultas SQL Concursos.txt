@@ -1,0 +1,62 @@
+INSERT INTO `instituciones` (`id_Institucion`, `cue`, `numero`, `nombre`, `id_Director`, `id_ZonaSupervison`) VALUES ('1', '3009962', NULL, 'Dirección Departamental de Escuelas dpto. Concordia', '2', '1');
+
+
+INSERT INTO `zonassupervision` (`id_ZonaSupervision`, `nombre`, `id_Supervisor`) VALUES ('1', 'Dirección Departamental de Escuelas de Concordia', '2');
+
+
+INSERT INTO `agentes` (`apellido`, `nombre`, `dni`, `telefono`, `direccion`, `email`, `usuario`, `password`, `id_Rol`) VALUES 
+('Super', 'Zona A', '11111111', '345', 'Calle 13', 'agente@mail.com', 'UsuarioZonaA', 'SupervisorA', '2'),
+('Super', 'Zona B', '22222222', '345', 'Calle 13', 'agente@mail.com', 'UsuarioZonaB', 'SupervisorB', '2'),
+('Super', 'Zona C', '33333333', '345', 'Calle 13', 'agente@mail.com', 'UsuarioZonaC', 'SupervisorC', '2'),
+('Super', 'Zona D', '44444444', '345', 'Calle 13', 'agente@mail.com', 'UsuarioZonaD', 'SupervisorD', '2'),
+('Super', 'Zona E', '55555555', '345', 'Calle 13', 'agente@mail.com', 'UsuarioZonaE', 'SupervisorE', '2'),
+('Super', 'Especial Zona C', '66666666', '345', 'Calle 13', 'agente@mail.com', 'UsuarioEspecialC', 'SupervisorEspC', '2'),
+('Super', 'Jóvenes y Adultos', '77777777', '345', 'Calle 13', 'agente@mail.com', 'UsuarioJyA', 'SupervisorJyA', '2'),
+('Super', 'Nivel Inicial V', '88888888', '345', 'Calle 13', 'agente@mail.com', 'UsuarioNIV', 'SupervisorNIV', '2'),
+('Super', 'Nivel Inicial XVI', '88888889', '345', 'Calle 13', 'agente@mail.com', 'UsuarioNIXVI', 'SupervisorNIXVI', '2');
+
+INSERT INTO `motivossuplencia` (`Motivo`, `Resolucion`, `Articulo`, `Insciso`) VALUES 
+('Jubilación', '', '', ''),
+('Renuncia', '', '', ''),
+('Casos Especiales', '', '9', ''),
+('Licencia Anual Ordinaria (LAO)', '', '11', ''),
+('Enfermedad Corto Tratamiento', '', '12', 'A'),
+('Enfermedad Largo Tratamiento', '', '12', 'B'),
+('Accidente de Trabajo', '', '12', 'C'),
+('Maternidad', '', '13', 'A'),
+('Paternidad', '', '13', 'B'),
+('Lactancia', '', '13', 'C'),
+('Adopción', '', '13', 'D'),
+('Atención de Hijo Menor', '', '13', 'E'),
+('Prof. Educ. Física', '', '13', 'F'),
+('Atención del Grupo Familiar', '', '14', ''),
+('Matrimonio del Agente', '', '16', 'A'),
+('Matrimonio de los hijos', '', '16', 'B'),
+('Exámen Prenupcial', '', '16', 'C'),
+('Duelo', '', '16', 'D'),
+('Donación de Sangre', '', '16', 'E'),
+('Donación de Órganos', '', '16', 'F'),
+('Mesas Examinadoras', '', '16', 'G'),
+('Mudanza', '', '16', 'H'),
+('Razones Personales', '', '16', 'I'),
+('Rendir Exámenes', '', '16', 'J'),
+('Perfeccionamiento Docente', '', '16', 'K'),
+('Actividades de Interés Público', '', '16', 'L'),
+('Licencia Deportiva', '', '16', 'M'),
+('Acompañar Delegaciones Escolares', '', '16', 'N'),
+('Intervención en Concursos', '', '16', 'Ñ'),
+('Razones Gremiales', '', '16', 'O'),
+('Postulación para Cargos Electivos', '', '16', 'P'),
+('Razones Particulares', '', '16', 'Q'),
+('Acompañar al Cónyuge', '', '16', 'R'),
+('Desempeños en Cargos Políticos', '', '16', 'S'),
+('Razones de Interés Pedagógico', '', '16', 'T'),
+('Mayor Jerarquía', '', '16', 'U'),
+('Comisión de Servicio', '', '', ''),
+('Amonestación', '1271/04', '8', ''),
+('Fenómenos Meteorológicos', '', '5', 'J'),
+('Día Religioso Dec. 1584/10', '', '', ''),
+('Día Religioso Ley 10224', '', '', ''),
+
+
+

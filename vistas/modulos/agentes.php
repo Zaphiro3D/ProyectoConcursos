@@ -6,7 +6,7 @@
     </div>
     <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="d-flex flex-wrap gap-2">    
-            <button type="button" class="btn btn-primary"><i data-feather="plus" ></i > &nbsp; Nuevo</button>
+            <a href="nuevo_agente" class="btn btn-primary"><i data-feather="plus" ></i > &nbsp; Nuevo</a>
             <!-- <button type="button" class="btn btn-primary"><i data-feather="edit-2"></i>Editar</button>
             <button type="button" class="btn btn-primary"><i data-feather="trash-2"></i>Eliminar</button>  -->
         </div> 
@@ -19,8 +19,8 @@
                     <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
+                                <th>Apellido</th>    
                                 <th>Nombre</th>
-                                <th>Apellido</th>
                                 <th>DNI</th>
                                 <th>Rol</th>
                                 <th>Dirección</th>
@@ -36,8 +36,8 @@
                                 foreach ($productos as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
+                                <td> <?php echo $value["apellido"] ?></td>    
                                 <td> <?php echo $value["nombre"] ?></td>
-                                <td> <?php echo $value["apellido"] ?></td>
                                 <td> <?php echo $value["dni"] ?></td>
                                 <td> <?php echo $value["rol"] ?></td>
                                 <td> <?php echo $value["direccion"] ?></td>
