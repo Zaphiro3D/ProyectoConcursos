@@ -59,4 +59,7 @@ INSERT INTO `motivossuplencia` (`Motivo`, `Resolucion`, `Articulo`, `Insciso`) V
 ('Día Religioso Ley 10224', '', '', ''),
 
 
+asd
+
+
 
