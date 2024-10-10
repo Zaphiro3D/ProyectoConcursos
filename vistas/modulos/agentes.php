@@ -32,8 +32,8 @@
                         <tbody>
                             <?php
 
-                                $productos = ControladorAgentes::ctrMostrarAgentes();
-                                foreach ($productos as $key => $value) {                         
+                                $agentes = ControladorAgentes::ctrMostrarAgentes();
+                                foreach ($agentes as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
                                 <td> <?php echo $value["apellido"] ?></td>    
