@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-10-2024 a las 04:51:39
+-- Tiempo de generación: 13-10-2024 a las 22:24:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,16 +30,16 @@ USE `gestionsuplentes`;
 --
 
 CREATE TABLE `agentes` (
-  `id_Agente` int(11) NOT NULL,
+  `id_Agente` int(11) UNSIGNED NOT NULL,
   `apellido` varchar(100) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `dni` int(11) NOT NULL,
-  `telefono` int(11) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `usuario` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `id_Rol` tinyint(4) NOT NULL
+  `id_Rol` tinyint(4) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -57,7 +57,8 @@ INSERT INTO `agentes` (`id_Agente`, `apellido`, `nombre`, `dni`, `telefono`, `di
 (8, 'Super', 'Especial Zona C', 66666666, 345, 'Calle 13', 'agente@mail.com', 'UsuarioEspecialC', 'SupervisorEspC', 2),
 (9, 'Super', 'Jóvenes y Adultos', 77777777, 345, 'Calle 13', 'agente@mail.com', 'UsuarioJyA', 'SupervisorJyA', 2),
 (10, 'Super', 'Nivel Inicial V', 88888888, 345, 'Calle 13', 'agente@mail.com', 'UsuarioNIV', 'SupervisorNIV', 2),
-(11, 'Super', 'Nivel Inicial XVI', 88888889, 345, 'Calle 13', 'agente@mail.com', 'UsuarioNIXVI', 'SupervisorNIXVI', 2);
+(11, 'Super', 'Nivel Inicial XVI', 88888889, 345, 'Calle 13', 'agente@mail.com', 'UsuarioNIXVI', 'SupervisorNIXVI', 2),
+(12, 'Director', 'Esc 1', 11111111, NULL, NULL, 'agente@director.com', 'Dire1', '12345', 3);
 
 -- --------------------------------------------------------
 
@@ -66,15 +67,15 @@ INSERT INTO `agentes` (`id_Agente`, `apellido`, `nombre`, `dni`, `telefono`, `di
 --
 
 CREATE TABLE `cargos` (
-  `numeroPlaza` int(11) NOT NULL,
+  `numeroPlaza` int(11) UNSIGNED NOT NULL,
   `nombreCargo` varchar(100) NOT NULL,
-  `id_Grado` tinyint(4) DEFAULT NULL,
-  `id_Division` tinyint(4) DEFAULT NULL,
-  `id_Turno` tinyint(4) DEFAULT NULL,
-  `hsCatedra` int(11) NOT NULL,
+  `id_Grado` tinyint(4) UNSIGNED DEFAULT NULL,
+  `id_Division` tinyint(4) UNSIGNED DEFAULT NULL,
+  `id_Turno` tinyint(4) UNSIGNED DEFAULT NULL,
+  `hsCatedra` int(11) UNSIGNED DEFAULT NULL,
   `apellidoDocente` varchar(100) DEFAULT NULL,
   `nombreDocente` varchar(100) DEFAULT NULL,
-  `dniDocente` int(11) DEFAULT NULL
+  `dniDocente` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -84,9 +85,9 @@ CREATE TABLE `cargos` (
 --
 
 CREATE TABLE `cargo_institucion` (
-  `id_Cargo_Institucion` int(11) NOT NULL,
-  `numeroPlaza` int(11) NOT NULL,
-  `id_Institucion` int(11) NOT NULL
+  `id_Cargo_Institucion` int(11) UNSIGNED NOT NULL,
+  `numeroPlaza` int(11) UNSIGNED NOT NULL,
+  `id_Institucion` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -96,7 +97,7 @@ CREATE TABLE `cargo_institucion` (
 --
 
 CREATE TABLE `dias` (
-  `id_Dia` tinyint(4) NOT NULL,
+  `id_Dia` tinyint(4) UNSIGNED NOT NULL,
   `nombre` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -119,7 +120,7 @@ INSERT INTO `dias` (`id_Dia`, `nombre`) VALUES
 --
 
 CREATE TABLE `divisiones` (
-  `id_Division` tinyint(4) NOT NULL,
+  `id_Division` tinyint(4) UNSIGNED NOT NULL,
   `division` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -144,7 +145,7 @@ INSERT INTO `divisiones` (`id_Division`, `division`) VALUES
 --
 
 CREATE TABLE `grados` (
-  `id_Grado` tinyint(4) NOT NULL,
+  `id_Grado` tinyint(4) UNSIGNED NOT NULL,
   `grado` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -174,9 +175,9 @@ INSERT INTO `grados` (`id_Grado`, `grado`) VALUES
 --
 
 CREATE TABLE `hssemanal` (
-  `id_HsSemanal` int(11) NOT NULL,
-  `id_Jornada` int(11) NOT NULL,
-  `Id_Cargo_Institucion` int(11) NOT NULL
+  `id_HsSemanal` int(11) UNSIGNED NOT NULL,
+  `id_Jornada` int(11) UNSIGNED NOT NULL,
+  `Id_Cargo_Institucion` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -186,14 +187,129 @@ CREATE TABLE `hssemanal` (
 --
 
 CREATE TABLE `instituciones` (
-  `id_Institucion` int(11) NOT NULL,
+  `id_Institucion` int(11) UNSIGNED NOT NULL,
   `id_Tipo` tinyint(4) UNSIGNED DEFAULT NULL,
-  `cue` int(11) NOT NULL,
-  `numero` smallint(6) DEFAULT NULL,
+  `cue` int(11) UNSIGNED NOT NULL,
+  `numero` smallint(6) UNSIGNED DEFAULT NULL,
   `nombre` varchar(100) NOT NULL,
-  `id_Director` int(11) NOT NULL,
-  `id_ZonaSupervison` smallint(6) NOT NULL
+  `id_Director` int(11) UNSIGNED DEFAULT NULL,
+  `id_ZonaSupervison` smallint(6) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `instituciones`
+--
+
+INSERT INTO `instituciones` (`id_Institucion`, `id_Tipo`, `cue`, `numero`, `nombre`, `id_Director`, `id_ZonaSupervison`) VALUES
+(328, 1, 3009962, NULL, 'Dirección Departamental de Escuelas dpto. Concordia', 2, 1),
+(329, 1, 3003006, NULL, 'Servicio Educativo Domiciliario y Hospitalario', 2, 1),
+(330, 2, 3001330, 1, 'Vélez Sarsfield', 12, 6),
+(331, 2, 3001861, 2, 'Almafuerte', NULL, 3),
+(332, 3, 3001087, 3, 'Domingo Faustino Sarmiento', NULL, 4),
+(333, 3, 3001169, 4, 'Manuel José de Lavardén', NULL, 3),
+(334, 2, 3001581, 5, 'San José De Calasanz', NULL, 6),
+(335, 3, 3000517, 6, 'Gral. San Martín', NULL, 4),
+(336, 2, 3000009, 7, 'Cabildo Abierto', NULL, 5),
+(337, 3, 3001081, 8, 'Madame Curie', NULL, 2),
+(338, 3, 3001859, 9, 'Juan María Gutiérrez', NULL, 6),
+(339, 3, 3001097, 10, 'Benito Garat', NULL, 2),
+(340, 2, 3001576, 11, 'Gral. Manuel Basavilbaso', NULL, 6),
+(341, 2, 3000016, 13, 'Pancho Ramírez', NULL, 4),
+(342, 2, 3001575, 14, 'Coronel Antonio Navarro', NULL, 4),
+(343, 2, 3001214, 15, 'José E. Rivera', NULL, 3),
+(344, 2, 3001860, 15, 'Normal Domingo Faustino Sarmiento', NULL, 3),
+(345, 2, 3000007, 16, 'Manuel Pacífico de Antequeda', NULL, 5),
+(346, 2, 3001582, 17, 'Dr. Diógenes José de Urquiza', NULL, 2),
+(347, 3, 3000168, 18, 'El Aconcagua', NULL, 3),
+(348, 2, 3000169, 19, 'Juan Lavalle', NULL, 3),
+(349, 2, 3001241, 21, 'Luis Rodriguez', NULL, 2),
+(350, 3, 3000166, 22, 'Madre Patria', NULL, 2),
+(351, 2, 3000152, 23, 'Hans Cristián Andersen', NULL, 5),
+(352, 2, 3000167, 24, 'El Escondido', NULL, 5),
+(353, 2, 3001240, 28, 'Thomas Alva Edison', NULL, 2),
+(354, 2, 3000171, 30, 'Alina P. de Matheron', NULL, 2),
+(355, 2, 3001078, 31, 'El Chimborazo', NULL, 4),
+(356, 2, 3000154, 32, 'Benito Juarez', NULL, 3),
+(357, 2, 3000013, 33, 'Paso a Paso', NULL, 4),
+(358, 3, 3000518, 34, 'Esteban Echeverría', NULL, 5),
+(359, 2, 3000153, 36, 'Damián P. Garat', NULL, 5),
+(360, 3, 3000155, 38, 'Luis Nicolás Cayetano Palma', NULL, 3),
+(361, 2, 3000012, 39, 'José María Paz', NULL, 4),
+(362, 3, 3001082, 41, 'Batalla de Chacabuco', NULL, 2),
+(363, 2, 3001265, 42, 'General Belgrano', NULL, 2),
+(364, 3, 3001092, 43, 'Bernardino Rivadavia', NULL, 5),
+(365, 2, 3000026, 44, 'Mariano Moreno', NULL, 3),
+(366, 2, 3001080, 46, 'Helena L. De Roffo', NULL, 6),
+(367, 2, 3001212, 47, 'Justa Gayoso', NULL, 5),
+(368, 2, 3000006, 49, 'Gregoria Pérez', NULL, 6),
+(369, 2, 3001175, 51, 'Felipe Gardell', NULL, 4),
+(370, 2, 3001170, 52, 'Dos  Naciones', NULL, 5),
+(371, 2, 3001176, 53, 'Gral. San Martín', NULL, 3),
+(372, 3, 3001329, 54, 'Juan Blasco', NULL, 3),
+(373, 2, 3001094, 55, 'Justo José De Urquiza', NULL, 4),
+(374, 2, 3000170, 56, 'Ángel Cayetano Bardelli', NULL, 2),
+(375, 2, 3001585, 57, 'Belgrano', NULL, 5),
+(376, 2, 3000010, 58, 'Colonia De Inmigrantes', NULL, 6),
+(377, 2, 3000172, 60, 'Gral. Manuel de Olazábal', NULL, 5),
+(378, 3, 3000011, 61, 'Mi Patria Chica', NULL, 6),
+(379, 2, 3000014, 62, 'Carlos Villamil', NULL, 4),
+(380, 2, 3001077, 63, 'Hernando Arias de Saavedra', NULL, 6),
+(381, 2, 3001076, 64, 'Juan Bautista Alberdi', NULL, 6),
+(382, 2, 3001218, 65, 'Almirante Guillermo Brown', NULL, 6),
+(383, 2, 3000888, 66, 'República Oriental Del Uruguay', NULL, 4),
+(384, 2, 3000015, 67, 'Adolfo Guidobono', NULL, 4),
+(385, 2, 3001215, 68, 'María Elena Walsh', NULL, 3),
+(386, 3, 3001171, 69, 'Malvinas Argentinas', NULL, 6),
+(387, 2, 3001178, 70, 'Eva Duarte', NULL, 4),
+(388, 3, 3001164, 71, 'Independencia', NULL, 2),
+(389, 2, 3001586, 72, 'Trabajador Comunitario', NULL, 2),
+(390, 2, 3001165, 73, 'Pancho Ramírez', NULL, 5),
+(391, 2, 3002524, 74, 'Gral. Juan José Valle', NULL, 6),
+(392, 3, 3003003, 75, '2 de Abril', NULL, 3),
+(393, 2, 3003020, 76, 'Teresa de Calcuta', NULL, 5),
+(394, 2, 3003170, 77, 'Pte. Néstor Kirchner', NULL, 5),
+(395, 2, 3003295, 78, 'Brazos Abiertos', NULL, 2),
+(396, 4, 3001272, 1, 'Concordia', NULL, 7),
+(397, 4, 3002456, 2, '', NULL, 7),
+(398, 4, 3001862, 25, 'María Ana Mac Cotter de Madrazzo', NULL, 7),
+(399, 5, 3003171, 6, 'Los Charrúas', NULL, 7),
+(400, 8, 3009962, NULL, 'Equipo Orientador Escolar (EOE)', NULL, 7),
+(401, 10, 3001173, 6, 'Ntra. Sra. De Fátima', NULL, 8),
+(402, 10, 3000508, 7, 'Ntra. Sra. de Pompeya', NULL, 8),
+(403, 10, 3001083, 8, 'Marta Ávalo', NULL, 8),
+(404, 10, 3002017, 20, 'Néstor Rivero', NULL, 8),
+(405, 9, 3000027, 12, 'El Supremo Entrerriano', NULL, 8),
+(406, 9, 3001863, 35, 'Almirante Brown', NULL, 8),
+(407, 9, 3001267, 45, 'Fray Luis Beltrán', NULL, 8),
+(408, 11, 3000029, 3, 'Primeros Pasos', NULL, 9),
+(409, 11, 3002202, 7, 'Gurisito Costero', NULL, 10),
+(410, 11, 3003025, 13, 'Castillo de Arena', NULL, 9),
+(411, 11, 3003024, 14, 'Solcito Litoraleño', NULL, 10),
+(412, 11, 3003190, 20, 'Había Una Vez', NULL, 10),
+(413, 11, 3003240, 26, 'Patito Sirirí', NULL, 10),
+(414, 11, 3003422, 49, 'Tacuarita Azul', NULL, 9),
+(415, 11, 3003525, 68, 'Carrito de Ilusión', NULL, 10),
+(416, 11, 3003533, 71, 'Burbujas de Colores', NULL, 9),
+(417, 6, 3003106, NULL, 'Arco Iris', NULL, 9),
+(418, 6, 3002986, NULL, 'Azahares', NULL, 10),
+(419, 6, 3003172, NULL, 'Capullito', NULL, 9),
+(420, 6, 3003010, NULL, 'Duendelin', NULL, 9),
+(421, 6, 3003322, NULL, 'Estación de los Sueños', NULL, 9),
+(422, 6, 3002988, NULL, 'Trencito de Colores - Evita', NULL, 10),
+(423, 6, 3003105, NULL, 'Frutillitas', NULL, 9),
+(424, 6, 3003108, NULL, 'Haditas Y Duendes', NULL, 10),
+(425, 6, 3003100, NULL, 'Hormiguita Viajera', NULL, 9),
+(426, 6, 3002989, NULL, 'Los Azahares', NULL, 9),
+(427, 6, 3003348, NULL, 'Manitos Pintadas', NULL, 10),
+(428, 6, 3003044, NULL, 'Miguitas De Amor', NULL, 10),
+(429, 6, 3003104, NULL, 'Mitaí Rorí - Capricornio', NULL, 9),
+(430, 6, 3003099, NULL, 'Naranjitas', NULL, 9),
+(431, 6, 3003101, NULL, 'Payasito', NULL, 9),
+(432, 6, 3003102, NULL, 'Pelusita', NULL, 9),
+(433, 6, 3002987, NULL, 'Rayito de Sol', NULL, 9),
+(434, 6, 3003098, NULL, 'Rincón de Luz', NULL, 9),
+(435, 6, 3003103, NULL, 'Ivotí Porá - Santa Rita', NULL, 10),
+(436, 7, 3003107, NULL, 'Néstor Carlos Kirchner', NULL, 9);
 
 -- --------------------------------------------------------
 
@@ -202,8 +318,8 @@ CREATE TABLE `instituciones` (
 --
 
 CREATE TABLE `jornadas` (
-  `id_Jornada` int(11) NOT NULL,
-  `id_Dia` tinyint(4) NOT NULL,
+  `id_Jornada` int(11) UNSIGNED NOT NULL,
+  `id_Dia` tinyint(4) UNSIGNED NOT NULL,
   `horaInicio` time NOT NULL,
   `horaFin` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -215,11 +331,11 @@ CREATE TABLE `jornadas` (
 --
 
 CREATE TABLE `motivossuplencia` (
-  `id_MotivoSuplencia` int(11) NOT NULL,
+  `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL,
   `Motivo` varchar(100) NOT NULL,
-  `Resolucion` varchar(100) NOT NULL,
-  `Articulo` smallint(6) NOT NULL,
-  `Insciso` varchar(50) NOT NULL
+  `Resolucion` varchar(100) DEFAULT NULL,
+  `Articulo` smallint(6) DEFAULT NULL,
+  `Insciso` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -229,7 +345,7 @@ CREATE TABLE `motivossuplencia` (
 --
 
 CREATE TABLE `roles` (
-  `id_Rol` tinyint(4) NOT NULL,
+  `id_Rol` tinyint(4) UNSIGNED NOT NULL,
   `rol` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -250,13 +366,13 @@ INSERT INTO `roles` (`id_Rol`, `rol`) VALUES
 --
 
 CREATE TABLE `solicitudessuplente` (
-  `id_SolSuplente` int(11) NOT NULL,
-  `numeroTramite` int(11) DEFAULT NULL,
+  `id_SolSuplente` int(11) UNSIGNED NOT NULL,
+  `numeroTramite` int(11) UNSIGNED DEFAULT NULL,
   `fechaInicio` date NOT NULL,
   `fechaFin` date NOT NULL,
-  `id_MotivoSuplencia` int(11) NOT NULL,
+  `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL,
   `observaciones` varchar(100) DEFAULT NULL,
-  `numeroPlaza` int(11) NOT NULL
+  `numeroPlaza` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -294,7 +410,7 @@ INSERT INTO `tipoinstitucion` (`id_Tipo`, `TipoInstitucion`) VALUES
 --
 
 CREATE TABLE `turnos` (
-  `id_Turno` tinyint(4) NOT NULL,
+  `id_Turno` tinyint(4) UNSIGNED NOT NULL,
   `turno` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -318,9 +434,9 @@ INSERT INTO `turnos` (`id_Turno`, `turno`) VALUES
 --
 
 CREATE TABLE `zonassupervision` (
-  `id_ZonaSupervision` smallint(6) NOT NULL,
+  `id_ZonaSupervision` smallint(6) UNSIGNED NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `id_Supervisor` int(11) DEFAULT NULL
+  `id_Supervisor` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -407,7 +523,8 @@ ALTER TABLE `instituciones`
   ADD PRIMARY KEY (`id_Institucion`),
   ADD UNIQUE KEY `id_Institucion` (`id_Institucion`),
   ADD KEY `Instituciones_fk4` (`id_Director`),
-  ADD KEY `Instituciones_fk5` (`id_ZonaSupervison`);
+  ADD KEY `Instituciones_fk5` (`id_ZonaSupervison`),
+  ADD KEY `id_Tipo` (`id_Tipo`);
 
 --
 -- Indices de la tabla `jornadas`
@@ -469,73 +586,73 @@ ALTER TABLE `zonassupervision`
 -- AUTO_INCREMENT de la tabla `agentes`
 --
 ALTER TABLE `agentes`
-  MODIFY `id_Agente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_Agente` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `cargos`
 --
 ALTER TABLE `cargos`
-  MODIFY `numeroPlaza` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `numeroPlaza` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cargo_institucion`
 --
 ALTER TABLE `cargo_institucion`
-  MODIFY `id_Cargo_Institucion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Cargo_Institucion` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `dias`
 --
 ALTER TABLE `dias`
-  MODIFY `id_Dia` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_Dia` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `divisiones`
 --
 ALTER TABLE `divisiones`
-  MODIFY `id_Division` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Division` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `grados`
 --
 ALTER TABLE `grados`
-  MODIFY `id_Grado` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_Grado` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `hssemanal`
 --
 ALTER TABLE `hssemanal`
-  MODIFY `id_HsSemanal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_HsSemanal` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `instituciones`
 --
 ALTER TABLE `instituciones`
-  MODIFY `id_Institucion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id_Institucion` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=437;
 
 --
 -- AUTO_INCREMENT de la tabla `jornadas`
 --
 ALTER TABLE `jornadas`
-  MODIFY `id_Jornada` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Jornada` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `motivossuplencia`
 --
 ALTER TABLE `motivossuplencia`
-  MODIFY `id_MotivoSuplencia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_Rol` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_Rol` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudessuplente`
 --
 ALTER TABLE `solicitudessuplente`
-  MODIFY `id_SolSuplente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_SolSuplente` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoinstitucion`
@@ -547,13 +664,13 @@ ALTER TABLE `tipoinstitucion`
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `id_Turno` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_Turno` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `zonassupervision`
 --
 ALTER TABLE `zonassupervision`
-  MODIFY `id_ZonaSupervision` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_ZonaSupervision` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas
@@ -592,7 +709,8 @@ ALTER TABLE `hssemanal`
 --
 ALTER TABLE `instituciones`
   ADD CONSTRAINT `Instituciones_fk4` FOREIGN KEY (`id_Director`) REFERENCES `agentes` (`id_Agente`),
-  ADD CONSTRAINT `Instituciones_fk5` FOREIGN KEY (`id_ZonaSupervison`) REFERENCES `zonassupervision` (`id_ZonaSupervision`);
+  ADD CONSTRAINT `Instituciones_fk5` FOREIGN KEY (`id_ZonaSupervison`) REFERENCES `zonassupervision` (`id_ZonaSupervision`),
+  ADD CONSTRAINT `instituciones_ibfk_1` FOREIGN KEY (`id_Tipo`) REFERENCES `tipoinstitucion` (`id_Tipo`);
 
 --
 -- Filtros para la tabla `jornadas`

@@ -23,6 +23,7 @@
                                 <th>N°</th>
                                 <th>Nombre</th>
                                 <th>Director</th>
+                                <th>DNI Director</th>
                                 <th>Zona de Supervisión</th>
                                 <th>Acciones</th>
                             </tr>
@@ -36,9 +37,10 @@
                             <tr style = "background-color:#000888">
                                 <td> <?php echo $value["cue"] ?></td>    
                                 <td> <?php echo $value["numero"] ?></td>
-                                <td> <?php echo $value["nombre"] ?></td>
-                                <td> <?php echo $value["id_Director"] ?></td>
-                                <td> <?php echo $value["id_ZonaSupervision"] ?></td>
+                                <td> <?php echo $value["institucion"] ?></td>
+                                <td> <?php echo $value["apellido"] . " " .$value["nombre"] ?></td>
+                                <td> <?php echo $value["dni"] ?></td>
+                                <td> <?php echo $value["zona"] ?></td>
                                 <td><a href="editar_institucion" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> <a href="eliminar_institucion" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td>
                             </tr>
 
