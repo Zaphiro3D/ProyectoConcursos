@@ -33,13 +33,10 @@
                                 foreach ($zonasSupervision as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
-                                <td> <?php echo $value["nombre"] ?></td>    
-                                <td> <?php echo $value[" "] ?></td>
+                                <td> <?php echo $value["zona"] ?></td>    
+                                <td> <?php echo $value["apellido"] . ' ' . $value["nombre"] ?></td>
                                 <td> <?php echo $value["dni"] ?></td>
-                                <td> <?php echo $value["rol"] ?></td>
-                                <td> <?php echo $value["direccion"] ?></td>
                                 <td> <?php echo $value["telefono"] ?></td>
-                                <td> <?php echo $value["email"] ?></td>
                                 <td><a href="editar_zona" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> <a href="eliminar_zona" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td>
                             </tr>
 

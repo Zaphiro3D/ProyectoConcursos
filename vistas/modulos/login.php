@@ -16,8 +16,8 @@
                                                     </div>
                             
                                                     <div class="auth-title-section mb-3"> 
-                                                        <h3 class="text-dark fs-20 fw-medium mb-2">Welcome back</h3>
-                                                        <p class="text-dark text-capitalize fs-14 mb-0">Please enter your details.</p>
+                                                        <h3 class="text-dark fs-20 fw-medium mb-2">Bienvenido</h3>
+                                                        <p class="text-dark text-capitalize fs-14 mb-0">Ingrese sus datos.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -25,12 +25,12 @@
                                             <div class="pt-0">
                                                 <form action="index.html" class="my-4">
                                                     <div class="form-group mb-3">
-                                                        <label for="emailaddress" class="form-label">Email address</label>
+                                                        <label for="emailaddress" class="form-label">Email</label>
                                                         <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
                                                     </div>
                         
                                                     <div class="form-group mb-3">
-                                                        <label for="password" class="form-label">Password</label>
+                                                        <label for="password" class="form-label">Contraseña</label>
                                                         <input class="form-control" type="password" required="" id="password" placeholder="Enter your password">
                                                     </div>
                         
@@ -38,24 +38,24 @@
                                                         <div class="col-sm-6">
                                                             <div class="form-check">
                                                                 <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
-                                                                <label class="form-check-label" for="checkbox-signin">Remember me</label>
+                                                                <label class="form-check-label" for="checkbox-signin">Recordar usuario</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 text-end">
-                                                            <a class='text-muted fs-14' href='auth-recoverpw.html'>Forgot password?</a>                             
+                                                            <a class='text-muted fs-14' href='auth-recoverpw.html'>Olvidó su contraseña?</a>                             
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="form-group mb-0 row">
                                                         <div class="col-12">
                                                             <div class="d-grid">
-                                                                <button class="btn btn-primary" type="submit"> Log In </button>
+                                                                <button class="btn btn-primary" type="submit"> Ingresar </button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </form>
                                                 <div class="text-center text-muted">
-                                                    <p class="mb-0">Don't have an account ?<a class='text-primary ms-2 fw-medium' href='auth-register.html'>Sign Up</a></p>
+                                                    <p class="mb-0">No tienes un usuario?<a class='text-primary ms-2 fw-medium' href='auth-register.html'>Sign Up</a></p>
                                                 </div>
                                             </div>
                                         </div>

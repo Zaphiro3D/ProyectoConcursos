@@ -7,9 +7,9 @@ class ModeloZonas{
     static public function mdlMostrarZonas($tabla)
     {
         try {
-            $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;");
-            $agentes->execute();
-            return $agentes->fetchAll(PDO::FETCH_ASSOC);
+            $Zonas = Conexion::conectar()->prepare("SELECT z.nombre as zona, a.apellido, a.nombre, a.dni, a.telefono FROM `agentes` as a inner join `zonassupervision` as z ON z.id_Supervisor = a.id_Agente;");
+            $Zonas->execute();
+            return $Zonas->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (Exception $e) {
             return "Error: " .$e ->getMessage();
