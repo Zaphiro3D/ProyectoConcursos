@@ -93,7 +93,7 @@
                                 <div class="col-md">
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control"  id="floatingInput"  disabled="" placeholder="DNI">
-                                        <label for="floatingInput">Su usuario será su DNI sin puntos</label>
+                                        <label for="floatingInput">Usuario: DNI sin puntos</label>
                                     </div>
                                 </div>
                                 <div class="col-md">
@@ -107,7 +107,13 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
+            <div class="d-flex flex-wrap gap-2">    
+                <button type="button" class="btn btn-light"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
+                <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
+                <!-- <button type="button" class="btn btn-primary"><i data-feather="trash-2"></i>Eliminar</button>  -->
+            </div> 
         </div>
     </div>
 

@@ -7,12 +7,14 @@
                                     <i data-feather="menu" class="noti-icon"></i>
                                 </button>
                             </li>
+                            <!-- 
                             <li class="d-none d-lg-block">
                                 <div class="position-relative topbar-search">
                                     <input type="text" class="form-control bg-light bg-opacity-75 border-light ps-4" placeholder="Buscar...">
                                     <i class="mdi mdi-magnify fs-16 position-absolute text-muted top-50 translate-middle-y ms-2"></i>
                                 </div>
                             </li>
+                            -->
                         </ul>
                         <ul class="list-unstyled topnav-menu mb-0 d-flex align-items-center">
                 
@@ -28,9 +30,9 @@
                                         <h5 class="m-0">
                                             <span class="float-end">
                                                 <a href="" class="text-dark">
-                                                    <small>Clear All</small>
+                                                    <small>Limpiar todo</small>
                                                 </a>
-                                            </span>Notification
+                                            </span>Notificaciones
                                         </h5>
                                     </div>
         
@@ -143,7 +145,7 @@
         
                                     <!-- All-->
                                     <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                                        View all
+                                        Ver todos
                                         <i class="fe-arrow-right"></i>
                                     </a>
         
@@ -154,25 +156,25 @@
                                 <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                     <img src="vistas/assets/images/users/user-11.jpg" alt="user-image" class="rounded-circle">
                                     <span class="pro-user-name ms-1">
-                                        Christian <i class="mdi mdi-chevron-down"></i> 
+                                        Cristian <i class="mdi mdi-chevron-down"></i> 
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
                                     <!-- item-->
                                     <div class="dropdown-header noti-title">
-                                        <h6 class="text-overflow m-0">Welcome !</h6>
+                                        <h6 class="text-overflow m-0">Bienvenido!</h6>
                                     </div>
         
                                     <!-- item-->
                                     <a href="pages-profile.html" class="dropdown-item notify-item">
                                         <i class="mdi mdi-account-circle-outline fs-16 align-middle"></i>
-                                        <span>My Account</span>
+                                        <span>Mi cuenta</span>
                                     </a>
         
                                     <!-- item-->
                                     <a href="auth-lock-screen.html" class="dropdown-item notify-item">
                                         <i class="mdi mdi-lock-outline fs-16 align-middle"></i>
-                                        <span>Lock Screen</span>
+                                        <span>Bloquear Pantalla</span>
                                     </a>
         
                                     <div class="dropdown-divider"></div>

@@ -30,26 +30,26 @@
 
                             <li>
                                 <a href="agentes">
-                                    <i data-feather="users"></i>
+                                    <i class="fa-solid fa-users"></i>
                                     <span> Agentes </span>
                                 </a>
                             </li>
 
                             <li>
                                 <a href="instituciones">
-                                    <i data-feather="briefcase"></i>
+                                    <i class="fa-solid fa-building-columns"></i>
                                     <span> Instituciones </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="zonasSupervision">
-                                    <i data-feather="users"></i>
+                                    <i class="fa-solid fa-building-user"></i>
                                     <span> Zonas de Supervisión </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="solicitudesSuplente">
-                                    <i data-feather="list"></i>
+                                    <i class="fa-solid fa-list"></i>
                                     <span> Solicitudes de Suplente </span>
                                 </a>
                             </li>
