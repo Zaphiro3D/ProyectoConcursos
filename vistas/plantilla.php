@@ -21,7 +21,7 @@ $url = ControladorPlantilla::url();
         <!-- App css -->
         <link href="<?php echo $url; ?>vistas/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
-        <!-- Icons -->
+        <!-- Iconos -->
         <link href="<?php echo $url; ?>vistas/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Otros iconos -->
@@ -57,28 +57,22 @@ $url = ControladorPlantilla::url();
             <div class="content-page">
                     <?php
 
-                    $rutas = explode('/',$_GET["pagina"]);
-
-                    //print_r($rutas);
-
                     if (isset($_GET["pagina"]))
                     {
-                        if ($rutas[0] == "agentes" ||                    
+                        $rutas = explode('/',$_GET["pagina"]);
+                        if ($rutas[0] == "agentes" ||
+                            $rutas[0] == "nuevo_agente" ||
                             $rutas[0] == "instituciones" ||
                             $rutas[0] == "zonasSupervision" ||
                             $rutas[0] == "solicitudesSuplente"
                         ) {
                         include "vistas/modulos/" . $rutas[0] . ".php";
                         }else{
-
                             include "vistas/modulos/404.php";
                         }
                     }
-                        
 
                     ?>
-                
-
 
                 <!-- Footer Start -->
                <?php include 'modulos/footer.php' ?>
