@@ -5,7 +5,7 @@ $url = ControladorPlantilla::url();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
 
         <meta charset="utf-8" />
@@ -62,8 +62,10 @@ $url = ControladorPlantilla::url();
                         $rutas = explode('/',$_GET["pagina"]);
                         if ($rutas[0] == "agentes" ||
                             $rutas[0] == "nuevo_agente" ||
+                            $rutas[0] == "editar_agente" ||
                             $rutas[0] == "instituciones" ||
                             $rutas[0] == "zonasSupervision" ||
+                            $rutas[0] == "login" ||
                             $rutas[0] == "solicitudesSuplente"
                         ) {
                         include "vistas/modulos/" . $rutas[0] . ".php";
