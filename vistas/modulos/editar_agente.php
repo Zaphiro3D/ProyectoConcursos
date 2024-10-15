@@ -34,7 +34,7 @@
 
                                 <h6 class="fs-15 mb-3">DNI</h6>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="DNI">
+                                    <input type="number" class="form-control" id="floatingInput" placeholder="DNI">
                                     <label for="floatingInput">Número de DNI sin puntos</label>
                                 </div>
 

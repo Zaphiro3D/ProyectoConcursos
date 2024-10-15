@@ -68,7 +68,10 @@ $url = ControladorPlantilla::url();
                             $rutas[0] == "nuevo_agente" ||
                             $rutas[0] == "editar_agente" ||
                             $rutas[0] == "instituciones" ||
+                            $rutas[0] == "nueva_institucion" ||
+                            $rutas[0] == "editar_institucion" ||
                             $rutas[0] == "zonasSupervision" ||
+                            $rutas[0] == "elementos_formularios" ||
                             $rutas[0] == "login" ||
                             $rutas[0] == "solicitudesSuplente"
                         ) {
