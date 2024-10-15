@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
+                    <table id="tablaES" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th>Apellido</th>    
@@ -50,6 +50,7 @@
                             
                         </tbody>
                     </table>
+                    
                 </div>
 
             </div>

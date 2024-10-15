@@ -11,8 +11,8 @@ $url = ControladorPlantilla::url();
         <meta charset="utf-8" />
         <title>Sistema de Gestión de Suplentes</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc."/>
-        <meta name="author" content="Zoyothemes"/>
+        <meta name="description" content="Sistema de Gestión de Solicitudes de Suplentes"/>
+        <meta name="author" content="Ana y Vladimir"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <!-- App favicon -->
@@ -33,7 +33,11 @@ $url = ControladorPlantilla::url();
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-    
+        
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script> 
+        
+        <script src= "<?php echo $url; ?>vistas/assets/libs/DataTables-ES.js"></script>
+        
     </head>
 
     <!-- body start -->
@@ -118,7 +122,7 @@ $url = ControladorPlantilla::url();
         
         <!-- App js-->
         <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
-        
+
     </body>
     
 </html>
