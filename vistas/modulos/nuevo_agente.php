@@ -6,8 +6,7 @@
             <h4 class="fs-22 fw-bold m-0">Nuevo Agente</h4>
         </div>
     </div>
-
-
+    
     <div class="row"> <!-- Floating Labels -->
         <div class="col-12">
             <div class="card">
@@ -68,7 +67,6 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">Acceso al Sistema</h5>
                 </div><!-- end card header -->
-                
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
@@ -105,16 +103,25 @@
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
+                                <div class="d-flex flex-wrap gap-2">  
+                                    <button type="button" class="btn btn-light"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
+                                    <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
-            <div class="d-flex flex-wrap gap-2">    
-                <button type="button" class="btn btn-light"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
-                <!-- <button type="button" class="btn btn-primary"><i data-feather="trash-2"></i>Eliminar</button>  -->
-            </div> 
-        </div>
+        
     </div>
 
 </div> <!-- container-fluid -->
