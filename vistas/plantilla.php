@@ -27,13 +27,19 @@ $url = ControladorPlantilla::url();
         <!-- Otros iconos -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-        <!-- Datatables css -->
+        <!-- Datatables css-->
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-        
+         
+        <!-- Datatables web -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.css" rel="stylesheet">
+ 
+
+
         <script src="//code.jquery.com/jquery-1.12.4.js"></script> 
         
         <script src= "<?php echo $url; ?>vistas/assets/libs/DataTables-ES.js"></script>
@@ -105,26 +111,36 @@ $url = ControladorPlantilla::url();
         <script src="<?php echo $url; ?>vistas/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/feather-icons/feather.min.js"></script>
         
-        <!-- Datatables js -->
+        <!-- Datatables js
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 
-        <!-- dataTables.bootstrap5 -->
+        dataTables.bootstrap5
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
 
-        <!-- dataTable.responsive -->
+        dataTable.responsive
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
         
-        <!-- dataTables.select -->
+        dataTables.select 
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/js/select.bootstrap5.min.js"></script>
 
-        <!-- Datatable Demo App Js -->
+        Datatable Demo App Js
         <script src="<?php echo $url; ?>vistas/assets/js/pages/datatable.init.js"></script>
+        -->
+        
+        <!-- dataTables.net web -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>-->
+        <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.js"></script>
+
+        
         
         <!-- App js-->
         <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
+        
 
     </body>
     
