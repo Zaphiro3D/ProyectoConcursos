@@ -77,6 +77,7 @@
                                 
                                 <!-- Pantalla Seleccionar director -->
                                 <?php include 'seleccionar_director.php' ?>
+                                
                             </div>
                         </div>
                         

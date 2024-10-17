@@ -14,7 +14,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="tablaSelectES" class="table table-striped table-hover dt-responsive nowrap w-100">                    
+                    <table id="tablaSelectES" class="table table-striped table-hover dt-responsive nowrap w-100">  
+                        <div class="table-title">
+                            asd
+                        </div>        
                         <thead>
                             <tr>
                                 <th>Apellido</th>    
