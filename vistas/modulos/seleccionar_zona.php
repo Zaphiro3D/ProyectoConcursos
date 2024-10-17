@@ -9,20 +9,16 @@
                         </div>        
                         <thead>
                             <tr>
-                                <th>Apellido</th>    
-                                <th>Nombre</th>
-                                <th>DNI</th>
+                                <th>Zona</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                $agentes = ControladorAgentes::ctrMostrarDirectores();
+                                $agentes = ControladorAgentes::ctrMostrarSupervisores();
                                 foreach ($agentes as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
-                                <td> <?php echo $value["apellido"] ?></td>    
-                                <td> <?php echo $value["nombre"] ?></td>
-                                <td> <?php echo $value["dni"] ?></td>
+                                <td> <?php echo $value["nombre"] ?></td> 
                             </tr>
 
                             <?php } ?>
