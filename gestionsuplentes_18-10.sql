@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2024 a las 17:28:23
+-- Tiempo de generación: 18-10-2024 a las 19:39:40
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -69,7 +69,7 @@ INSERT INTO `agentes` (`id_Agente`, `apellido`, `nombre`, `dni`, `telefono`, `di
 
 CREATE TABLE `cargos` (
   `numeroPlaza` int(11) UNSIGNED NOT NULL,
-  `nombreCargo` varchar(100) NOT NULL,
+  `id_NombreCargo` int(11) UNSIGNED NOT NULL,
   `id_Grado` tinyint(4) UNSIGNED DEFAULT NULL,
   `id_Division` tinyint(4) UNSIGNED DEFAULT NULL,
   `id_Turno` tinyint(4) UNSIGNED DEFAULT NULL,
@@ -79,6 +79,13 @@ CREATE TABLE `cargos` (
   `dniDocente` int(11) UNSIGNED DEFAULT NULL,
   `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cargos`
+--
+
+INSERT INTO `cargos` (`numeroPlaza`, `id_NombreCargo`, `id_Grado`, `id_Division`, `id_Turno`, `hsCatedra`, `apellidoDocente`, `nombreDocente`, `dniDocente`, `eliminado`) VALUES
+(999999, 12, NULL, NULL, 3, 20, 'Perez', 'Lucas', 21245465, 0);
 
 -- --------------------------------------------------------
 
@@ -91,6 +98,16 @@ CREATE TABLE `cargo_institucion` (
   `numeroPlaza` int(11) UNSIGNED NOT NULL,
   `id_Institucion` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cargo_institucion`
+--
+
+INSERT INTO `cargo_institucion` (`id_Cargo_Institucion`, `numeroPlaza`, `id_Institucion`) VALUES
+(2, 999999, 330),
+(3, 999999, 331),
+(4, 999999, 332),
+(5, 999999, 333);
 
 -- --------------------------------------------------------
 
@@ -181,6 +198,17 @@ CREATE TABLE `hssemanal` (
   `id_Jornada` int(11) UNSIGNED NOT NULL,
   `Id_Cargo_Institucion` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `hssemanal`
+--
+
+INSERT INTO `hssemanal` (`id_HsSemanal`, `id_Jornada`, `Id_Cargo_Institucion`) VALUES
+(1, 1, 2),
+(2, 1, 3),
+(3, 2, 3),
+(4, 3, 4),
+(5, 4, 5);
 
 -- --------------------------------------------------------
 
@@ -327,6 +355,17 @@ CREATE TABLE `jornadas` (
   `horaFin` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `jornadas`
+--
+
+INSERT INTO `jornadas` (`id_Jornada`, `id_Dia`, `horaInicio`, `horaFin`) VALUES
+(1, 1, '08:00:00', '11:00:00'),
+(2, 1, '13:00:00', '15:20:00'),
+(3, 2, '08:00:00', '11:15:00'),
+(4, 3, '08:00:00', '10:30:00'),
+(5, 4, '09:00:00', '11:40:00');
+
 -- --------------------------------------------------------
 
 --
@@ -340,6 +379,106 @@ CREATE TABLE `motivossuplencia` (
   `Articulo` smallint(6) DEFAULT NULL,
   `Insciso` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `motivossuplencia`
+--
+
+INSERT INTO `motivossuplencia` (`id_MotivoSuplencia`, `Motivo`, `Resolucion`, `Articulo`, `Insciso`) VALUES
+(1, 'Jubilación', '', 0, ''),
+(2, 'Renuncia', '', 0, ''),
+(3, 'Casos Especiales', '', 9, ''),
+(4, 'Licencia Anual Ordinaria (LAO)', '', 11, ''),
+(5, 'Enfermedad Corto Tratamiento', '', 12, 'A'),
+(6, 'Enfermedad Largo Tratamiento', '', 12, 'B'),
+(7, 'Accidente de Trabajo', '', 12, 'C'),
+(8, 'Maternidad', '', 13, 'A'),
+(9, 'Paternidad', '', 13, 'B'),
+(10, 'Lactancia', '', 13, 'C'),
+(11, 'Adopción', '', 13, 'D'),
+(12, 'Atención de Hijo Menor', '', 13, 'E'),
+(13, 'Prof. Educ. Física', '', 13, 'F'),
+(14, 'Atención del Grupo Familiar', '', 14, ''),
+(15, 'Matrimonio del Agente', '', 16, 'A'),
+(16, 'Matrimonio de los hijos', '', 16, 'B'),
+(17, 'Exámen Prenupcial', '', 16, 'C'),
+(18, 'Duelo', '', 16, 'D'),
+(19, 'Donación de Sangre', '', 16, 'E'),
+(20, 'Donación de Órganos', '', 16, 'F'),
+(21, 'Mesas Examinadoras', '', 16, 'G'),
+(22, 'Mudanza', '', 16, 'H'),
+(23, 'Razones Personales', '', 16, 'I'),
+(24, 'Rendir Exámenes', '', 16, 'J'),
+(25, 'Perfeccionamiento Docente', '', 16, 'K'),
+(26, 'Actividades de Interés Público', '', 16, 'L'),
+(27, 'Licencia Deportiva', '', 16, 'M'),
+(28, 'Acompañar Delegaciones Escolares', '', 16, 'N'),
+(29, 'Intervención en Concursos', '', 16, 'Ñ'),
+(30, 'Razones Gremiales', '', 16, 'O'),
+(31, 'Postulación para Cargos Electivos', '', 16, 'P'),
+(32, 'Razones Particulares', '', 16, 'Q'),
+(33, 'Acompañar al Cónyuge', '', 16, 'R'),
+(34, 'Desempeños en Cargos Políticos', '', 16, 'S'),
+(35, 'Razones de Interés Pedagógico', '', 16, 'T'),
+(36, 'Mayor Jerarquía', '', 16, 'U'),
+(37, 'Comisión de Servicio', '', 0, ''),
+(38, 'Amonestación', '1271/04', 8, ''),
+(39, 'Fenómenos Meteorológicos', '', 5, 'J'),
+(40, 'Día Religioso Dec. 1584/10', '', 0, ''),
+(41, 'Día Religioso Ley 10224', '', 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `nombrescargos`
+--
+
+CREATE TABLE `nombrescargos` (
+  `id_NombreCargo` int(11) UNSIGNED NOT NULL,
+  `nombreCargo` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `nombrescargos`
+--
+
+INSERT INTO `nombrescargos` (`id_NombreCargo`, `nombreCargo`) VALUES
+(1, 'Director de Radio'),
+(2, 'Director'),
+(3, 'Vicedirector'),
+(4, 'Secretario'),
+(5, 'Maestro del Servicio Domiciliario y Hospitalario de Nivel Primario'),
+(6, 'Maestro del Servicio Domiciliario y Hospitalario de Nivel Inicial'),
+(7, 'Maestro del Servicio Domiciliario y Hospitalario de Educación Especial'),
+(8, 'Maestro de Ciclo de Jóvenes y Adultos'),
+(9, 'Maestro de Ciclo de Jóvenes y Adultos en Contexto de Privación de la Libertad'),
+(10, 'Maestro de Educación Tecnológica'),
+(11, 'Maestro de Artes Visuales'),
+(12, 'Maestro de Educación Física'),
+(13, 'Maestro de Educación Musical'),
+(14, 'Maestro de Sección'),
+(15, 'Maestro Auxiliar'),
+(16, 'Maestro de Sección para discapacidad intelectual'),
+(17, 'Maestro de Sección para discapacidad auditiva'),
+(18, 'Maestro de Sección para discapacidad visual'),
+(19, 'Maestro Orientador para la Inclusión'),
+(20, 'Formación Laboral y Ocupacional'),
+(21, 'Orientación Vocacional y Ocupacional'),
+(22, 'Técnico Auxiliar Asistente/Trabajador Social'),
+(23, 'Técnico Auxiliar Psicólogo'),
+(24, 'Técnico Auxiliar Psicopedagogo'),
+(25, 'Terapista Ocupacional'),
+(26, 'Técnico Auxiliar Fonoaudiólogo'),
+(27, 'Maestro de Artes Visuales'),
+(28, 'Maestro de Educación Física'),
+(29, 'Maestro de Educación Musical'),
+(30, 'Director de Personal Único'),
+(31, 'Bibliotecario'),
+(32, 'Maestro Auxiliar'),
+(33, 'Maestro de Ciclo'),
+(34, 'Maestro de Idioma Inglés'),
+(35, 'Complemento Maestro de Ciclo'),
+(36, 'Bibliotecario Pedagógico');
 
 -- --------------------------------------------------------
 
@@ -378,6 +517,13 @@ CREATE TABLE `solicitudessuplente` (
   `numeroPlaza` int(11) UNSIGNED NOT NULL,
   `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `solicitudessuplente`
+--
+
+INSERT INTO `solicitudessuplente` (`id_SolSuplente`, `numeroTramite`, `fechaInicio`, `fechaFin`, `id_MotivoSuplencia`, `observaciones`, `numeroPlaza`, `eliminado`) VALUES
+(1, 1234, '2024-10-18', '2024-10-31', 5, 'Pendiente de aprobacion', 999999, 0);
 
 -- --------------------------------------------------------
 
@@ -480,7 +626,8 @@ ALTER TABLE `cargos`
   ADD UNIQUE KEY `numeroPlaza` (`numeroPlaza`),
   ADD KEY `Cargos_fk2` (`id_Grado`),
   ADD KEY `Cargos_fk3` (`id_Division`),
-  ADD KEY `Cargos_fk4` (`id_Turno`);
+  ADD KEY `Cargos_fk4` (`id_Turno`),
+  ADD KEY `id_nombreCargo` (`id_NombreCargo`);
 
 --
 -- Indices de la tabla `cargo_institucion`
@@ -547,6 +694,12 @@ ALTER TABLE `motivossuplencia`
   ADD UNIQUE KEY `id_MotivoSuplencia` (`id_MotivoSuplencia`);
 
 --
+-- Indices de la tabla `nombrescargos`
+--
+ALTER TABLE `nombrescargos`
+  ADD PRIMARY KEY (`id_NombreCargo`);
+
+--
 -- Indices de la tabla `roles`
 --
 ALTER TABLE `roles`
@@ -594,16 +747,10 @@ ALTER TABLE `agentes`
   MODIFY `id_Agente` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT de la tabla `cargos`
---
-ALTER TABLE `cargos`
-  MODIFY `numeroPlaza` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `cargo_institucion`
 --
 ALTER TABLE `cargo_institucion`
-  MODIFY `id_Cargo_Institucion` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Cargo_Institucion` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `dias`
@@ -627,7 +774,7 @@ ALTER TABLE `grados`
 -- AUTO_INCREMENT de la tabla `hssemanal`
 --
 ALTER TABLE `hssemanal`
-  MODIFY `id_HsSemanal` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_HsSemanal` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `instituciones`
@@ -639,13 +786,19 @@ ALTER TABLE `instituciones`
 -- AUTO_INCREMENT de la tabla `jornadas`
 --
 ALTER TABLE `jornadas`
-  MODIFY `id_Jornada` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Jornada` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `motivossuplencia`
 --
 ALTER TABLE `motivossuplencia`
-  MODIFY `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT de la tabla `nombrescargos`
+--
+ALTER TABLE `nombrescargos`
+  MODIFY `id_NombreCargo` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -657,7 +810,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `solicitudessuplente`
 --
 ALTER TABLE `solicitudessuplente`
-  MODIFY `id_SolSuplente` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_SolSuplente` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoinstitucion`
@@ -693,7 +846,9 @@ ALTER TABLE `agentes`
 ALTER TABLE `cargos`
   ADD CONSTRAINT `Cargos_fk2` FOREIGN KEY (`id_Grado`) REFERENCES `grados` (`id_Grado`),
   ADD CONSTRAINT `Cargos_fk3` FOREIGN KEY (`id_Division`) REFERENCES `divisiones` (`id_Division`),
-  ADD CONSTRAINT `Cargos_fk4` FOREIGN KEY (`id_Turno`) REFERENCES `turnos` (`id_Turno`);
+  ADD CONSTRAINT `Cargos_fk4` FOREIGN KEY (`id_Turno`) REFERENCES `turnos` (`id_Turno`),
+  ADD CONSTRAINT `cargos_ibfk_1` FOREIGN KEY (`id_nombreCargo`) REFERENCES `nombrescargos` (`id_NombreCargo`),
+  ADD CONSTRAINT `cargos_ibfk_2` FOREIGN KEY (`id_NombreCargo`) REFERENCES `nombrescargos` (`id_NombreCargo`);
 
 --
 -- Filtros para la tabla `cargo_institucion`
