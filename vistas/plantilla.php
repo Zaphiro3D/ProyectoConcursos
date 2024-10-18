@@ -67,18 +67,29 @@ $url = ControladorPlantilla::url();
                     if (isset($_GET["pagina"]))
                     {
                         $rutas = explode('/',$_GET["pagina"]);
-                        if ($rutas[0] == "agentes" ||
+                        if (
+                            // Agentes
+                            $rutas[0] == "agentes" ||
                             $rutas[0] == "nuevo_agente" ||
                             $rutas[0] == "editar_agente" ||
+                            // Instituciones
                             $rutas[0] == "instituciones" ||
                             $rutas[0] == "nueva_institucion" ||
                             $rutas[0] == "editar_institucion" ||
+                            // Zonas
                             $rutas[0] == "zonasSupervision" ||
                             $rutas[0] == "nueva_zona" ||
                             $rutas[0] == "editar_zona" ||
+
+                            // Solicitudes de Suplente
+                            $rutas[0] == "solicitudesSuplente"||                            
+                            $rutas[0] == "nueva_solsuplente" ||
+                            $rutas[0] == "editar_editar_solsuplente" ||
+
+                            // otros
                             $rutas[0] == "elementos_formularios" ||
-                            $rutas[0] == "login" ||
-                            $rutas[0] == "solicitudesSuplente"
+                            $rutas[0] == "login"
+                            
                         ) {
                         include "vistas/modulos/" . $rutas[0] . ".php";
                         }else{

@@ -37,7 +37,7 @@
                             <h5 class="card-title mb-0">Seleccione un Supervisor</h5>
                         </div>
                         <div class="card-body">                           
-                            <!-- Pantalla Seleccionar director -->
+                            <!-- Pantalla Seleccionar Supervisor -->
                             <?php include 'seleccionar_supervisor.php' ?>
                         </div>
                     </div>                    

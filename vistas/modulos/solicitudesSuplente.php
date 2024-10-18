@@ -18,9 +18,6 @@
                         <thead>
                             <tr>
                                 <th>Establecimiento Sede</th>    
-                                <th>Establecimiento 2</th>
-                                <th>Establecimiento 3</th>
-                                <th>Establecimiento 4</th>
                                 <th>Cargo</th>
                                 <th>Hs Cátedra</th>
                                 <th>Grado</th>
@@ -30,6 +27,9 @@
                                 <th>Fecha Hasta</th>
                                 <th>Motivo Lic.</th>
                                 <th>Agente Reemplazado</th>
+                                <th>Establecimiento 2</th>
+                                <th>Establecimiento 3</th>
+                                <th>Establecimiento 4</th>
                                 <th>DNI</th>
                                 <th>Horario</th>
                                 <th>Observaciones</th>
@@ -37,8 +37,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
                         </tbody>
                     </table>
                 </div>
