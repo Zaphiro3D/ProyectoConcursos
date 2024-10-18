@@ -27,20 +27,18 @@ $url = ControladorPlantilla::url();
         <!-- Otros iconos -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-        <!-- Datatables css-->
+        <!-- Datatables css
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo $url; ?>vistas/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" type="text/css" /> -->
          
         <!-- Datatables web -->
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.css" rel="stylesheet">
  
-
-
-        <script src="//code.jquery.com/jquery-1.12.4.js"></script> 
-        
+        <!-- Datatables Traduccion Español -->                 
         <script src= "<?php echo $url; ?>vistas/assets/libs/DataTables-ES.js"></script>
         
     </head>
@@ -76,6 +74,8 @@ $url = ControladorPlantilla::url();
                             $rutas[0] == "nueva_institucion" ||
                             $rutas[0] == "editar_institucion" ||
                             $rutas[0] == "zonasSupervision" ||
+                            $rutas[0] == "nueva_zona" ||
+                            $rutas[0] == "editar_zona" ||
                             $rutas[0] == "elementos_formularios" ||
                             $rutas[0] == "login" ||
                             $rutas[0] == "solicitudesSuplente"

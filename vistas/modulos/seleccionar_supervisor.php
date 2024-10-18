@@ -9,7 +9,9 @@
                         </div>        
                         <thead>
                             <tr>
-                                <th>Zona</th>
+                                <th>Apellido</th>    
+                                <th>Nombre</th>
+                                <th>DNI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -18,7 +20,9 @@
                                 foreach ($agentes as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
-                                <td> <?php echo $value["nombre"] ?></td> 
+                                <td> <?php echo $value["apellido"] ?></td>    
+                                <td> <?php echo $value["nombre"] ?></td>
+                                <td> <?php echo $value["dni"] ?></td>
                             </tr>
 
                             <?php } ?>
