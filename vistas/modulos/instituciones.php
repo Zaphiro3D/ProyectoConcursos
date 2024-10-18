@@ -6,7 +6,7 @@
     </div>
     <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="d-flex flex-wrap gap-2">    
-            <a href="nueva_institucion" class="btn btn-primary"><i class="fas fa-plus" ></i > &nbsp; Nuevo</a>
+            <a href="nueva_institucion" class="btn btn-primary"><i class="fas fa-plus" ></i > &nbsp; Nueva Institución</a>
             <!-- <button type="button" class="btn btn-primary"><i data-feather="edit-2"></i>Editar</button>
             <button type="button" class="btn btn-primary"><i data-feather="trash-2"></i>Eliminar</button>  -->
         </div> 

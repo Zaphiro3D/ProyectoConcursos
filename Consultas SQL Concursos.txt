@@ -176,3 +176,47 @@ INSERT INTO `tipoinstitucion` (`TipoInstitucion`) VALUES
 ('Jardín Materno Infantil'),
 ('Centro de Desarrollo Infantil'),
 ('Equipo de Orientación Escolar (EOE)');
+
+
+INSERT INTO `nombrescargos` (`nombreCargo`) VALUES 
+('Director de Radio'),
+('Director'),
+('Vicedirector'),
+('Secretario'),
+('Maestro del Servicio Domiciliario y Hospitalario de Nivel Primario'),
+('Maestro del Servicio Domiciliario y Hospitalario de Nivel Inicial'),
+('Maestro del Servicio Domiciliario y Hospitalario de Educación Especial'),
+('Maestro de Ciclo de Jóvenes y Adultos'),
+('Maestro de Ciclo de Jóvenes y Adultos en Contexto de Privación de la Libertad'),
+('Maestro de Educación Tecnológica'),
+('Maestro de Artes Visuales'),
+('Maestro de Educación Física'),
+('Maestro de Educación Musical'),
+('Maestro de Sección'),
+('Maestro Auxiliar'),
+('Maestro de Sección para discapacidad intelectual'),
+('Maestro de Sección para discapacidad auditiva'),
+('Maestro de Sección para discapacidad visual'),
+('Maestro Orientador para la Inclusión'),
+('Formación Laboral y Ocupacional'),
+('Orientación Vocacional y Ocupacional'),
+('Técnico Auxiliar Asistente/Trabajador Social'),
+('Técnico Auxiliar Psicólogo'),
+('Técnico Auxiliar Psicopedagogo'),
+('Terapista Ocupacional'),
+('Técnico Auxiliar Fonoaudiólogo'),
+('Maestro de Artes Visuales'),
+('Maestro de Educación Física'),
+('Maestro de Educación Musical'),
+('Director de Personal Único'),
+('Bibliotecario'),
+('Maestro Auxiliar'),
+('Maestro de Ciclo'),
+('Maestro de Idioma Inglés'),
+('Complemento Maestro de Ciclo'),
+('Bibliotecario Pedagógico');
+
+
+
+
+
