@@ -54,21 +54,21 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp2" value="option1" checked>
+                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp2" value="option1" unchecked>
                                 <label class="form-check-label" for="gridRadioComp2">
                                     Comparte con 1 institución
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp3" value="option1" checked>
+                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp3" value="option1" unchecked>
                                 <label class="form-check-label" for="gridRadioComp3">
                                     Comparte con 2 instituciones
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp4" value="option1" checked>
+                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp4" value="option1" unchecked>
                                 <label class="form-check-label" for="gridRadioComp4">
                                     Comparte con 3 instituciones
                                 </label>
@@ -87,11 +87,36 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Seleccione la Segunda Institución</h5>
+                            <h5 class="card-title mb-0">Seleccione las Instituciones Compartidas</h5>
                         </div>
-                        <div class="card-body">                           
-                            <!-- Pantalla Seleccionar director -->
-                            <?php include 'seleccionar_institucion.php' ?>
+                        <div class="card-body">   
+                            <form>
+                                <!-- Opciones Datalist Instituciones -->       
+                                <datalist id="OpcionesInstitucion">
+                                    <?php
+                                        $institucion = ControladorInstituciones::ctrMostrarInstituciones();
+                                        foreach ($institucion as $key => $value) {   
+                                            // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
+                                    ?>
+                                    <option ><?php echo $value["TipoInstitucion"] . " N°" . $value["numero"]. '"' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
+                                    <?php } ?>
+                                </datalist>    
+                            
+                                <div class="pb-3">   <!-- Datalist Instituciones 2 -->
+                                    <label for="datalistInstitucion2" class="form-label">Segunda Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="datalistInstitucion2" placeholder="Escriba para buscar...">
+                                </div>
+
+                                <div class="pb-3">   <!-- Datalist Instituciones 3 -->
+                                    <label for="datalistInstitucion3" class="form-label">Tercera Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="datalistInstitucion3" placeholder="Escriba para buscar...">
+                                </div>
+
+                                <div class="pb-3">   <!-- Datalist Instituciones 4 -->
+                                    <label for="datalistInstitucion4" class="form-label">Cuarta Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="datalistInstitucion4" placeholder="Escriba para buscar...">
+                                </div>
+                            </form>
                         </div>
                     </div>                    
                 </div>             
@@ -106,28 +131,9 @@
                 <div class="card-body">
                     
                     <div class="row">
-                        <div class="col-lg-2"> 
-                            <!-- <h6 class="fs-15 mb-3">Número</h6> -->
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control disabled" id="numero" placeholder="DNI">
-                                <label for="numero">N°</label>
-                            </div>
-                        </div>
-                        <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
-                        <div class="col-lg-6"> 
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-                                <label for="nombre">Nombre</label>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4"> 
-                            <!-- <h6 class="fs-15 mb-3">CUE</h6> -->
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="cue" placeholder="CUE">
-                                <label for="cue">CUE</label>
-                            </div>
-                        </div>    
+                            
+                        
+                                   
 
                     </div>
                     

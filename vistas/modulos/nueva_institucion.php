@@ -50,13 +50,13 @@
                                     <option value="1">Escuela NINA</option>
                                     <option value="2">Escuela NEP</option>
                                     <option value="3">Escuela de Educación Integral</option>
-                                    <option value="3">Centro Educativo Integral</option>
-                                    <option value="3">Jardín Materno Infantil</option>
-                                    <option value="3">Centro Integrador Comunitario</option>
-                                    <option value="3">Equipo de Orientación Escolar (EOE)</option>
-                                    <option value="3">Escuela Primaria de Jóvenes y Adultos</option>
-                                    <option value="3">Centro Comunitario</option>
-                                    <option value="3">Unidad Educativa de Nivel Inicial</option>
+                                    <option value="4">Centro Educativo Integral</option>
+                                    <option value="5">Jardín Materno Infantil</option>
+                                    <option value="6">Centro Integrador Comunitario</option>
+                                    <option value="7">Equipo de Orientación Escolar (EOE)</option>
+                                    <option value="8">Escuela Primaria de Jóvenes y Adultos</option>
+                                    <option value="9">Centro Comunitario</option>
+                                    <option value="10">Unidad Educativa de Nivel Inicial</option>
                                 </select>
                                 <label for="tipo">Elegir tipo</label>
                             </div>
