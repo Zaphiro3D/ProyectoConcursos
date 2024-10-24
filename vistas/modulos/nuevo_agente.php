@@ -16,7 +16,7 @@
                 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-2">
+                        <div class="col-lg-3">
                             <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                             <div class="form-floating mb-3">
                                 <input type="number" class="form-control" id="dni" placeholder="DNI">
@@ -24,7 +24,7 @@
                             </div>
 
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             <!-- <h6 class="fs-15 mb-3">Apellido</h6> -->
 
                             <div class="form-floating mb-3">
@@ -46,7 +46,7 @@
                         <div class="col-lg-4">
                             <!-- <h6 class="fs-15 mb-3">Email</h6>  -->
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com" value="nombre@ejemplo.com">
+                                <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
                                 <label for="email">Email</label>
                             </div>
                         </div>
