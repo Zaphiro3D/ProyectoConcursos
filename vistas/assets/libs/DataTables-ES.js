@@ -249,13 +249,13 @@ $(document).ready(function(){$("#datatable").DataTable();
     var a= 
 
     //tabla General para visualizar sin seleccion
-    $('#tablaES').DataTable({ scrollX: true, pagingType:"full_numbers",
+    $('#tablaES').DataTable({ scrollX:!0, pagingType:"full_numbers",
         "language": espanol
     });
 
 
     //tabla solo seleccion
-    $('#tablaSelectES').DataTable({ scrollX: true, select: true, blurable: true, select:{style:"single"}, pagingType:"full_numbers",
+    $('#tablaSelectES').DataTable({ scrollX:!0, select: true, blurable: true, select:{style:"single"}, pagingType:"full_numbers",
         "language": espanol
     });
         
