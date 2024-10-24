@@ -11,72 +11,67 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Datos de la Institución Sede</h5>
+                    <h5 class="card-title mb-0">Datos de las Instituciones</h5>
                 </div><!-- end card header -->
                 
                 <div class="card-body">
-                    
-                    <div class="row"> 
-                        <div class="col-lg-4"> 
-                            <!-- <h6 class="fs-15 mb-3">CUE</h6> -->
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="cue" placeholder="CUE">
-                                <label for="cue">CUE</label>
-                            </div>
-                        </div>    
 
-                        <!-- Autofill despues de ingresar el CUE -->
-                        <div class="col-lg-2"> 
-                            <!-- <h6 class="fs-15 mb-3">Número</h6> -->
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="numero" placeholder="DNI">
-                                <label for="numero">N°</label>
+                        <fieldset class="row mb-3"> 
+                            <!-- Escuela Sede -->
+                            <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
+                            <div>
+                                <label for="institucion1-deshab" class="form-label">Institución Sede</label>
+                                <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
                             </div>
+                        </fieldset>
+
+                
+                </div>
+            </div>  <!-- card datos sede -->
+            
+            <div class="card">
+
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Datos de las Instituciones</h5>
+                </div><!-- end card header -->
+                
+                <div class="card-body">
+                    <form>
+                        <div class="row mb-3">
+                            <fieldset class="row mb-3">
+                                <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend>
+                                <div class="col-sm-10 d-flex gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp1" value="option1" checked>
+                                        <label class="form-check-label" for="gridRadioComp1">
+                                            No comparte
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp2" value="option1" unchecked>
+                                        <label class="form-check-label" for="gridRadioComp2">
+                                            Comparte con 1 institución
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp3" value="option1" unchecked>
+                                        <label class="form-check-label" for="gridRadioComp3">
+                                            Comparte con 2 instituciones
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp4" value="option1" unchecked>
+                                        <label class="form-check-label" for="gridRadioComp4">
+                                            Comparte con 3 instituciones
+                                        </label>
+                                    </div>
+                                </div>     
+                            </fieldset>                            
                         </div>
-                        <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
-                        <div class="col-lg-6"> 
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-                                <label for="nombre">Nombre</label>
-                            </div>
-                        </div>
-                                                    
-                        
-                    </div>
-                    <fieldset class="row mb-3">
-                        <legend class="col-form-label col-sm-2 pt-0 fs-15">¿Comparte con otra institución?</legend>
-                        <div class="col-sm-10 d-flex gap-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp1" value="option1" checked>
-                                <label class="form-check-label" for="gridRadioComp1">
-                                    No comparte
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp2" value="option1" unchecked>
-                                <label class="form-check-label" for="gridRadioComp2">
-                                    Comparte con 1 institución
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp3" value="option1" unchecked>
-                                <label class="form-check-label" for="gridRadioComp3">
-                                    Comparte con 2 instituciones
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadiosComparte" id="gridRadioComp4" value="option1" unchecked>
-                                <label class="form-check-label" for="gridRadioComp4">
-                                    Comparte con 3 instituciones
-                                </label>
-                            </div>
-                            
-                        </div>
-                    </fieldset>
-                    
+                    </form>
                 </div>
             </div>
 
