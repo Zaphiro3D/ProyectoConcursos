@@ -11,16 +11,16 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Datos de las Instituciones</h5>
+                    <h5 class="card-title mb-0">Institución Sede</h5>
                 </div><!-- end card header -->
                 
                 <div class="card-body">
 
-                        <fieldset class="row mb-3"> 
+                        <fieldset class="row mb-3 mt-1"> 
                             <!-- Escuela Sede -->
                             <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
                             <div>
-                                <label for="institucion1-deshab" class="form-label">Institución Sede</label>
+                                <!-- <label for="institucion1-deshab" class="form-label">Institución Sede</label> -->
                                 <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
                             </div>
                         </fieldset>
@@ -84,14 +84,14 @@
                 </div>
                 <div class="card-body">   
                     <form>
-                        <!-- Opciones Datalist Instituciones -->       
+                        <!-- Opciones Datalist Instituciones        -->
                         <datalist id="OpcionesInstitucion">
                             <?php
                                 $institucion = ControladorInstituciones::ctrMostrarInstituciones();
                                 foreach ($institucion as $key => $value) {   
                                     // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
                             ?>
-                            <option ><?php echo $value["TipoInstitucion"] . " N°" . $value["numero"]. '"' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
+                            <option ><?php echo $value["TipoInstitucion"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
                             <?php } ?>
                         </datalist>    
                     

@@ -6,8 +6,9 @@
         </div>
     </div>
     
+    
     <div class="row"> <!-- Floating Labels -->
-        <div class="col-12">
+        <div class="col-lg-6">
             <div class="card">
 
                 <div class="card-header">
@@ -15,33 +16,53 @@
                 </div><!-- end card header -->
                 
                 <div class="card-body">
-                    
-                    <div class="row"> 
-                        
-                        <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
-                        <div class="col-lg-12"> 
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-                                <label for="nombre">Nombre</label>
-                            </div>
-                        </div>                        
+                    <div class="form-floating mb-3 mt-2">
+                        <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                        <label for="nombre">Nombre</label>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
 
-            <div class="row">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Seleccionar Supervisor</h5>
+                </div><!-- end card header -->
                 
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Seleccione un Supervisor</h5>
-                        </div>
-                        <div class="card-body">                           
-                            <!-- Pantalla Seleccionar Supervisor -->
-                            <?php include 'seleccionar_supervisor.php' ?>
-                        </div>
-                    </div>                    
-                </div>             
+                <div class="card-body">
+                    <!-- Opciones Datalist Instituciones -->       
+                    <datalist id="OpcionesSupervisor">
+                        <?php
+                            $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
+                            foreach ($agentes as $key => $value) {   
+                        ?>
+                        <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>
+                        <?php } ?>
+                    </datalist>    
+                
+                    <div class="pb-3">   <!-- Datalist Supervisores-->
+                        <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
+                        <div class="form-floating mb-1 mt-1">
+                            <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
+                            <label for="datalistSupervisor">Escriba para buscar...</label>
+                        </div>   
+                    </div>    
+                </div>
+            </div>
+        </div>  <!-- col -->
+        
+        <div class="col-12">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Seleccione las Instituciones</h5>
+                    </div>
+                    <div class="card-body">                           
+                        <!-- Pantalla Seleccionar Supervisor -->
+                        <?php include 'seleccionar_institucion.php' ?>
+                    </div>
+                </div>               
                 
             </div>
 

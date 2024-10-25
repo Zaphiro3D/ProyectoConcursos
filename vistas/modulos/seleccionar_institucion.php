@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <table id="tablaSelectES" class="table table-striped table-hover dt-responsive nowrap w-100">  
+                    <table id="tablaSelectMultiES" class="table table-striped table-hover dt-responsive nowrap w-100">  
                         <div class="table-title">
                         </div>        
                         <thead>

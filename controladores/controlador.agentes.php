@@ -13,5 +13,10 @@ class ControladorAgentes{
         $respuesta = ModeloAgentes::mdlMostrarSupervisores();
         return $respuesta;
     }
+
+    static public function ctrMostrarAgentes_noS(){
+        $respuesta = ModeloAgentes::mdlMostrarAgentes_noS();
+        return $respuesta;
+    }
 }
 

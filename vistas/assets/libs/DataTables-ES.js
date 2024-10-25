@@ -265,5 +265,15 @@ $(document).ready(function(){$("#datatable").DataTable();
         pagingType:"full_numbers",
         "language": espanol
     });
+
+    //tabla solo seleccion multiple
+    $('#tablaSelectMultiES').DataTable({ 
+        scrollX:!0, 
+        select: true, 
+        blurable: true, 
+        select:{style:"multi"}, 
+        pagingType:"full_numbers",
+        "language": espanol
+    });
         
 });

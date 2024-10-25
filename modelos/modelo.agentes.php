@@ -42,5 +42,19 @@ class ModeloAgentes{
         }
 
     }
+    static public function mdlMostrarAgentes_noS()
+    {
+        try {
+            $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and roles.id_Rol != 2;");
+            $agentes->execute();
+            return $agentes->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
+
+    
     
 }
