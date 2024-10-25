@@ -2,18 +2,15 @@
 
 class ControladorAgentes{
     static public function ctrMostrarAgentes(){
-        $tabla = " 'Agentes', 'Roles' WHERE agentes.id_Rol = roles.id_Rol;";
-        $respuesta = ModeloAgentes::mdlMostrarAgentes($tabla);
+        $respuesta = ModeloAgentes::mdlMostrarAgentes();
         return $respuesta;
     }
     static public function ctrMostrarDirectores(){
-        $tabla = " 'Agentes', 'Roles' WHERE agentes.id_Rol = roles.id_Rol;";
-        $respuesta = ModeloAgentes::mdlMostrarDirectores($tabla);
+        $respuesta = ModeloAgentes::mdlMostrarDirectores();
         return $respuesta;
     }
     static public function ctrMostrarSupervisores(){
-        $tabla = " 'Agentes', 'Roles' WHERE agentes.id_Rol = roles.id_Rol;";
-        $respuesta = ModeloAgentes::mdlMostrarSupervisores($tabla);
+        $respuesta = ModeloAgentes::mdlMostrarSupervisores();
         return $respuesta;
     }
 }

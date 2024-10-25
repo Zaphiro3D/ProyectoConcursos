@@ -4,7 +4,7 @@ require_once 'conexion.php';
 
 class ModeloAgentes{
 
-    static public function mdlMostrarAgentes($tabla)
+    static public function mdlMostrarAgentes()
     {
         try {
             $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;");
@@ -17,7 +17,7 @@ class ModeloAgentes{
 
     }
 
-    static public function mdlMostrarDirectores($tabla)
+    static public function mdlMostrarDirectores()
     {
         try {
             $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and roles.id_Rol = 3;");
@@ -30,7 +30,7 @@ class ModeloAgentes{
 
     }
 
-    static public function mdlMostrarSupervisores($tabla)
+    static public function mdlMostrarSupervisores()
     {
         try {
             $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and roles.id_Rol = 2;");

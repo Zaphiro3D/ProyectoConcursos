@@ -91,7 +91,7 @@ $url = ControladorPlantilla::url();
                             $rutas[0] == "login"
                             
                         ) {
-                        include "vistas/modulos/" . $rutas[0] . ".php";
+                            include "vistas/modulos/" . $rutas[0] . ".php";
                         }else{
                             include "vistas/modulos/404.php";
                         }

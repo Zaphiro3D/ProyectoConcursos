@@ -16,20 +16,7 @@
                 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <!-- <h6 class="fs-15 mb-3">Apellido</h6> -->
-
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="apellido" placeholder="Apellido">
-                                <label for="apellido">Apellido completo</label>
-                            </div>
-
-                            <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-                                <label for="nombre">Nombre completo</label>
-                            </div>
-
+                        <div class="col-lg-3">
                             <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                             <div class="form-floating mb-3">
                                 <input type="number" class="form-control" id="dni" placeholder="DNI">
@@ -37,20 +24,42 @@
                             </div>
 
                         </div>
+                        <div class="col-lg-4">
+                            <!-- <h6 class="fs-15 mb-3">Apellido</h6> -->
 
-                        <div class="col-lg-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="apellido" placeholder="Apellido">
+                                <label for="apellido">Apellido completo</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                                <label for="nombre">Nombre completo</label>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="col-lg-4">
                             <!-- <h6 class="fs-15 mb-3">Email</h6>  -->
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com" value="nombre@ejemplo.com">
+                                <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
                                 <label for="email">Email</label>
                             </div>
+                        </div>
 
+                        <div class="col-lg-4">
                             <!-- <h6 class="fs-15 mb-3">Dirección</h6> -->
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="direccion" placeholder="Direccion">
                                 <label for="direccion">Dirección</label>
                             </div>
+                        </div>
 
+                        <div class="col-lg-4">
                             <!-- <h6 class="fs-15 mb-3">Teléfono</h6> -->
                             <div class="form-floating mb-3">
                                 <input type="tel" class="form-control" id="telefono" placeholder="Telefono">
@@ -104,14 +113,12 @@
                 </div>
             </div>
 
-            <div >
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
-                            <div class="d-flex flex-wrap gap-2">  
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
+                        <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                                <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
-                            </div>
+                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
                         </div>
                     </div>
                 </div>
