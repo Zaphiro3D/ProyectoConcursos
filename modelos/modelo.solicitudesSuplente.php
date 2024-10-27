@@ -16,5 +16,30 @@ class ModeloSolSuplente{
         }
 
     }
+    static public function mdlMostrarDiasSol()
+    {
+        try {
+            $diasSOli = Conexion::conectar()->prepare("SELECT `nombre` FROM `dias` ");
+            $diasSOli->execute();
+            return $diasSOli->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
+
+    static public function mdlMostrarMotivoSol()
+    {
+        try {
+            $motivoSol = Conexion::conectar()->prepare("SELECT * FROM `motivossuplencia` ");
+            $motivoSol->execute();
+            return $motivoSol->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
     
 }
