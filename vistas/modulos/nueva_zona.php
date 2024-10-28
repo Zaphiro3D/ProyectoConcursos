@@ -31,7 +31,7 @@
                 </div><!-- end card header -->
                 
                 <div class="card-body">
-                    <!-- Opciones Datalist Instituciones -->       
+                    <!-- Opciones Datalist Agentes -->       
                     <datalist id="OpcionesSupervisor">
                         <?php
                             $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
@@ -41,8 +41,7 @@
                         <?php } ?>
                     </datalist>    
                 
-                    <div class="pb-3">   <!-- Datalist Supervisores-->
-                        <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
+                    <div class="pb-3">   <!-- Datalist Agentes-->
                         <div class="form-floating mb-1 mt-1">
                             <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
                             <label for="datalistSupervisor">Escriba para buscar...</label>

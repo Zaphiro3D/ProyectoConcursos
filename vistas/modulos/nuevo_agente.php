@@ -113,6 +113,73 @@
                 </div>
             </div>
 
+            <div class="card" id= "cardInstiRol">
+
+                <div class="card-header">
+                    <h5 class="card-title mb-0" >Seleccione la Institucion Correspondiente al Rol</h5>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-lg-12">
+                            <!-- Opciones Datalist Instituciones -->       
+                            <datalist id="OpcionesSupervisor">
+                                <?php
+                                    $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
+                                    foreach ($agentes as $key => $value) {   
+                                ?>
+                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>
+                                <?php } ?>
+                            </datalist>    
+                        
+                            <div class="pb-3">   <!-- Datalist Supervisores-->
+                                <div class="form-floating mb-1 mt-1">
+                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
+                                    <label for="datalistSupervisor">Escriba para buscar...</label>
+                                </div>   
+                            </div>   
+                            
+                        </div>
+                    </div> 
+                </div>
+
+            </div>
+
+            <div class="card" id= "cardZonaRol">
+
+                <div class="card-header">
+                    <h5 class="card-title mb-0" >Seleccione la Zona Correspondiente al Rol</h5>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-lg-12">
+                            <!-- Opciones Datalist Zona -->       
+                            <datalist id="OpcionesSupervisor">
+                                <?php
+                                    $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
+                                    foreach ($agentes as $key => $value) {   
+                                ?>
+                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>
+                                <?php } ?>
+                            </datalist>    
+                        
+                            <div class="pb-3">   <!-- Datalist Supervisores-->
+                                <div class="form-floating mb-1 mt-1">
+                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
+                                    <label for="datalistSupervisor">Escriba para buscar...</label>
+                                </div>   
+                            </div>   
+                            
+                        </div>
+                    </div> 
+                </div>
+
+            </div>
+
+
             <div class="row">
                 <div class="col-lg-6">
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">

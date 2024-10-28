@@ -88,7 +88,6 @@
                                 </div>
                             </fieldset>
 
-                    
                     </div>
                 </div>  <!-- card datos sede -->
             </div>  <!-- col -->   
