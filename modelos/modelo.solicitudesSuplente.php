@@ -7,7 +7,7 @@ class ModeloSolSuplente{
     static public function mdlMostrarSolSuplente()
     {
         try {
-            $SolSuplente = Conexion::conectar()->prepare("SELECT * FROM `instituciones`, `agentes`, `zonassupervision` WHERE instituciones.id_Director = agentes.Id_Agente and instituciones.id_ZonaSupervison = zonassupervision.id_ZonaSupervision;");
+            $SolSuplente = Conexion::conectar()->prepare("SELECT * FROM `instituciones`, `agentes`, `zonas_supervision` WHERE instituciones.id_Director = agentes.Id_Agente and instituciones.id_ZonaSupervison = zonas_supervision.id_ZonaSupervision;");
             $SolSuplente->execute();
             return $SolSuplente->fetchAll(PDO::FETCH_ASSOC);
 
@@ -32,7 +32,7 @@ class ModeloSolSuplente{
     static public function mdlMostrarMotivoSol()
     {
         try {
-            $motivoSol = Conexion::conectar()->prepare("SELECT * FROM `motivossuplencia` ");
+            $motivoSol = Conexion::conectar()->prepare("SELECT * FROM `motivos_suplencia` ");
             $motivoSol->execute();
             return $motivoSol->fetchAll(PDO::FETCH_ASSOC);
 

@@ -37,7 +37,7 @@
                             ?>
                             <tr style = "background-color:#000888">
                                 <td> <?php echo $value["cue"] ?></td>
-                                <td> <?php echo $value["TipoInstitucion"] ?></td> 
+                                <td> <?php echo $value["tipo"] ?></td> 
                                 <td> <?php echo $value["numero"] ?></td>
                                 <td> <?php echo $value["institucion"] ?></td>
                                 <td> <?php echo $value["apellido"] . " " .$value["nombre"] ?></td>
