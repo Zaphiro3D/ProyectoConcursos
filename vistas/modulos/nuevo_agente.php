@@ -124,19 +124,19 @@
                         
                         <div class="col-lg-12">
                             <!-- Opciones Datalist Instituciones -->       
-                            <datalist id="OpcionesSupervisor">
+                            <datalist id="OpcInstituciones">
                                 <?php
                                     $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
                                     foreach ($agentes as $key => $value) {   
                                 ?>
-                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>
+                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' (' . $value["dni"] . ')' ?> </option>
                                 <?php } ?>
                             </datalist>    
                         
-                            <div class="pb-3">   <!-- Datalist Supervisores-->
+                            <div class="pb-3">   <!-- Datalist Instituciones-->
                                 <div class="form-floating mb-1 mt-1">
-                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
-                                    <label for="datalistSupervisor">Escriba para buscar...</label>
+                                    <input class="form-control fs-14" list="OpcInstituciones" id="datalistInstituciones" placeholder="Escriba para buscar..." ></input>
+                                    <label for="datalistInstituciones">Escriba para buscar...</label>
                                 </div>   
                             </div>   
                             
@@ -156,20 +156,20 @@
                     <div class="row">
                         
                         <div class="col-lg-12">
-                            <!-- Opciones Datalist Zona -->       
-                            <datalist id="OpcionesSupervisor">
+                            <!-- Opciones Datalist Zonas -->       
+                            <datalist id="OpcZonas">
                                 <?php
                                     $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
                                     foreach ($agentes as $key => $value) {   
                                 ?>
-                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>
+                                <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' (' . $value["dni"] . ')' ?> </option>
                                 <?php } ?>
                             </datalist>    
                         
-                            <div class="pb-3">   <!-- Datalist Supervisores-->
+                            <div class="pb-3">   <!-- Datalist Zonas-->
                                 <div class="form-floating mb-1 mt-1">
-                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." ></input>
-                                    <label for="datalistSupervisor">Escriba para buscar...</label>
+                                    <input class="form-control fs-14" list="OpcZonas" id="datalistZonas" placeholder="Escriba para buscar..." ></input>
+                                    <label for="datalistZonas">Escriba para buscar...</label>
                                 </div>   
                             </div>   
                             
@@ -196,3 +196,32 @@
 
 </div> <!-- container-fluid -->
 
+<!-- Script para habilitar las opciones según el rol seleccionado -->
+<script>
+    // Obtiene el elemento del rol y las cards
+    const rolSelect = document.getElementById("rol");
+    const cardZonaRol = document.getElementById("cardZonaRol");
+    const cardInstiRol = document.getElementById("cardInstiRol");
+
+    // Función para mostrar u ocultar las cards según la selección del rol
+    function toggleCards() {
+        const selectedRole = rolSelect.value;
+
+        if (selectedRole === "1") { // Director
+            cardInstiRol.style.display = "block";
+            cardZonaRol.style.display = "none";
+        } else if (selectedRole === "2") { // Supervisor
+            cardZonaRol.style.display = "block";
+            cardInstiRol.style.display = "none";
+        } else {
+            cardZonaRol.style.display = "none";
+            cardInstiRol.style.display = "none";
+        }
+    }
+
+    // Añade el evento de cambio al select para ejecutar la función al cambiar el rol
+    rolSelect.addEventListener("change", toggleCards);
+
+    // Oculta inicialmente ambas cards
+    toggleCards();
+</script>

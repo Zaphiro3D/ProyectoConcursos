@@ -36,6 +36,13 @@
                             </li>
 
                             <li>
+                                <a style="text-decoration:none" href="cargos">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span> Cargos </span>
+                                </a>
+                            </li>
+
+                            <li>
                                 <a style="text-decoration:none" href="instituciones">
                                     <i class="fa-solid fa-building-columns"></i>
                                     <span> Instituciones </span>
