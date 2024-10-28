@@ -540,7 +540,7 @@ CREATE TABLE `tipo_institucion` (
 -- Volcado de datos para la tabla `tipo_institucion`
 --
 
-INSERT INTO `tipo_institucion` (`id_Tipo`, `tipo_institucion`) VALUES
+INSERT INTO `tipo_institucion` (`id_Tipo`, `tipo`) VALUES
 (1, 'Dirección Departamental de Escuelas'),
 (2, 'Escuela NEP'),
 (3, 'Escuela NINA'),
