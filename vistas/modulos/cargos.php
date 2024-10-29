@@ -17,14 +17,13 @@
                     <table id="tablaES" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <!-- <th>Establecimiento</th>     -->
                                 <th>Cargo</th>    
-                                <th>Hs. Cátedra</th>
+                                <th>Hs. Cát.</th>
                                 <th>Grado</th>
-                                <th>División</th>
+                                <th>Div.</th>
                                 <th>Turno</th>
                                 <th>Docente</th>
-                                <th>Int. Sede</th>
+                                <th>Inst. Sede</th>
                                 <th>Institución 2</th>
                                 <th>Institución 3</th>
                                 <th>Institución 4</th>                                 
@@ -39,7 +38,6 @@
                                 foreach ($cargos as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">
-                                <!-- <td> <?php echo $value["tipo"] . " N°" .  $value["numero"] . ' "' . $value["nombreInsti"] . '" CUE:' . $value["cue"] ?></td>     -->
                                 <td> <?php echo $value["nombreCargo"] ?></td>
                                 <td> <?php echo $value["hsCatedra"] ?></td>
                                 <td> <?php echo $value["grado"] ?></td>

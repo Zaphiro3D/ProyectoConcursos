@@ -19,7 +19,7 @@ class ModeloCargos{
                 tipo.tipo, 
                 GROUP_CONCAT(
                     CONCAT(
-                        i.numero, ' - ', i.nombre, ' (CUE: ', i.cue, ')'
+                        i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
                     ) ORDER BY p.sede DESC
                 ) AS instituciones
             FROM 
