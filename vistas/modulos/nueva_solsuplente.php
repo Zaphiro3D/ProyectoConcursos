@@ -153,7 +153,7 @@
                                 foreach ($institucion as $key => $value) {   
                                     // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
                             ?>
-                            <option ><?php echo $value["TipoInstitucion"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
+                            <option ><?php echo $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
                             <?php } ?>
                         </datalist>    
                     
