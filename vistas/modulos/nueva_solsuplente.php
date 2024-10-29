@@ -233,7 +233,7 @@
                                         $motivoSol = ControladorSolSuplente::ctrMostrarMotivoSol();
                                         foreach ($motivoSol as $key => $value) {   
                                     ?>
-                                    <option ><?php echo $value["Articulo"] . ' "' . $value["Insciso"] . '" - ' . $value["Resolucion"] . " - ". $value["Motivo"] ?> </option>
+                                    <option ><?php echo $value["articulo"] . ' "' . $value["inciso"] . '" - ' . $value["resolucion"] . " - ". $value["motivo"] ?> </option>
                                     <?php } ?>
                                 </datalist>    
                             
