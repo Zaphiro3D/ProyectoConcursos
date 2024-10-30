@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 14:36:10
+-- Tiempo de generación: 30-10-2024 a las 02:05:29
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -90,28 +90,6 @@ INSERT INTO `cargos` (`id_Cargo`, `id_NombreCargo`, `id_Grado`, `id_Division`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `plazas`
---
-
-CREATE TABLE `plazas` (
-  `numeroPlaza` int(11) UNSIGNED NOT NULL,
-  `id_Cargo` int(11) UNSIGNED NOT NULL,
-  `id_Institucion` int(11) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `plazas`
---
-
-INSERT INTO `plazas` (`numeroPlaza`, `id_Cargo`, `id_Institucion`) VALUES
-(2, 1, 3),
-(3, 1, 4),
-(4, 1, 5),
-(5, 1, 6);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `dias`
 --
 
@@ -156,6 +134,31 @@ INSERT INTO `divisiones` (`id_Division`, `division`) VALUES
 (6, '\"F\"'),
 (7, '\"G\"'),
 (8, '\"U\"');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estados_solicitud`
+--
+
+CREATE TABLE `estados_solicitud` (
+  `id_EstadoSol` tinyint(4) UNSIGNED NOT NULL,
+  `estado` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estados_solicitud`
+--
+
+INSERT INTO `estados_solicitud` (`id_EstadoSol`, `estado`) VALUES
+(1, 'Borrador'),
+(2, 'Pendiente en Supervisión'),
+(3, 'Pendiente en Administración'),
+(4, 'Rechazado por Supervisión'),
+(5, 'Rechazado por Administración'),
+(6, 'A Concursar'),
+(7, 'Ya Concursado'),
+(8, 'Eliminado');
 
 -- --------------------------------------------------------
 
@@ -483,6 +486,29 @@ INSERT INTO `nombres_cargos` (`id_NombreCargo`, `nombreCargo`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `plazas`
+--
+
+CREATE TABLE `plazas` (
+  `numeroPlaza` int(11) UNSIGNED NOT NULL,
+  `id_Cargo` int(11) UNSIGNED NOT NULL,
+  `id_Institucion` int(11) UNSIGNED NOT NULL,
+  `sede` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `plazas`
+--
+
+INSERT INTO `plazas` (`numeroPlaza`, `id_Cargo`, `id_Institucion`, `sede`) VALUES
+(2, 1, 3, 1),
+(3, 1, 4, 0),
+(4, 1, 5, 0),
+(5, 1, 6, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `roles`
 --
 
@@ -515,15 +541,15 @@ CREATE TABLE `solicitudes_suplente` (
   `id_MotivoSuplencia` int(11) UNSIGNED NOT NULL,
   `observaciones` varchar(100) DEFAULT NULL,
   `id_Cargo` int(11) UNSIGNED NOT NULL,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `id_EstadoSol` tinyint(4) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `solicitudes_suplente`
 --
 
-INSERT INTO `solicitudes_suplente` (`id_SolSuplente`, `numeroTramite`, `fechaInicio`, `fechaFin`, `id_MotivoSuplencia`, `observaciones`, `id_Cargo`, `eliminado`) VALUES
-(1, 1234, '2024-10-18', '2024-10-31', 5, 'Pendiente de aprobacion', 1, 0);
+INSERT INTO `solicitudes_suplente` (`id_SolSuplente`, `numeroTramite`, `fechaInicio`, `fechaFin`, `id_MotivoSuplencia`, `observaciones`, `id_Cargo`, `id_EstadoSol`) VALUES
+(1, 1234, '2024-10-18', '2024-10-31', 5, 'Pendiente de aprobacion', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -631,15 +657,6 @@ ALTER TABLE `cargos`
   ADD KEY `id_nombreCargo` (`id_NombreCargo`);
 
 --
--- Indices de la tabla `plazas`
---
-ALTER TABLE `plazas`
-  ADD PRIMARY KEY (`numeroPlaza`),
-  ADD UNIQUE KEY `numeroPlaza` (`numeroPlaza`),
-  ADD KEY `plazas_fk1` (`id_Cargo`),
-  ADD KEY `plazas_fk2` (`id_Institucion`);
-
---
 -- Indices de la tabla `dias`
 --
 ALTER TABLE `dias`
@@ -652,6 +669,12 @@ ALTER TABLE `dias`
 ALTER TABLE `divisiones`
   ADD PRIMARY KEY (`id_Division`),
   ADD UNIQUE KEY `id_Division` (`id_Division`);
+
+--
+-- Indices de la tabla `estados_solicitud`
+--
+ALTER TABLE `estados_solicitud`
+  ADD PRIMARY KEY (`id_EstadoSol`);
 
 --
 -- Indices de la tabla `grados`
@@ -701,6 +724,15 @@ ALTER TABLE `nombres_cargos`
   ADD PRIMARY KEY (`id_NombreCargo`);
 
 --
+-- Indices de la tabla `plazas`
+--
+ALTER TABLE `plazas`
+  ADD PRIMARY KEY (`numeroPlaza`),
+  ADD UNIQUE KEY `numeroPlaza` (`numeroPlaza`),
+  ADD KEY `plazas_fk1` (`id_Cargo`),
+  ADD KEY `plazas_fk2` (`id_Institucion`);
+
+--
 -- Indices de la tabla `roles`
 --
 ALTER TABLE `roles`
@@ -714,7 +746,8 @@ ALTER TABLE `solicitudes_suplente`
   ADD PRIMARY KEY (`id_SolSuplente`),
   ADD UNIQUE KEY `id_SolSuplente` (`id_SolSuplente`),
   ADD KEY `solicitudes_suplente_fk4` (`id_MotivoSuplencia`),
-  ADD KEY `solicitudes_suplente_fk6` (`id_Cargo`);
+  ADD KEY `solicitudes_suplente_fk6` (`id_Cargo`),
+  ADD KEY `estado` (`id_EstadoSol`);
 
 --
 -- Indices de la tabla `tipo_institucion`
@@ -764,6 +797,12 @@ ALTER TABLE `dias`
 --
 ALTER TABLE `divisiones`
   MODIFY `id_Division` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `estados_solicitud`
+--
+ALTER TABLE `estados_solicitud`
+  MODIFY `id_EstadoSol` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `grados`
@@ -848,15 +887,8 @@ ALTER TABLE `cargos`
   ADD CONSTRAINT `Cargos_fk2` FOREIGN KEY (`id_Grado`) REFERENCES `grados` (`id_Grado`),
   ADD CONSTRAINT `Cargos_fk3` FOREIGN KEY (`id_Division`) REFERENCES `divisiones` (`id_Division`),
   ADD CONSTRAINT `Cargos_fk4` FOREIGN KEY (`id_Turno`) REFERENCES `turnos` (`id_Turno`),
-  ADD CONSTRAINT `cargos_ibfk_1` FOREIGN KEY (`id_nombreCargo`) REFERENCES `nombres_cargos` (`id_NombreCargo`),
+  ADD CONSTRAINT `cargos_ibfk_1` FOREIGN KEY (`id_NombreCargo`) REFERENCES `nombres_cargos` (`id_NombreCargo`),
   ADD CONSTRAINT `cargos_ibfk_2` FOREIGN KEY (`id_NombreCargo`) REFERENCES `nombres_cargos` (`id_NombreCargo`);
-
---
--- Filtros para la tabla `plazas`
---
-ALTER TABLE `plazas`
-  ADD CONSTRAINT `plazas_fk1` FOREIGN KEY (`id_Cargo`) REFERENCES `cargos` (`id_Cargo`),
-  ADD CONSTRAINT `plazas_fk2` FOREIGN KEY (`id_Institucion`) REFERENCES `instituciones` (`id_Institucion`);
 
 --
 -- Filtros para la tabla `hs_semanal`
@@ -880,11 +912,19 @@ ALTER TABLE `jornadas`
   ADD CONSTRAINT `Jornadas_fk1` FOREIGN KEY (`id_Dia`) REFERENCES `dias` (`id_Dia`);
 
 --
+-- Filtros para la tabla `plazas`
+--
+ALTER TABLE `plazas`
+  ADD CONSTRAINT `plazas_fk1` FOREIGN KEY (`id_Cargo`) REFERENCES `cargos` (`id_Cargo`),
+  ADD CONSTRAINT `plazas_fk2` FOREIGN KEY (`id_Institucion`) REFERENCES `instituciones` (`id_Institucion`);
+
+--
 -- Filtros para la tabla `solicitudes_suplente`
 --
 ALTER TABLE `solicitudes_suplente`
   ADD CONSTRAINT `solicitudes_suplente_fk4` FOREIGN KEY (`id_MotivoSuplencia`) REFERENCES `motivos_suplencia` (`id_MotivoSuplencia`),
-  ADD CONSTRAINT `solicitudes_suplente_fk6` FOREIGN KEY (`id_Cargo`) REFERENCES `cargos` (`id_Cargo`);
+  ADD CONSTRAINT `solicitudes_suplente_fk6` FOREIGN KEY (`id_Cargo`) REFERENCES `cargos` (`id_Cargo`),
+  ADD CONSTRAINT `solicitudes_suplente_ibfk_1` FOREIGN KEY (`id_EstadoSol`) REFERENCES `estados_solicitud` (`id_EstadoSol`);
 
 --
 -- Filtros para la tabla `zonas_supervision`
