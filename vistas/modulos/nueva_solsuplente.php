@@ -323,18 +323,19 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="pb-1">
-                                    <form >
-                                        <label for="horaIni1" class="form-label">hora  inicio</label>
-                                        <input id="horaIni1" type="text" class="form-control" placeholder="24-hour Time Picker">
+                                    <form>
+                                        <label for="24hours-timepicker" class="form-label">Hora  Inicio</label>
+                                        <input id="24hours-timepicker" data-id="hora1" type="text" class="form-control" placeholder="Hora">
                                     </form> 
                                 </div>
                             </div> 
                             <div class="col-lg-2">
                                 <div class="pb-1">
-                                    <form >
-                                        <label for="hora" class="form-label">hora fin</label>
-                                        <input class="form-control"  placeholder="...">
-                                    </form> 
+                                    <form>
+                                        <label for="24hours-timepicker" class="form-label">Hora  Fin</label>
+                                        <input id="24hours-timepicker" data-id="hora2" type="time" class="form-control" placeholder="Hora">
+                                        
+                                    </form>  
                                 </div>
                             </div> 
                             
