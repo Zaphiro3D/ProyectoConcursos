@@ -31,18 +31,18 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="turno" aria-label="Turno">
+                                    <select class="form-select" id="turno">
                                         <option selected>...</option>
                                         <option value="1">Director</option>
                                         <option value="2">Supervisor</option>
                                         <option value="3">Administrativo</option>
                                     </select>
-                                    <label for="rol">Turno</label>
+                                    <label for="turno">Turno</label>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="anio" aria-label="Año">
+                                    <select class="form-select" id="anio">
                                         <option selected>...</option>
                                         <option value="1">Director</option>
                                         <option value="2">Supervisor</option>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="division" aria-label="División">
+                                    <select class="form-select" id="division">
                                         <option selected>...</option>
                                         <option value="1">Director</option>
                                         <option value="2">Supervisor</option>
@@ -309,14 +309,14 @@
                             </datalist>
                             
                             <div class="col-lg-4">
-                                <div class="pb-3">   <!-- Datalist de los dais -->
+                                <div class="pb-3">   <!-- Datalist de los dias -->
                                     <form >
                                         <label for="datalistDias" class="form-label">Dias</label>
-                                        <input class="form-control" list="Dias" id="datalistDIas" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="datalistDIas" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="datalistDIas" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="datalistDIas" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="datalistDIas" placeholder="Seleccione...">
+                                        <input class="form-control" list="Dias" id="dlDia1" placeholder="Seleccione...">
+                                        <input class="form-control" list="Dias" id="dlDia2" placeholder="Seleccione...">
+                                        <input class="form-control" list="Dias" id="dlDia3" placeholder="Seleccione...">
+                                        <input class="form-control" list="Dias" id="dlDia4" placeholder="Seleccione...">
+                                        <input class="form-control" list="Dias" id="dlDia5" placeholder="Seleccione...">
                                     </form>    
                                 </div>
                               
@@ -324,12 +324,8 @@
                             <div class="col-lg-4">
                                 <div class="pb-1">
                                     <form >
-                                        <label for="hora" class="form-label">hora  inicio</label>
-                                        <input id="24hours-timepicker" type="text" class="form-control" placeholder="24-hour Time Picker">
-                                        <input class="form-control"  placeholder="...">
-                                        <input class="form-control"  placeholder="...">
-                                        <input class="form-control"  placeholder="...">
-                                        <input class="form-control"  placeholder="...">
+                                        <label for="horaIni1" class="form-label">hora  inicio</label>
+                                        <input id="horaIni1" type="text" class="form-control" placeholder="24-hour Time Picker">
                                     </form> 
                                 </div>
                             </div> 

@@ -18,6 +18,9 @@ $url = ControladorPlantilla::url();
         <!-- App favicon -->
         <link rel="shortcut icon" href="vistas/assets/images/favicon.ico">
 
+        <!-- Flatpickr Timepicker css -->
+        <link href="<?php echo $url; ?>vistas/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+
         <!-- App css -->
         <link href="<?php echo $url; ?>vistas/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
@@ -127,7 +130,12 @@ $url = ControladorPlantilla::url();
         <script src="<?php echo $url; ?>vistas/assets/libs/waypoints/lib/jquery.waypoints.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
         <script src="<?php echo $url; ?>vistas/assets/libs/feather-icons/feather.min.js"></script>
-        
+
+        <!-- Flatpickr Timepicker Plugin js -->
+        <script src="<?php echo $url; ?>vistas/assets/libs/flatpickr/flatpickr.min.js"></script>
+        <script src="<?php echo $url; ?>vistas/assets/js/pages/form-picker.js"></script>
+
+
         <!-- Datatables js
         <script src="<?php echo $url; ?>vistas/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 

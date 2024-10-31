@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-10-2024 a las 02:05:29
+-- Tiempo de generación: 31-10-2024 a las 01:39:38
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -747,7 +747,7 @@ ALTER TABLE `solicitudes_suplente`
   ADD UNIQUE KEY `id_SolSuplente` (`id_SolSuplente`),
   ADD KEY `solicitudes_suplente_fk4` (`id_MotivoSuplencia`),
   ADD KEY `solicitudes_suplente_fk6` (`id_Cargo`),
-  ADD KEY `estado` (`id_EstadoSol`);
+  ADD KEY `id_EstadoSol` (`id_EstadoSol`);
 
 --
 -- Indices de la tabla `tipo_institucion`
