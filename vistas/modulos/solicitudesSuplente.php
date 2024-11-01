@@ -5,11 +5,11 @@
         </div>
     </div>
     <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
-        <div class="d-flex flex-wrap gap-2">    
-            <a href="nueva_solsuplente" class="btn btn-primary"><i class="fas fa-plus" ></i > &nbsp; Nueva Solicitud</a>
-        </div> 
+        <div class="d-flex flex-wrap gap-2">
+            <a href="nueva_solsuplente" class="btn btn-primary"><i class="fas fa-plus"></i> &nbsp; Nueva Solicitud</a>
+        </div>
     </div>
-    
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -17,7 +17,7 @@
                     <table id="tablaES" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>Establecimiento Sede</th>    
+                                <th>Establecimiento Sede</th>
                                 <th>Cargo</th>
                                 <th>Hs Cátedra</th>
                                 <th>Grado</th>
@@ -30,30 +30,52 @@
                                 <th>Establecimiento 2</th>
                                 <th>Establecimiento 3</th>
                                 <th>Establecimiento 4</th>
-                                <th>DNI</th>
                                 <th>Horario</th>
                                 <th>Observaciones</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
+
+                            <?php
+                            $nombreinstitucion = ControladorSolSuplente::ctrMostrarSolSuplente();
+                            foreach ($nombreinstitucion as $key => $value) {
+                            ?>
+                            
+                                <?php
+                                // Procesa las instituciones y las divide en columnas
+                                $instituciones = explode(',', $value['instituciones']);
+                                for ($i = 0; $i < 4; $i++) {
+                                    //   if (isset($instituciones[$i])) {
+                                    ?>
+                                    <!--echo "<td>" . $instituciones[0] . "</td>";
+                                    //} 
+                                    //else {-->
+                            <tr>        
+                                <td><?php echo $instituciones[0]?></td><!--<td><//?php echo $value["nombre_insti"]; ?></td>-->
+                                <td><?php echo $value["nombreCargo"] ?></td>
+                                <td><?php echo $value["hsCatedra"] ?></td>
+                                <td><?php echo $value["grado"] ?></td>
+                                <td><?php echo $value["division"] ?></td>
+                                <td><?php echo $value["turno"] ?></td>
+                                
+                                <td><?php echo $value["fechaInicio"] ?></td>
+                                <td><?php echo $value["fechaFin"] ?></td>
+                                <td><?php echo $value["motivo"]?></td>
+                                <td><?php echo $value["docente"] ?></td>
+                                <?php
+                                    echo "<td>" . $instituciones[1] . "</td>";
+                                    echo "<td>" . $instituciones[2] . "</td>";
+                                    echo "<td>" . $instituciones[3] . "</td>";  // Celda vacía si no hay más instituciones
+                                }
+                                //}
+                                ?>
+                                <td>08:00/10:00</td>
+                                <td>Observacion</td>
+                                <td>accion</td>
+                            </tr>
+                            <?php } ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -61,6 +83,5 @@
             </div>
         </div>
     </div>
-    
-</div>
 
+</div>
