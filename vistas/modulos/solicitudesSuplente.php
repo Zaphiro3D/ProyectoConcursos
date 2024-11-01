@@ -17,65 +17,19 @@
                     <table id="tablaES" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>Establecimiento Sede</th>
-                                <th>Cargo</th>
-                                <th>Hs Cátedra</th>
+                                
+                                <th></th>
+                                <th>Nombre del Cargo</th>
+                                <th>Horas Cátedra</th>
                                 <th>Grado</th>
                                 <th>División</th>
                                 <th>Turno</th>
-                                <th>Fecha Desde</th>
-                                <th>Fecha Hasta</th>
-                                <th>Motivo Lic.</th>
-                                <th>Agente Reemplazado</th>
-                                <th>Establecimiento 2</th>
-                                <th>Establecimiento 3</th>
-                                <th>Establecimiento 4</th>
-                                <th>Horario</th>
-                                <th>Observaciones</th>
-                                <th>Acciones</th>
+                                <th>Docente</th>
+                                <th>Tipo de Institución</th>
                             </tr>
                         </thead>
                         <tbody>
-
-                            <?php
-                            $nombreinstitucion = ControladorSolSuplente::ctrMostrarSolSuplente();
-                            foreach ($nombreinstitucion as $key => $value) {
-                            ?>
-                            
-                                <?php
-                                // Procesa las instituciones y las divide en columnas
-                                $instituciones = explode(',', $value['instituciones']);
-                                for ($i = 0; $i < 4; $i++) {
-                                    //   if (isset($instituciones[$i])) {
-                                    ?>
-                                    <!--echo "<td>" . $instituciones[0] . "</td>";
-                                    //} 
-                                    //else {-->
-                            <tr>        
-                                <td><?php echo $instituciones[0]?></td><!--<td><//?php echo $value["nombre_insti"]; ?></td>-->
-                                <td><?php echo $value["nombreCargo"] ?></td>
-                                <td><?php echo $value["hsCatedra"] ?></td>
-                                <td><?php echo $value["grado"] ?></td>
-                                <td><?php echo $value["division"] ?></td>
-                                <td><?php echo $value["turno"] ?></td>
-                                
-                                <td><?php echo $value["fechaInicio"] ?></td>
-                                <td><?php echo $value["fechaFin"] ?></td>
-                                <td><?php echo $value["motivo"]?></td>
-                                <td><?php echo $value["docente"] ?></td>
-                                <?php
-                                    echo "<td>" . $instituciones[1] . "</td>";
-                                    echo "<td>" . $instituciones[2] . "</td>";
-                                    echo "<td>" . $instituciones[3] . "</td>";  // Celda vacía si no hay más instituciones
-                                }
-                                //}
-                                ?>
-                                <td>08:00/10:00</td>
-                                <td>Observacion</td>
-                                <td>accion</td>
-                            </tr>
-                            <?php } ?>
-
+                            <!-- Se llenará con JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -85,3 +39,312 @@
     </div>
 
 </div>
+
+<script>
+    // Idioma de la tabla
+    var espanol = {
+        "processing": "Procesando...",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "zeroRecords": "No se encontraron resultados",
+        "emptyTable": "Ningún dato disponible en esta tabla",
+        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "search": "Buscar:",
+        "infoThousands": ",",
+        "loadingRecords": "Cargando...",
+        "paginate": {
+            "first": "Primero",
+            "last": "Último",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        },
+        "aria": {
+            "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        "buttons": {
+            "copy": "Copiar",
+            "colvis": "Visibilidad",
+            "collection": "Colección",
+            "colvisRestore": "Restaurar visibilidad",
+            "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+            "copySuccess": {
+                "1": "Copiada 1 fila al portapapeles",
+                "_": "Copiadas %ds fila al portapapeles"
+            },
+            "copyTitle": "Copiar al portapapeles",
+            "csv": "CSV",
+            "excel": "Excel",
+            "pageLength": {
+                "-1": "Mostrar todas las filas",
+                "_": "Mostrar %d filas"
+            },
+            "pdf": "PDF",
+            "print": "Imprimir",
+            "renameState": "Cambiar nombre",
+            "updateState": "Actualizar",
+            "createState": "Crear Estado",
+            "removeAllStates": "Remover Estados",
+            "removeState": "Remover",
+            "savedStates": "Estados Guardados",
+            "stateRestore": "Estado %d"
+        },
+        "autoFill": {
+            "cancel": "Cancelar",
+            "fill": "Rellene todas las celdas con <i>%d<\/i>",
+            "fillHorizontal": "Rellenar celdas horizontalmente",
+            "fillVertical": "Rellenar celdas verticalmentemente"
+        },
+        "decimal": ",",
+        "searchBuilder": {
+            "add": "Añadir condición",
+            "button": {
+                "0": "Constructor de búsqueda",
+                "_": "Constructor de búsqueda (%d)"
+            },
+            "clearAll": "Borrar todo",
+            "condition": "Condición",
+            "conditions": {
+                "date": {
+                    "after": "Despues",
+                    "before": "Antes",
+                    "between": "Entre",
+                    "empty": "Vacío",
+                    "equals": "Igual a",
+                    "notBetween": "No entre",
+                    "notEmpty": "No Vacio",
+                    "not": "Diferente de"
+                },
+                "number": {
+                    "between": "Entre",
+                    "empty": "Vacio",
+                    "equals": "Igual a",
+                    "gt": "Mayor a",
+                    "gte": "Mayor o igual a",
+                    "lt": "Menor que",
+                    "lte": "Menor o igual que",
+                    "notBetween": "No entre",
+                    "notEmpty": "No vacío",
+                    "not": "Diferente de"
+                },
+                "string": {
+                    "contains": "Contiene",
+                    "empty": "Vacío",
+                    "endsWith": "Termina en",
+                    "equals": "Igual a",
+                    "notEmpty": "No Vacio",
+                    "startsWith": "Empieza con",
+                    "not": "Diferente de",
+                    "notContains": "No Contiene",
+                    "notStartsWith": "No empieza con",
+                    "notEndsWith": "No termina con"
+                },
+                "array": {
+                    "not": "Diferente de",
+                    "equals": "Igual",
+                    "empty": "Vacío",
+                    "contains": "Contiene",
+                    "notEmpty": "No Vacío",
+                    "without": "Sin"
+                }
+            },
+            "cargos": "cargos",
+            "deleteTitle": "Eliminar regla de filtrado",
+            "leftTitle": "Criterios anulados",
+            "logicAnd": "Y",
+            "logicOr": "O",
+            "rightTitle": "Criterios de sangría",
+            "title": {
+                "0": "Constructor de búsqueda",
+                "_": "Constructor de búsqueda (%d)"
+            },
+            "value": "Valor"
+        },
+        "searchPanes": {
+            "clearMessage": "Borrar todo",
+            "collapse": {
+                "0": "Paneles de búsqueda",
+                "_": "Paneles de búsqueda (%d)"
+            },
+            "count": "{total}",
+            "countFiltered": "{shown} ({total})",
+            "emptyPanes": "Sin paneles de búsqueda",
+            "loadMessage": "Cargando paneles de búsqueda",
+            "title": "Filtros Activos - %d",
+            "showMessage": "Mostrar Todo",
+            "collapseMessage": "Colapsar Todo"
+        },
+        "select": {
+            "cells": {
+                "0": "",
+                "1": "1 celda seleccionada",
+                "_": "%d celdas seleccionadas"
+            },
+            "columns": {
+                "0": "",
+                "1": "1 columna seleccionada",
+                "_": "%d columnas seleccionadas"
+            },
+            "rows": {
+                "0": "",
+                "1": "1 fila seleccionada",
+                "_": "%d filas seleccionadas"
+            }
+        },
+        "thousands": ".",
+        "datetime": {
+            "previous": "Anterior",
+            "next": "Proximo",
+            "hours": "Horas",
+            "minutes": "Minutos",
+            "seconds": "Segundos",
+            "unknown": "-",
+            "amPm": [
+                "AM",
+                "PM"
+            ],
+            "months": {
+                "0": "Enero",
+                "1": "Febrero",
+                "10": "Noviembre",
+                "11": "Diciembre",
+                "2": "Marzo",
+                "3": "Abril",
+                "4": "Mayo",
+                "5": "Junio",
+                "6": "Julio",
+                "7": "Agosto",
+                "8": "Septiembre",
+                "9": "Octubre"
+            },
+            "weekdays": [
+                "Dom",
+                "Lun",
+                "Mar",
+                "Mie",
+                "Jue",
+                "Vie",
+                "Sab"
+            ]
+        },
+        "editor": {
+            "close": "Cerrar",
+            "create": {
+                "button": "Nuevo",
+                "title": "Crear Nuevo Registro",
+                "submit": "Crear"
+            },
+            "edit": {
+                "button": "Editar",
+                "title": "Editar Registro",
+                "submit": "Actualizar"
+            },
+            "remove": {
+                "button": "Eliminar",
+                "title": "Eliminar Registro",
+                "submit": "Eliminar",
+                "confirm": {
+                    "_": "¿Está seguro que desea eliminar %d filas?",
+                    "1": "¿Está seguro que desea eliminar 1 fila?"
+                }
+            },
+            "error": {
+                "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
+            },
+            "multi": {
+                "title": "Múltiples Valores",
+                "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
+                "restore": "Deshacer Cambios",
+                "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
+            }
+        },
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "stateRestore": {
+            "creationModal": {
+                "button": "Crear",
+                "name": "Nombre:",
+                "order": "Clasificación",
+                "paging": "Paginación",
+                "search": "Busqueda",
+                "select": "Seleccionar",
+                "columns": {
+                    "search": "Búsqueda de Columna",
+                    "visible": "Visibilidad de Columna"
+                },
+                "title": "Crear Nuevo Estado",
+                "toggleLabel": "Incluir:"
+            },
+            "emptyError": "El nombre no puede estar vacio",
+            "removeConfirm": "¿Seguro que quiere eliminar este %s?",
+            "removeError": "Error al eliminar el registro",
+            "removeJoiner": "y",
+            "removeSubmit": "Eliminar",
+            "renameButton": "Cambiar Nombre",
+            "renameLabel": "Nuevo nombre para %s",
+            "duplicateError": "Ya existe un Estado con este nombre.",
+            "emptyStates": "No hay Estados guardados",
+            "removeTitle": "Remover Estado",
+            "renameTitle": "Cambiar Nombre Estado"
+        }
+    };
+
+    // Cargar datos de PHP
+    <?php
+        $cargos = array();
+        $solSuplente = ModeloCargos::mdlMostrarCargos1();
+        foreach ($solSuplente as $key => $value) { 
+            $cargos[] = $key;
+        } 
+    
+    ?>
+
+    // Función de formateo para detalles adicionales
+    function format(d) {
+        return '<dl>' +
+               '<dt>Nombre del Cargo:</dt><dd>' + d.nombreCargo + '</dd>' +
+               '<dt>Horas Cátedra:</dt><dd>' + d.hsCatedra + '</dd>' +
+               '<dt>Grado:</dt><dd>' + d.grado + '</dd>' +
+               '<dt>División:</dt><dd>' + d.division + '</dd>' +
+               '<dt>Turno:</dt><dd>' + d.turno + '</dd>' +
+               '<dt>Docente:</dt><dd>' + d.docente + '</dd>' +
+               '<dt>Tipo de Institución:</dt><dd>' + d.tipo + '</dd>' +
+               '</dl>';
+    }
+
+    $(document).ready(function() {
+        let table = $('#example1').cargosTable({
+            "language": espanol ,
+            cargos: cargosSet,
+            columns: [
+                {
+                    className: 'dt-control',
+                    orderable: false,
+                    cargos: null,
+                    defaultContent: ''
+                },
+                { cargos: 'nombreCargo' },
+                { cargos: 'hsCatedra' },
+                { cargos: 'grado' },
+                { cargos: 'division' },
+                { cargos: 'turno' },
+                { cargos: 'docente' },
+                { cargos: 'tipo' }
+            ],
+            order: [[1, 'asc']]
+        });
+
+        // Evento para mostrar y ocultar detalles
+        $('#example1 tbody').on('click', 'td.dt-control', function() {
+            let tr = $(this).closest('tr');
+            let row = table.row(tr);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                row.child(format(row.cargos())).show();
+                tr.addClass('shown');
+            }
+        });
+    });
+</script>
