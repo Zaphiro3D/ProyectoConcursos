@@ -20,10 +20,19 @@
                                 <th></th>
                                 <th>Establecimiento Sede</th>
                                 <th>Cargo</th>
+                                <th>Hs. Cátedra</th>
                                 <th>Grado</th>
                                 <th>División</th>
                                 <th>Turno</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Motivo</th>
                                 <th>Agente Reemplazado</th>
+                                <th>Institución 2</th>
+                                <th>Institución 3</th>
+                                <th>Institución 4</th>
+                                <th>Horarios</th>
+                                <th>Observaciones</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -44,26 +53,30 @@
                                 }
                             ?>                                                          
                                 
-                            <tr data-hs= <?php echo $value['hsCatedra']; ?> 
-                                data-fIni= <?php echo $value['fechaInicio']; ?>
-                                data-fFin= <?php echo $value['fechaFin']; ?>
-                                data-motivo= <?php echo $value['motivo']; ?>
-                                data-I1= <?php echo $instituciones[1]; ?>
-                                data-I2= <?php echo $instituciones[2]; ?>
-                                data-I3= <?php echo $instituciones[3]; ?>
-                                data-horario= <?php echo $horario; ?>
-                                data-obs= <?php echo $value['observaciones']; ?>
-                            >   
-                                
-                                
+                            <tr>    
                                 <td class="dt-control"></td>    
                                 <td><?php echo $instituciones[0]?></td>
                                 <td><?php echo $value["nombreCargo"] ?></td>
+                                <td><?php echo $value["hsCatedra"] ?></td>
                                 <td><?php echo $value["grado"] ?></td>
                                 <td><?php echo $value["division"] ?></td>
                                 <td><?php echo $value["turno"] ?></td>
+                                <td><?php echo $value["fechaInicio"] ?></td>
+                                <td><?php echo $value["fechaFin"] ?></td>
+                                <td><?php echo $value["motivo"] ?></td>
                                 <td><?php echo $value["docente"] ?></td>
-                                <td><?php echo "" ?> </td>
+                                <td><?php echo $instituciones[1] ?></td>
+                                <td><?php echo $instituciones[2] ?></td>
+                                <td><?php echo $instituciones[3] ?></td>
+                                <td><?php echo $horario ?></td>
+                                <td><?php echo $value["observaciones"] ?></td>
+                                <td><a href="detalles_solsuplente" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Ver detalles"><i class="fas fa-file-lines"></i> </a> 
+                                    <a href="editar_solsuplente" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
+                                    </a> <button href="eliminar_cargo" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
+                                    &nbsp;|&nbsp; 
+                                    <button href="aprobar_solic" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Aprobar"><i class="fas fa-circle-check"></i>
+                                    </button> <button href="rechazar_solicitud" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rechazar"><i class="fas fa-circle-xmark"></i></button> 
+                                </td>
                                 <?php endforeach;?>
                             </tr>
                             
@@ -80,17 +93,18 @@
 
 <script>
     // Función de formato para los detalles
-    function format(hsCat, fIni, fFin, motivo, I1, I2, I3, horario, obs) {
+    function format(d) {
         return (
-            '<div>Hs Cátedra: ' + hsCat + 
-            '<br>Fecha Inicio: ' + fIni + 
-            '<br />Fecha Fin: ' + fFin + 
-            '<br />Motivo: ' + motivo + 
-            '<br />Institución 2: ' + I1 + 
-            '<br />Institución 3: ' + I2 + 
-            '<br />Institución 4: ' + I3 + 
-            '<br />Horario: ' + horario + 
-            '<br />Observaciones: ' + obs + 
+            '<div><b>Hs Cátedra:</b> ' + d[3] + 
+            '<br> <b>Fecha Inicio:</b> ' + d[7] + 
+            '&nbsp; - &nbsp;<b>Fecha Fin:</b> ' + d[8] + 
+            '<br /><b>Motivo:</b> ' + d[9] + 
+            '<br /><br /><b>Comparte con</b>' +
+            '<br /><b>Institución 2:</b> ' + d[11] + 
+            '<br /><b>Institución 3:</b> ' + d[12] + 
+            '<br /><b>Institución 4:</b> ' + d[13]+ 
+            '<br /><br /><b>Horario:</b> ' + d[14] + 
+            '<br /><b>Observaciones:</b> ' + d[15] + 
             '</div>'
         );
     }
@@ -347,7 +361,46 @@
         let table = $('#tablaSolSuplente').DataTable({
             scrollX: true,
             pagingType:"full_numbers",
-            "language": espanol
+            "language": espanol,
+            columnDefs: [
+            {
+                target: 3,
+                visible: false
+            },
+            {
+                target: 7,
+                visible: false
+            },
+            {
+                target: 8,
+                visible: false
+            },
+            {
+                target: 9,
+                visible: false
+            },
+            {
+                target: 11,
+                visible: false
+            },
+            {
+                target: 12,
+                visible: false
+            },
+            {
+                target: 13,
+                visible: false
+            },
+            {
+                target: 14,
+                visible: false
+            },
+            {
+                target: 15,
+                visible: false
+            }
+            
+            ]
         });
 
         // Evento para mostrar y ocultar detalles
@@ -357,33 +410,12 @@
 
             if (row.child.isShown()) {
                 // Esta fila ya está abierta, la cierra
-                let hsCatedra = tr.data('hs');
-                let fIni = tr.data('fIni');
-                let fFin = tr.data('fFin');
-                let motivo = tr.data('motivo');
-                let I1 = tr.data('I1');
-                let I2 = tr.data('I2');
-                let I3 = tr.data('I3');
-                let horario = tr.data('horario');
-                let obs = tr.data('obs');
-
                 row.child.hide();
                                 
             } else {
                 // Abre la fila y muestra detalles
                 
-                row.child(format( 
-                    tr.data('hs'),
-                    tr.data('fIni'),
-                    tr.data('fFin'),
-                    tr.data('motivo'),
-                    tr.data('I1'),
-                    tr.data('I2'),
-                    tr.data('I3'),
-                    tr.data('horario'),
-                    tr.data('obs')
-                    )                           
-                ).show();
+                row.child(format(row.data())).show();
             }
         });
     });
