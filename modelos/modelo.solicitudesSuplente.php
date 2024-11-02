@@ -16,7 +16,9 @@ class ModeloSolSuplente{
             t.turno, 
             CONCAT(c.apellidoDocente, ', ' ,c.nombreDocente,' (', c.dniDocente, ') ') 
             as docente,tipo.tipo, GROUP_CONCAT(CONCAT(i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-            ) ORDER BY p.sede DESC) AS instituciones ,ss.fechaInicio,ss.fechaFin,ms.motivo
+            ) ORDER BY p.sede DESC) AS instituciones ,ss.fechaInicio,ss.fechaFin,
+            ss.observaciones,ms.motivo,GROUP_CONCAT(CONCAT(j.horaInicio,
+            j.horaFin)) AS horario,GROUP_CONCAT(CONCAT( dias.nombre))AS dias
             FROM cargos AS c 
             INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
             INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
@@ -27,7 +29,10 @@ class ModeloSolSuplente{
             LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
             LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo  = c.id_Cargo
             LEFT JOIN motivos_suplencia AS ms on ms.id_MotivoSuplencia= ss.id_MotivoSuplencia
-            WHERE c.eliminado = 0 GROUP BY c.id_Cargo;");
+            LEFT JOIN hs_semanal AS hs ON hs.numeroPlaza = p.numeroPlaza
+            LEFT JOIN jornadas AS J ON j.id_Jornada= hs.id_Jornada
+            LEFT JOIN dias ON dias.id_Dia = j.id_Dia 
+            WHERE c.eliminado = 0 GROUP BY p.id_Institucion;");
             $SolSuplente->execute();
             return $SolSuplente->fetchAll(PDO::FETCH_ASSOC);
 
@@ -63,3 +68,4 @@ class ModeloSolSuplente{
     }
     
 }
+

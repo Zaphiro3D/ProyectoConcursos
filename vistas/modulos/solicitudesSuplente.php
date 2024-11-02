@@ -52,7 +52,7 @@
                                     //} 
                                     //else {-->
                             <tr>        
-                                <td><?php echo $instituciones[0]?></td><!--<td><//?php echo $value["nombre_insti"]; ?></td>-->
+                                <td><?php echo $instituciones[0]?></td>
                                 <td><?php echo $value["nombreCargo"] ?></td>
                                 <td><?php echo $value["hsCatedra"] ?></td>
                                 <td><?php echo $value["grado"] ?></td>
@@ -67,12 +67,13 @@
                                     echo "<td>" . $instituciones[1] . "</td>";
                                     echo "<td>" . $instituciones[2] . "</td>";
                                     echo "<td>" . $instituciones[3] . "</td>";  // Celda vacía si no hay más instituciones
-                                }
+                               
                                 //}
                                 ?>
-                                <td>08:00/10:00</td>
-                                <td>Observacion</td>
-                                <td>accion</td>
+                                <td><?php echo $value["horario"].$value["dias"] ?></td>
+                                <td><?php echo $value["observaciones"] ?></td>
+                                <td><?php echo "" ?> </td>
+                                <?php  }?>
                             </tr>
                             <?php } ?>
 
