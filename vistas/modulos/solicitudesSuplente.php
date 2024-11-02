@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="tablaES" class="table table-striped dt-responsive nowrap w-100">
+                    <table id="tablaSolSuplente" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 
@@ -26,10 +26,31 @@
                                 <th>Turno</th>
                                 <th>Docente</th>
                                 <th>Tipo de Institución</th>
+                                <th>Instituciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Se llenará con JavaScript -->
+                        <?php
+
+                            $cargos = ControladorCargos::ctrMostrarCargos();
+
+                            foreach ($cargos as $cargo): 
+                                ?>
+                                
+                                <tr data-hs= <?php echo $cargo['hsCatedra']; ?> >
+                                    <td class="dt-control"></td>
+                                    <td><?php echo $cargo['nombreCargo']; ?></td>
+                                    <td><?php echo $cargo['hsCatedra']; ?></td>
+                                    <td><?php echo $cargo['grado']; ?></td>
+                                    <td><?php echo $cargo['division']; ?></td>
+                                    <td><?php echo $cargo['turno']; ?></td>
+                                    <td><?php echo $cargo['docente']; ?></td>
+                                    <td><?php echo $cargo['tipo']; ?></td>
+                                    <td><?php echo $cargo['instituciones']; ?></td>
+                                </tr>
+                            <?php endforeach; 
+                        ?>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -40,8 +61,15 @@
 
 </div>
 
+
 <script>
-    // Idioma de la tabla
+// Función de formato para los detalles
+function format(value) {
+    return '<div>Hs Cátedra: ' + value + '</div>';
+    
+}
+
+$(document).ready(function() {
     var espanol = {
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -148,7 +176,7 @@
                     "without": "Sin"
                 }
             },
-            "cargos": "cargos",
+            "data": "Data",
             "deleteTitle": "Eliminar regla de filtrado",
             "leftTitle": "Criterios anulados",
             "logicAnd": "Y",
@@ -287,64 +315,31 @@
             "renameTitle": "Cambiar Nombre Estado"
         }
     };
-
-    // Cargar datos de PHP
-    <?php
-        $cargos = array();
-        $solSuplente = ModeloCargos::mdlMostrarCargos1();
-        foreach ($solSuplente as $key => $value) { 
-            $cargos[] = $key;
-        } 
     
-    ?>
-
-    // Función de formateo para detalles adicionales
-    function format(d) {
-        return '<dl>' +
-               '<dt>Nombre del Cargo:</dt><dd>' + d.nombreCargo + '</dd>' +
-               '<dt>Horas Cátedra:</dt><dd>' + d.hsCatedra + '</dd>' +
-               '<dt>Grado:</dt><dd>' + d.grado + '</dd>' +
-               '<dt>División:</dt><dd>' + d.division + '</dd>' +
-               '<dt>Turno:</dt><dd>' + d.turno + '</dd>' +
-               '<dt>Docente:</dt><dd>' + d.docente + '</dd>' +
-               '<dt>Tipo de Institución:</dt><dd>' + d.tipo + '</dd>' +
-               '</dl>';
-    }
-
-    $(document).ready(function() {
-        let table = $('#example1').cargosTable({
-            "language": espanol ,
-            cargos: cargosSet,
-            columns: [
-                {
-                    className: 'dt-control',
-                    orderable: false,
-                    cargos: null,
-                    defaultContent: ''
-                },
-                { cargos: 'nombreCargo' },
-                { cargos: 'hsCatedra' },
-                { cargos: 'grado' },
-                { cargos: 'division' },
-                { cargos: 'turno' },
-                { cargos: 'docente' },
-                { cargos: 'tipo' }
-            ],
-            order: [[1, 'asc']]
-        });
-
-        // Evento para mostrar y ocultar detalles
-        $('#example1 tbody').on('click', 'td.dt-control', function() {
-            let tr = $(this).closest('tr');
-            let row = table.row(tr);
-
-            if (row.child.isShown()) {
-                row.child.hide();
-                tr.removeClass('shown');
-            } else {
-                row.child(format(row.cargos())).show();
-                tr.addClass('shown');
-            }
-        });
+    // Inicialización de DataTable
+    let table = $('#tablaSolSuplente').DataTable({
+        pagingType:"full_numbers",
+        // Opciones adicionales como el idioma
+        "language": espanol,
+        "order": [[1, 'asc']]
     });
+
+    // Evento para mostrar y ocultar detalles
+    $('#tablaSolSuplente tbody').on('click', 'td.dt-control', function () {
+        let tr = $(this).closest('tr');
+        let row = table.row(tr);
+
+        if (row.child.isShown()) {
+            // Abrir la fila y mostrar detalles
+            row.child(format(tr.data('hs'))).show();
+            // row.child(format(row.data())).show();
+            tr.addClass('shown');
+        } else {
+            // Esta fila ya está abierta, cerrarla
+            let hsCatedra = tr.data('hs');
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+    });
+});
 </script>

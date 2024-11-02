@@ -1,5 +1,5 @@
 "use strict";
-var espanol = {
+const espanol = {
     "processing": "Procesando...",
     "lengthMenu": "Mostrar _MENU_ registros",
     "zeroRecords": "No se encontraron resultados",
@@ -276,11 +276,11 @@ $(document).ready(function(){$("#datatable").DataTable();
         "language": espanol
     });
 
-    //tabla para mostrar solicitudes de suplente
-    $('#tablaSolSuplente').DataTable({ 
-        scrollX:!0, 
-        pagingType:"full_numbers",
-        "language": espanol
-    });
+    // //tabla para mostrar solicitudes de suplente
+    // $('#tablaSolSuplente').DataTable({ 
+    //     // scrollX:!0, 
+    //     pagingType:"full_numbers",
+    //     "language": espanol
+    // });
         
 });
