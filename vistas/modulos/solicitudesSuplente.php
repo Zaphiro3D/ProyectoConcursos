@@ -70,7 +70,7 @@
                                 }
                                 
                                 // Procesa los horarios  y los concatena para mostrarlos
-                                // $horario = 'Horario: ' ;
+                                $horario = '' ;
                                 for ($i = 0; $i < count($horarios); $i++) {
                                     if (isset($horarios[$i])) {
                                         $horario = $horario . $horarios[$i] . '. ';
