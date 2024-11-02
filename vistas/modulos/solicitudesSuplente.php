@@ -40,17 +40,11 @@
                             <?php
                             $nombreinstitucion = ControladorSolSuplente::ctrMostrarSolSuplente();
                             foreach ($nombreinstitucion as $key => $value) {
-                            ?>
-                            
-                                <?php
-                                // Procesa las instituciones y las divide en columnas
                                 $instituciones = explode(',', $value['instituciones']);
-                                for ($i = 0; $i < 4; $i++) {
-                                    //   if (isset($instituciones[$i])) {
-                                    ?>
-                                    <!--echo "<td>" . $instituciones[0] . "</td>";
-                                    //} 
-                                    //else {-->
+                                $horarios = explode(' | ', $value['horarios']);
+                            ?>
+                                                          
+                                
                             <tr>        
                                 <td><?php echo $instituciones[0]?></td>
                                 <td><?php echo $value["nombreCargo"] ?></td>
@@ -63,19 +57,33 @@
                                 <td><?php echo $value["fechaFin"] ?></td>
                                 <td><?php echo $value["motivo"]?></td>
                                 <td><?php echo $value["docente"] ?></td>
+
                                 <?php
-                                    echo "<td>" . $instituciones[1] . "</td>";
-                                    echo "<td>" . $instituciones[2] . "</td>";
-                                    echo "<td>" . $instituciones[3] . "</td>";  // Celda vacía si no hay más instituciones
-                               
-                                //}
+                                // Procesa las instituciones y las divide en columnas
+                                
+                                for ($i = 1; $i < 4; $i++) {
+                                    if (isset($instituciones[$i])) {
+                                        echo "<td>" . $instituciones[$i] . "</td>";
+                                    } else {
+                                        echo "<td></td>";  // Celda vacía si no hay más instituciones
+                                    }
+                                }
+                                
+                                // Procesa los horarios  y los concatena para mostrarlos
+                                // $horario = 'Horario: ' ;
+                                for ($i = 0; $i < count($horarios); $i++) {
+                                    if (isset($horarios[$i])) {
+                                        $horario = $horario . $horarios[$i] . '. ';
+                                    } 
+                                }
                                 ?>
-                                <td><?php echo $value["horario"].$value["dias"] ?></td>
+                                
+                                <td><?php echo $horario ?>  </td>
                                 <td><?php echo $value["observaciones"] ?></td>
                                 <td><?php echo "" ?> </td>
                                 <?php  }?>
                             </tr>
-                            <?php } ?>
+                            
 
                         </tbody>
                     </table>
