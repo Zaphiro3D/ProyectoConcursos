@@ -286,77 +286,94 @@
                     </div><!-- end card header -->
 
                     <div class="card-body">
-                        
-                        <div class="row">
-                            <!-- <div class="col-lg-12">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="establecimiento1" placeholder="Establecimiento Sede">
-                                    <label for="establecimiento1">Establecimiento</label>
+                        <div class="card-body">
+                            <div class="row" id= 'hsEst1'>
+                                <!-- <div class="col-lg-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="establecimiento1" placeholder="Establecimiento Sede">
+                                        <label for="establecimiento1">Establecimiento</label>
+                                    </div>
+                                </div> -->
+                                <div class="pb-2">
+                                    <label for="nombreEst1" > <h5>Establecimiento</h5></label>
+                                    <input class="form-control" placeholder="Nº Nombre CUE" id= "nombreEst1">        
                                 </div>
-                            </div> -->
-                            <div class="pb-1">
-                                <label for="establecimiento">Establecimiento</label>
-                                <input class="form-control" placeholder="Nº Nombre CUE" id= "horarioEst1">        
-                            </div>
+                                
+                                <div class="col-lg-4">
+                                    <div class="pb-3">   <!-- Div dias -->
+                                        <?php
+                                        // Función para opciones de select días
+                                        function generarOpcionesDias() {
+                                            $dias = ControladorSolSuplente::ctrMostrarDiasSol();
+                                            $opciones = '<option>...</option>';
+                                            foreach ($dias as $value) { 
+                                                $opciones .= "<option>{$value['nombre']}</option>";
+                                            }
+                                            return $opciones;
+                                        }
+                                        ?>
 
-                            <datalist id="Dias">
-                            <?php
-                                $dias = ControladorSolSuplente::ctrMostrarDiasSol();
-                                foreach ($dias as $key => $value) {            
-                            ?>
-                            <option ><?php echo $value["nombre"]?> </option>
-                            <?php } ?>
-                            </datalist>
-                            
-                            <div class="col-lg-4">
-                                <div class="pb-3">   <!-- Datalist de los dias -->
-                                    <form >
-                                        <label for="datalistDias" class="form-label">Dias</label>
-                                        <input class="form-control" list="Dias" id="dlDia1" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="dlDia2" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="dlDia3" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="dlDia4" placeholder="Seleccione...">
-                                        <input class="form-control" list="Dias" id="dlDia5" placeholder="Seleccione...">
-                                    </form>    
-                                </div>
-                              
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="pb-1">
-                                    <form>
-                                        <label for="24hours-timepicker" class="form-label">Hora  Inicio</label>
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                    </form> 
-                                </div>
-                            </div> 
-                            <div class="col-lg-2">
-                                <div class="pb-1">
-                                    <form>
-                                        <label for="24hours-timepicker" class="form-label">Hora  Fin</label>
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        <input id="horaIni1" type="time" class="form-control" placeholder="24-hour Time Picker">
-                                        
-                                    </form>  
-                                </div>
-                            </div> 
-                            
-                        </div>
+                                        <form >
+                                            <H6>Días</H6>  
+                                            <select class="form-select" id="diaEst1">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
 
+                                            <select class="form-select" id="diaEst2">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst5">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+                                        </form>    
+                                    </div>
+                                </div>
+
+                                <!-- Horarios de Inicio -->           
+                                <div class="col-lg-4">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Inicio</H6>
+                                            <input id="horaIni1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni5" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </form> 
+                                    </div>
+                                </div> 
+
+                                <!-- Horarios de Fin -->
+                                <div class="col-lg-4">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Fin</H6>
+                                            <input id="horaFin1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin5" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            
+                                        </form>  
+                                    </div>
+                                </div> 
+                                
+                            </div> <!-- Fin Hs Establecimiento 1 -->
+                        </div>  <!-- Card Hs Est 1-->
                         
                         
                     </div>
                 </div>
             </div>  <!-- col -->
-
-
-
 
         </div>
 
