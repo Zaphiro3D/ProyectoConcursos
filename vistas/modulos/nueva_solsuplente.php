@@ -258,11 +258,18 @@
 
                         <div class="card-body">
                             
-                            <div class="row">
+                            <div class="col">
+                                <form>
+                                    <div class="row-lg-6 mb-3">
+                                        <label class="form-label">Fecha Inicio</label>
+                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
+                                    <!-- </div>
                                     
-                                
-                                        
-
+                                    <div class="col-lg-6 mb-3"> -->
+                                        <label class="form-label">Fecha Fin</label>
+                                        <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
+                                    </div>
+                                </form>
                             </div>
                             
                         </div>
@@ -372,7 +379,86 @@
                                 
                             </div> <!-- Fin Hs Establecimiento 1 -->
                         </div>  <!-- Card Hs Est 1-->
+
+                        <hr></hr>
                         
+                        <div class="card-body">
+                            <div class="row" id= 'hsEst1'>
+                                <div class="pb-2">
+                                    <label for="nombreEst1" > <h5>Establecimiento</h5></label>
+                                    <input class="form-control" placeholder="Nº Nombre CUE" id= "nombreEst1">        
+                                </div>
+                                
+                                <div class="col-5">
+                                    <div class="pb-3">   <!-- Div dias -->
+                                        <form >
+                                            <H6>Días</H6>  
+                                            <select class="form-select" id="diaEst1">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst2">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="diaEst5">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+                                        </form>    
+                                    </div>
+                                </div>
+
+                                <!-- Horarios de Inicio -->           
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Inicio</H6>
+                                            <input id="horaIni1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </form> 
+                                    </div>
+                                </div> 
+
+                                <!-- Horarios de Fin -->
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Fin</H6>
+                                            <input id="horaFin1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            
+                                        </form>  
+                                    </div>
+                                </div> 
+
+                                <div class="col">
+                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5)"><i class="fa-solid fa-eraser"></i></button>
+
+                                    </div>
+                                </div> 
+
+                                
+                            </div> <!-- Fin Hs Establecimiento 1 -->
+                        </div>  <!-- Card Hs Est 1-->
                         
                     </div>
                 </div>
