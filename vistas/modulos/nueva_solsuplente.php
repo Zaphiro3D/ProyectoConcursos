@@ -10,6 +10,29 @@
     <div class="col-12"> <!-- Floating Labels -->
         <div class= "row">
             <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Institución Sede</h5>
+                        </div><!-- end card header -->
+                        
+                        <div class="card-body">
+
+                                <fieldset class="row mb-3 mt-1"> 
+                                    <!-- Escuela Sede -->
+                                    <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
+                                    <div>
+                                        <!-- <label for="institucion1-deshab" class="form-label">Institución Sede</label> -->
+                                        <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
+                                    </div>
+                                </fieldset>
+
+                        </div>
+                    </div>  <!-- card datos sede -->
+                </div>  <!-- col -->   
+
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Datos del Cargo</h5>
@@ -69,31 +92,111 @@
                 </div>
             </div>  <!-- col -->
         </div>  <!-- row -->
-        <div class= "row">
+        
+        <div class="row">
             <div class="col-lg-6">
                 <div class="card">
-
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Institución Sede</h5>
+                        <h5 class="card-title mb-0">Datos del Agente</h5>
                     </div><!-- end card header -->
-                    
+
                     <div class="card-body">
-
-                            <fieldset class="row mb-3 mt-1"> 
-                                <!-- Escuela Sede -->
-                                <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
-                                <div>
-                                    <!-- <label for="institucion1-deshab" class="form-label">Institución Sede</label> -->
-                                    <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
+                        <div  class="row">
+                            <div class="col-lg-12">
+                                <div class="col-lg-12">
+                                    <div class="form-floating my-3">
+                                        <input type="text" class="form-control" id="nombreAgente" placeholder="Nombre">
+                                        <label for="nombreAgente">Nombre</label>
+                                    </div>
                                 </div>
-                            </fieldset>
 
-                    </div>
-                </div>  <!-- card datos sede -->
-            </div>  <!-- col -->   
+                                <div class="col-lg-12">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" id="apellidoAgente" placeholder="Apellido">
+                                        <label for="apellidoAgente">Apellido</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
+                                    <div class="form-floating mb-4">
+                                        <input type="number" class="form-control" id="dniAgente" placeholder="DNI">
+                                        <label for="dniAgente">Número de DNI sin puntos</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>  <!-- row -->
+                        
+                    </div>  <!-- card body -->
+                </div>  <!-- card -->
+            </div>  <!-- col -->
+
+
+
             <div class="col-lg-6">
-                <div class="card">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Motivo</h5>
+                        </div><!-- end card header -->
 
+                        <div class="card-body">
+                            
+                            <div class="row">
+                                <!-- Opciones Datalist Motivo -->       
+                                <datalist id="opcionesMotivo">
+                                    <?php
+                                        $motivoSol = ControladorSolSuplente::ctrMostrarMotivoSol();
+                                        foreach ($motivoSol as $key => $value) {   
+                                    ?>
+                                    <option ><?php echo $value["articulo"] . ' "' . $value["inciso"] . '" - ' . $value["resolucion"] . " - ". $value["motivo"] ?> </option>
+                                    <?php } ?>
+                                </datalist>    
+                            
+                                <div class="pb-3">   <!-- Datalist Motivo-->
+                                    <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
+                                    <div class="form-floating">
+                                        <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
+                                        <label for="opcionesMotivo">Escriba para buscar...</label>
+                                    </div>   
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>  <!-- col -->
+
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Datos del Trámite</h5>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <form>
+                                <div class="row ">
+                                    <div class="col-lg-6">
+                                        <label class="form-label">Fecha Inicio</label>
+                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
+                                    </div>
+                                    <div class="col-lg-6 mb-2">
+                                        <label class="form-label">Fecha Fin</label>
+                                        <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>  <!-- col -->
+
+            </div>  <!-- col -->
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">¿Comparte con otra institución?</h5>
                     </div><!-- end card header -->
@@ -136,152 +239,7 @@
                         </form>
                     </div>
                 </div>  <!-- card comparte -->      
-            </div>  <!-- col -->   
-        </div>  <!-- row -->
-        <!-- hacer un if que controle lo seleccionado en los check y que muestre para solicitar los datos de las otras instituciones  -->
-        <div class="col-lg-12" id= "colSelecInstituciones">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Seleccione las Instituciones Compartidas</h5>
-                </div>
-                <div class="card-body">   
-                    <form>
-                        <!-- Opciones Datalist Instituciones        -->
-                        <datalist id="OpcionesInstitucion">
-                            <?php
-                                $institucion = ControladorInstituciones::ctrMostrarInstituciones();
-                                foreach ($institucion as $key => $value) {   
-                                    // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
-                            ?>
-                            <option ><?php echo $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
-                            <?php } ?>
-                        </datalist>    
-                    
-                        <div class="pb-3">   <!-- Datalist Instituciones 2 -->
-                            <label for="institucion2"  id="lblinstitucion2" class="form-label">Segunda Institución</label>
-                            <input class="form-control" list="OpcionesInstitucion" id="institucion2" placeholder="Escriba para buscar...">
-                        </div>
-
-                        <div class="pb-3">   <!-- Datalist Instituciones 3 -->
-                            <label for="institucion3" id="lblinstitucion3"  class="form-label">Tercera Institución</label>
-                            <input class="form-control" list="OpcionesInstitucion" id="institucion3" placeholder="Escriba para buscar...">
-                        </div>
-
-                        <div class="pb-3">   <!-- Datalist Instituciones 4 -->
-                            <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
-                            <input class="form-control" list="OpcionesInstitucion" id="institucion4" placeholder="Escriba para buscar...">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>  <!-- col -->
-
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Datos del Agente</h5>
-                    </div><!-- end card header -->
-
-                    <div class="card-body">
-                        <div  class="row">
-                            <div class="col-lg-12">
-                                <div class="col-lg-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="nombreAgente" placeholder="Nombre">
-                                        <label for="nombreAgente">Nombre</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="apellidoAgente" placeholder="Apellido">
-                                        <label for="apellidoAgente">Apellido</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="dniAgente" placeholder="DNI">
-                                        <label for="dniAgente">Número de DNI sin puntos</label>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>  <!-- row -->
-                        
-                    </div>  <!-- card body -->
-                </div>  <!-- card -->
             </div>  <!-- col -->
-
-
-
-            <div class="col-lg-6">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Motivo</h5>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            
-                            <div class="row">
-                                <!-- Opciones Datalist Motivo -->       
-                                <datalist id="opcionesMotivo">
-                                    <?php
-                                        $motivoSol = ControladorSolSuplente::ctrMostrarMotivoSol();
-                                        foreach ($motivoSol as $key => $value) {   
-                                    ?>
-                                    <option ><?php echo $value["articulo"] . ' "' . $value["inciso"] . '" - ' . $value["resolucion"] . " - ". $value["motivo"] ?> </option>
-                                    <?php } ?>
-                                </datalist>    
-                            
-                                <div class="pb-3">   <!-- Datalist Motivo-->
-                                    <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
-                                    <div class="form-floating mb-1 mt-1">
-                                        <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
-                                        <label for="opcionesMotivo">Escriba para buscar...</label>
-                                    </div>   
-                                </div>    
-                            </div>
-                        </div>
-                    </div>
-                </div>  <!-- col -->
-
-
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Datos del Trámite</h5>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            
-                            <div class="col">
-                                <form>
-                                    <div class="row-lg-6 mb-3">
-                                        <label class="form-label">Fecha Inicio</label>
-                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
-                                    <!-- </div>
-                                    
-                                    <div class="col-lg-6 mb-3"> -->
-                                        <label class="form-label">Fecha Fin</label>
-                                        <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
-                                    </div>
-                                </form>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>  <!-- col -->
-
-            </div>  <!-- col -->
-
-        </div>
-
-        <div class="row">
-            
 
             <div class="col-lg-12">
                 <div class="card">
@@ -289,12 +247,24 @@
                         <h5 class="card-title mb-0">Horarios</h5>
                     </div><!-- end card header -->
 
+                    
+                    <!-- Opciones Datalist Instituciones        -->
+                    <datalist id="OpcionesInstitucion">
+                        <?php
+                            $institucion = ControladorInstituciones::ctrMostrarInstituciones();
+                            foreach ($institucion as $key => $value) {   
+                                // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
+                        ?>
+                        <option ><?php echo $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
+                        <?php } ?>
+                    </datalist>    
+
                     <div class="card-body">
-                        <div class="card-body">
-                            <div class="row" id= 'hsEst1'>
-                                <div class="pb-2">
-                                    <label for="nombreEst1" > <h5>Establecimiento</h5></label>
-                                    <input class="form-control" placeholder="Nº Nombre CUE" id= "nombreEst1">        
+                        <div class="card-body" id= 'hsEst1'> <!-- Card Hs Est 1 -->
+                            <div class="row">
+                                <div class="pb-2">   <!-- Datalist Instituciones 1 -->
+                                    <label for="institucion1"  id="lblinstitucion1" class="form-label">Institución Sede</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion1" placeholder="Escriba para buscar...">
                                 </div>
                                 
                                 <div class="col-5">
@@ -313,23 +283,23 @@
 
                                         <form >
                                             <H6>Días</H6>  
-                                            <select class="form-select" id="diaEst1">
+                                            <select class="form-select" id="dia1Est1">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst2">
+                                            <select class="form-select" id="dia2Est1">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst3">
+                                            <select class="form-select" id="dia3Est1">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst4">
+                                            <select class="form-select" id="dia4Est1">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst5">
+                                            <select class="form-select" id="dia5Est1">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
                                         </form>    
@@ -365,13 +335,13 @@
                                     </div>
                                 </div> 
 
-                                <div class="col">
+                                <div class="col-1">
                                     <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,1)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,1)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,1)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,1)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,1)"><i class="fa-solid fa-eraser"></i></button>
 
                                     </div>
                                 </div> 
@@ -380,36 +350,36 @@
                             </div> <!-- Fin Hs Establecimiento 1 -->
                         </div>  <!-- Card Hs Est 1-->
 
-                        <hr></hr>
+                        <hr id= 'divhsEst2'></hr>
                         
-                        <div class="card-body">
-                            <div class="row" id= 'hsEst1'>
-                                <div class="pb-2">
-                                    <label for="nombreEst1" > <h5>Establecimiento</h5></label>
-                                    <input class="form-control" placeholder="Nº Nombre CUE" id= "nombreEst1">        
+                        <div class="card-body" id= 'hsEst2'>  <!-- Card Hs Est 2 -->
+                            <div class="row">
+                                <div class="pb-2">   <!-- Datalist Instituciones 2 -->
+                                    <label for="institucion2"  id="lblinstitucion2" class="form-label">Segunda Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion2" placeholder="Escriba para buscar...">
                                 </div>
                                 
                                 <div class="col-5">
                                     <div class="pb-3">   <!-- Div dias -->
                                         <form >
                                             <H6>Días</H6>  
-                                            <select class="form-select" id="diaEst1">
+                                            <select class="form-select" id="dia1Est2">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst2">
+                                            <select class="form-select" id="dia2Est2">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst3">
+                                            <select class="form-select" id="dia3Est2">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst4">
+                                            <select class="form-select" id="dia4Est2">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
 
-                                            <select class="form-select" id="diaEst5">
+                                            <select class="form-select" id="dia5Est2">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
                                         </form>    
@@ -421,11 +391,11 @@
                                     <div class="pb-1">
                                         <form>
                                             <H6>Hora  Inicio</H6>
-                                            <input id="horaIni1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni1E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni2E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni3E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni4E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni5E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
                                         </form> 
                                     </div>
                                 </div> 
@@ -435,30 +405,190 @@
                                     <div class="pb-1">
                                         <form>
                                             <H6>Hora  Fin</H6>
-                                            <input id="horaFin1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin1E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin2E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin3E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin4E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin5E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
                                             
                                         </form>  
                                     </div>
                                 </div> 
 
-                                <div class="col">
+                                <div class="col-1">
                                     <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,2)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,2)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,2)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,2)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,2)"><i class="fa-solid fa-eraser"></i></button>
 
                                     </div>
                                 </div> 
 
                                 
-                            </div> <!-- Fin Hs Establecimiento 1 -->
-                        </div>  <!-- Card Hs Est 1-->
+                            </div> <!-- Fin Hs Establecimiento 2 -->
+                        </div>  <!-- Card Hs Est 2-->
+
+                        <hr id= 'divhsEst3'></hr>
+                        
+                        <div class="card-body" id= 'hsEst3'>  <!-- Card Hs Est 3 -->
+                            <div class="row">
+                                <div class="pb-3">   <!-- Datalist Instituciones 3 -->
+                                    <label for="institucion3" id="lblinstitucion3"  class="form-label">Tercera Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion3" placeholder="Escriba para buscar...">
+                                </div>
+                                
+                                <div class="col-5">
+                                    <div class="pb-3">   <!-- Div dias -->
+                                        <form >
+                                            <H6>Días</H6>  
+                                            <select class="form-select" id="dia1Est3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia2Est3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia3Est3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia4Est3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia5Est3">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+                                        </form>    
+                                    </div>
+                                </div>
+
+                                <!-- Horarios de Inicio -->           
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Inicio</H6>
+                                            <input id="horaIni1E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni2E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni3E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni4E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni5E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </form> 
+                                    </div>
+                                </div> 
+
+                                <!-- Horarios de Fin -->
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Fin</H6>
+                                            <input id="horaFin1E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin2E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin3E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin4E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin5E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            
+                                        </form>  
+                                    </div>
+                                </div> 
+
+                                <div class="col-1">
+                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,3)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,3)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,3)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,3)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,3)"><i class="fa-solid fa-eraser"></i></button>
+
+                                    </div>
+                                </div> 
+
+                                
+                            </div> <!-- Fin Hs Establecimiento 3 -->
+                        </div>  <!-- Card Hs Est 3-->
+
+                        <hr id= 'divhsEst4'></hr>
+
+                        <div class="card-body" id= 'hsEst4'>  <!-- Card Hs Est 4 -->
+                            <div class="row">
+                                <div class="pb-3">   <!-- Datalist Instituciones 4 -->
+                                    <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion4" placeholder="Escriba para buscar...">
+                                </div>
+                                
+                                <div class="col-5">
+                                    <div class="pb-3">   <!-- Div dias -->
+                                        <form >
+                                            <H6>Días</H6>  
+                                            <select class="form-select" id="dia1Est4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia2Est4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia3Est4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia4Est4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+
+                                            <select class="form-select" id="dia5Est4">
+                                                <?php echo generarOpcionesDias(); ?>
+                                            </select>
+                                        </form>    
+                                    </div>
+                                </div>
+
+                                <!-- Horarios de Inicio -->           
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Inicio</H6>
+                                            <input id="horaIni1E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni2E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni3E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni4E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaIni5E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </form> 
+                                    </div>
+                                </div> 
+
+                                <!-- Horarios de Fin -->
+                                <div class="col-3">
+                                    <div class="pb-1">
+                                        <form>
+                                            <H6>Hora  Fin</H6>
+                                            <input id="horaFin1E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin2E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin3E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin4E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            <input id="horaFin5E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                            
+                                        </form>  
+                                    </div>
+                                </div> 
+
+                                <div class="col-1">
+                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,4)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,4)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,4)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,4)"><i class="fa-solid fa-eraser"></i></button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,4)"><i class="fa-solid fa-eraser"></i></button>
+
+                                    </div>
+                                </div> 
+
+                                
+                            </div> <!-- Fin Hs Establecimiento 4 -->
+                        </div>  <!-- Card Hs Est 4-->
                         
                     </div>
                 </div>
@@ -489,13 +619,38 @@
 
     // Función para mostrar u ocultar campos según la opción seleccionada
     function toggleInstituciones() {
+        // Institucion 2
         institucion2.style.display = radios[1].checked || radios[2].checked || radios[3].checked ? "block" : "none";
-        colSelecInstituciones.style.display = institucion2.style.display;
         lblinstitucion2.style.display = institucion2.style.display;
+        document.getElementById("divhsEst2").style.display = institucion2.style.display;
+        document.getElementById("hsEst2").style.display = institucion2.style.display;
+        
+        // Institucion 3
         institucion3.style.display = radios[2].checked || radios[3].checked ? "block" : "none";
         lblinstitucion3.style.display = institucion3.style.display;
+        document.getElementById("divhsEst3").style.display = institucion3.style.display;
+        document.getElementById("hsEst3").style.display = institucion3.style.display;
+        
+        // Institucion 4
         institucion4.style.display = radios[3].checked ? "block" : "none";
         lblinstitucion4.style.display = institucion4.style.display;
+        document.getElementById("divhsEst4").style.display = institucion4.style.display;
+        document.getElementById("hsEst4").style.display = institucion4.style.display;
+
+
+        //<hr id= 'div-hsEst4'></hr>
+        //<div class="card-body" id= 'hsEst4'>  <!-- Card Hs Est 4 -->
+    }
+
+    // Función para borrar horarios
+    function borrarHorario(dia, inst) {
+        // Selecciona los campos de inicio y fin correspondientes al día especificado
+        const horaInicio = document.getElementById(`horaIni${dia}E${inst}`);
+        const horaFin = document.getElementById(`horaFin${dia}E${inst}`);
+
+        // Borra el contenido de los campos
+        if (horaInicio) horaInicio.value = "";
+        if (horaFin) horaFin.value = "";
     }
 
     // Añade el evento de cambio a cada radio button para ejecutar la función cuando cambie la selección
@@ -505,15 +660,4 @@
 
     // Oculta inicialmente todos los campos extra
     toggleInstituciones();
-</script>
-<script>
-    function borrarHorario(dia) {
-        // Selecciona los campos de inicio y fin correspondientes al día especificado
-        const horaInicio = document.getElementById(`horaIni${dia}E1`);
-        const horaFin = document.getElementById(`horaFin${dia}E1`);
-
-        // Borra el contenido de los campos
-        if (horaInicio) horaInicio.value = "";
-        if (horaFin) horaFin.value = "";
-    }
 </script>
