@@ -172,7 +172,7 @@
                                         <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
                                         <label for="opcionesMotivo">Escriba para buscar...</label>
                                     </div>   
-                                </div>    
+                                </div>     
                             </div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                         <label class="form-label">Fecha Inicio</label>
                                         <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
                                     </div>
-                                    <div class="col-lg-6 ">
+                                    <div class="col-lg-6 bt-3">
                                         <label class="form-label">Fecha Fin</label>
                                         <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
                                     </div>
@@ -213,37 +213,36 @@
                     
                     <div class="card-body">
                         <form>
-                            <fieldset class="row">
+                            <fieldset class="row ">
                                 <!-- <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend> -->
-                                <div class="col-sm-10 d-flex gap-2">
-                                    <div class="form-check mb-2">
+                                <div class="row row-cols-lg-auto g-2 align-items-center">
+                                    <div class="form-check mb-2 mx-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" value="option1" checked>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
                                         </label>
                                     </div>
 
-                                    <div class="form-check mb-2">
+                                    <div class="form-check mb-2 mx-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte1" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
                                         </label>
                                     </div>
-                                <!-- </div>
-                                <div class="col-lg-6"> -->
-                                    <div class="form-check mb-2">
+                                    <div class="form-check mb-2 mx-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
                                         </label>
                                     </div>
 
-                                    <div class="form-check mb-2">
+                                    <div class="form-check mb-2 mx-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte3" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
                                         </label>
                                     </div>
+                                
                                 </div>     
                             </fieldset> 
                         </form>
