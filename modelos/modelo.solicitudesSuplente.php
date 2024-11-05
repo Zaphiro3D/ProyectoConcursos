@@ -89,6 +89,43 @@ GROUP BY c.id_Cargo;
         }
 
     }
+
+    static public function mdlMostrarGradoSol()
+    {
+        try {
+            $gradoSol = Conexion::conectar()->prepare("SELECT * FROM grados as g  ;");
+            $gradoSol->execute();
+            return $gradoSol->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
     
+    static public function mdlMostrarTurnoSol()
+    {
+        try {
+            $TurnoSol = Conexion::conectar()->prepare("SELECT * FROM Turnos as t  ;");
+            $TurnoSol->execute();
+            return $TurnoSol->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
+    static public function mdlMostrarDivisionSol()
+    {
+        try {
+            $DivisionSol = Conexion::conectar()->prepare("SELECT * FROM Divisiones as d  ;");
+            $DivisionSol->execute();
+            return $DivisionSol->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            return "Error: " .$e ->getMessage();
+        }
+
+    }
 }
 
