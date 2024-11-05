@@ -54,34 +54,43 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="turno">
-                                        <option selected>...</option>
-                                        <option value="1">Director</option>
-                                        <option value="2">Supervisor</option>
-                                        <option value="3">Administrativo</option>
-                                    </select>
+                                    <datalist id="opocionesturno">
+                                        <?php 
+                                            $turno = ModeloSolSuplente::mdlMostrarTurnoSol();
+                                            foreach($turno as $key => $value){
+                                        ?>
+                                        <option><?php echo $value["turno"]  ?></option>
+                                        <?php } ?>
+                                    </datalist>
+                                    <input class="form-control fs-14" list="opocionesturno" id="opocionesturno" placeholder="Escriba para buscar..." ></input>
                                     <label for="turno">Turno</label>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="anio">
-                                        <option selected>...</option>
-                                        <option value="1">Director</option>
-                                        <option value="2">Supervisor</option>
-                                        <option value="3">Administrativo</option>
-                                    </select>
+                                    <datalist id="opocionesAnio">
+                                        <?php 
+                                            $grado = ModeloSolSuplente::mdlMostrarGradoSol();
+                                            foreach($grado as $key => $value){
+                                        ?>
+                                        <option><?php echo $value["grado"]  ?></option>
+                                        <?php } ?>
+                                    </datalist>
+                                    <input class="form-control fs-14" list="opocionesAnio" id="opocionesAnio" placeholder="Escriba para buscar..." ></input>
                                     <label for="anio">Año</label>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="division">
-                                        <option selected>...</option>
-                                        <option value="1">Director</option>
-                                        <option value="2">Supervisor</option>
-                                        <option value="3">Administrativo</option>
-                                    </select>
+                                <datalist id="opocionesDivision">
+                                        <?php 
+                                            $Division = ModeloSolSuplente::mdlMostrarDivisionSol();
+                                            foreach($Division as $key => $value){
+                                        ?>
+                                        <option><?php echo $value["division"]  ?></option>
+                                        <?php } ?>
+                                    </datalist>
+                                    <input class="form-control fs-14" list="opocionesDivision" id="opocionesDivision" placeholder="Escriba para buscar..." ></input>
                                     <label for="division">División</label>
                                 </div>
                             </div>

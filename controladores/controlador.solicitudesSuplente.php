@@ -16,4 +16,19 @@ class ControladorSolSuplente{
         $respuesta = ModeloSolSuplente::mdlMostrarMotivoSol();
         return $respuesta;
     }
+
+    static public function ctrMostrarGradoSol(){
+        $respuesta = ModeloSolSuplente::mdlMostrarGradoSol();
+        return $respuesta;
+    }
+
+    static public function ctrMostrarTurnosSol(){
+        $respuesta = ModeloSolSuplente::mdlMostrarTurnoSol();
+        return $respuesta;
+    }
+
+    static public function ctrMostrarDivisionSol(){
+        $respuesta = ModeloSolSuplente::mdlMostrarDivisionSol();
+        return $respuesta;
+    }
 }
