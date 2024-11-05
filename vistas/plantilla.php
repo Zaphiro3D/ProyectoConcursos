@@ -87,7 +87,7 @@ $url = ControladorPlantilla::url();
                             // Solicitudes de Suplente
                             $rutas[0] == "solicitudesSuplente"||                            
                             $rutas[0] == "nueva_solsuplente" ||
-                            $rutas[0] == "editar_editar_solsuplente" ||
+                            $rutas[0] == "editar_solsuplente" ||
 
                             // otros
                             $rutas[0] == "elementos_formularios" ||

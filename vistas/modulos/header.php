@@ -74,16 +74,16 @@
                         </div>
 
                         <!-- item-->
-                        <a href="pages-profile.html" class="dropdown-item notify-item">
+                        <!-- <a href="pages-profile.html" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-circle-outline fs-16 align-middle"></i>
                             <span>Mi cuenta</span>
-                        </a>
+                        </a> -->
 
                         <!-- item-->
-                        <a href="auth-lock-screen.html" class="dropdown-item notify-item">
+                        <!-- <a href="auth-lock-screen.html" class="dropdown-item notify-item">
                             <i class="mdi mdi-lock-outline fs-16 align-middle"></i>
                             <span>Bloquear Pantalla</span>
-                        </a>
+                        </a> -->
 
                         <div class="dropdown-divider"></div>
 

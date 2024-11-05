@@ -19,12 +19,15 @@
                         
                         <div class="card-body">
 
-                                <fieldset class="row mb-3 mt-1"> 
+                                <fieldset class="row mb-2 mt-1"> 
                                     <!-- Escuela Sede -->
                                     <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
                                     <div>
-                                        <!-- <label for="institucion1-deshab" class="form-label">Institución Sede</label> -->
-                                        <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
+                                    
+                                    <label for="institucionSede"  id="lblinstitucion1" class="form-label">Institución Sede</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucionSede" placeholder="Escriba para buscar...">
+                                
+                                        <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
                                     </div>
                                 </fieldset>
 
@@ -39,7 +42,7 @@
                     </div><!-- end card header -->
 
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row mt-1">
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
                                     <input type="number" class="form-control" id="plaza" placeholder="N° Plaza">
@@ -111,7 +114,7 @@
                                 </div>
 
                                 <div class="col-lg-12">
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="apellidoAgente" placeholder="Apellido">
                                         <label for="apellidoAgente">Apellido</label>
                                     </div>
@@ -119,7 +122,7 @@
 
                                 <div class="col-lg-12">
                                     <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
-                                    <div class="form-floating mb-4">
+                                    <div class="form-floating mb-3">
                                         <input type="number" class="form-control" id="dniAgente" placeholder="DNI">
                                         <label for="dniAgente">Número de DNI sin puntos</label>
                                     </div>
@@ -154,7 +157,7 @@
                                     <?php } ?>
                                 </datalist>    
                             
-                                <div class="pb-3">   <!-- Datalist Motivo-->
+                                <div class="pb-1">   <!-- Datalist Motivo-->
                                     <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
                                     <div class="form-floating">
                                         <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
@@ -180,7 +183,7 @@
                                         <label class="form-label">Fecha Inicio</label>
                                         <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
                                     </div>
-                                    <div class="col-lg-6 mb-2">
+                                    <div class="col-lg-6 ">
                                         <label class="form-label">Fecha Fin</label>
                                         <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
                                     </div>
@@ -189,9 +192,7 @@
                         </div>
                     </div>
                 </div>  <!-- col -->
-
             </div>  <!-- col -->
-
         </div>
 
         <div class="row">
@@ -205,7 +206,7 @@
                         <form>
                             <fieldset class="row">
                                 <!-- <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend> -->
-                                <div class="col-lg-6">
+                                <div class="col-sm-10 d-flex gap-2">
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" value="option1" checked>
                                         <label class="form-check-label" for="noComparte">
@@ -219,8 +220,8 @@
                                             Comparte con 1 institución
                                         </label>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
+                                <!-- </div>
+                                <div class="col-lg-6"> -->
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte2">
