@@ -74,6 +74,7 @@ class ModeloAgentes{
     static public function mdlAgregarAgente($datos)
     {
         try {
+            // SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;
             $stmt = Conexion::conectar()->prepare("INSERT INTO (nombre, stock, precio, id_categoria) VALUES (:nombre, :stock, :precio, :id_categoria)");
 
             // UN ENLACE POR CADA DATO, TENER EN CUENTA EL TIPO DE DATO STR O INT
