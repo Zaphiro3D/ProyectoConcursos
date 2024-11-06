@@ -1,3 +1,14 @@
+<?php
+    // Función para opciones de select días
+    function generarOpcionesDias() {
+        $dias = ControladorSolSuplente::ctrMostrarDiasSol();
+        $opciones = '<option>...</option>';
+        foreach ($dias as $value) { 
+            $opciones .= "<option>{$value['nombre']}</option>";
+        }
+        return $opciones;
+    }
+?>
 
 <div class="container-xxl">
 
@@ -188,14 +199,29 @@
                         <div class="card-body">
                             <form>
                                 <div class="row ">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 mb-1">
                                         <label class="form-label">Fecha Inicio</label>
                                         <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
+                                    </div>         
+                                    
+                                    <div class="col-lg-6 mb-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- Label de Fecha Fin -->
+                                            <label class="form-label mb-0">Fecha Fin</label>
+
+                                            <!-- Checkbox de ¿Abierto? -->
+                                            <div class="form-check d-flex align-items-center">
+                                                <input type="checkbox" class="form-check-input" id="checkAbierto" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="checkAbierto">¿Abierto?</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Campo de entrada para la fecha -->
+                                        <div class="mt-2">
+                                            <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
+                                        </div> 
                                     </div>
-                                    <div class="col-lg-6 bt-3">
-                                        <label class="form-label">Fecha Fin</label>
-                                        <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
-                                    </div>
+
                                 </div>
                             </form>
                         </div>
@@ -269,335 +295,75 @@
                     </datalist>    
 
                     <div class="card-body">
-                        <div class="card-body" id= 'hsEst1'> <!-- Card Hs Est 1 -->
-                            <div class="row">
-                                <div class="pb-2">   <!-- Datalist Instituciones 1 -->
-                                    <label for="institucion1"  id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion1" placeholder="Escriba para buscar...">
-                                </div>
-                                
-                                <div class="col-5">
-                                    <div class="pb-3">   <!-- Div dias -->
-                                        <?php
-                                        // Función para opciones de select días
-                                        function generarOpcionesDias() {
-                                            $dias = ControladorSolSuplente::ctrMostrarDiasSol();
-                                            $opciones = '<option>...</option>';
-                                            foreach ($dias as $value) { 
-                                                $opciones .= "<option>{$value['nombre']}</option>";
-                                            }
-                                            return $opciones;
-                                        }
-                                        ?>
-
-                                        <form >
-                                            <H6>Días</H6>  
-                                            <select class="form-select" id="dia1Est1">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia2Est1">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia3Est1">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia4Est1">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia5Est1">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-                                        </form>    
+                        <?php
+                        // Función para generar el bloque de institución
+                        function generarBloqueInstitucion($numeroInstitucion) {
+                            ob_start(); // Iniciar el almacenamiento en búfer
+                        ?>
+                            <!-- Card Hs Est <?php echo $numeroInstitucion; ?> -->
+                            <div class="card-body" id="hsEst<?php echo $numeroInstitucion; ?>">
+                                <div class="row">
+                                    
+                                    <!-- Datalist Instituciones <?php echo $numeroInstitucion; ?> -->
+                                    <div class="col-12 pb-2">   
+                                        <label for="institucion<?php echo $numeroInstitucion; ?>" id="lblinstitucion<?php echo $numeroInstitucion; ?>" class="form-label">Institución <?php echo $numeroInstitucion; ?></label>
+                                        <input class="form-control" list="OpcionesInstitucion" id="institucion<?php echo $numeroInstitucion; ?>" placeholder="Escriba para buscar...">
                                     </div>
-                                </div>
 
-                                <!-- Horarios de Inicio -->           
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Inicio</H6>
-                                            <input id="horaIni1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                        </form> 
+                                    <!-- Encabezados para pantallas grandes -->
+                                    <div class="col-12 d-none d-md-flex">
+                                        <div class="col-5"><h6>Día</h6></div>
+                                        <div class="col-3"><h6>Hora Inicio</h6></div>
+                                        <div class="col-3"><h6>Hora Fin</h6></div>
+                                        <div class="col-1"><h6>Borrar</h6></div>
                                     </div>
-                                </div> 
 
-                                <!-- Horarios de Fin -->
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Fin</H6>
-                                            <input id="horaFin1E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin2E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin3E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin4E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin5E1" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            
-                                        </form>  
-                                    </div>
-                                </div> 
-
-                                <div class="col-1">
-                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,1)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,1)"><i class="fa-solid fa-eraser"></i></button>
-
-                                    </div>
-                                </div> 
-
-                                
-                            </div> <!-- Fin Hs Establecimiento 1 -->
-                        </div>  <!-- Card Hs Est 1-->
-
-                        <hr id= 'divhsEst2'></hr>
-                        
-                        <div class="card-body" id= 'hsEst2'>  <!-- Card Hs Est 2 -->
-                            <div class="row">
-                                <div class="pb-2">   <!-- Datalist Instituciones 2 -->
-                                    <label for="institucion2"  id="lblinstitucion2" class="form-label">Segunda Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion2" placeholder="Escriba para buscar...">
-                                </div>
-                                
-                                <div class="col-5">
-                                    <div class="pb-3">   <!-- Div dias -->
-                                        <form >
-                                            <H6>Días</H6>  
-                                            <select class="form-select" id="dia1Est2">
+                                    <!-- Estructura por día -->
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <div class="row align-items-center mb-2">
+                                        <!-- Días -->
+                                        <div class="col-12 col-md-5">
+                                            <h6 class="d-md-none">Día <?php echo $i; ?></h6>
+                                            <select class="form-select" id="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>">
                                                 <?php echo generarOpcionesDias(); ?>
                                             </select>
+                                        </div>
 
-                                            <select class="form-select" id="dia2Est2">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
+                                        <!-- Hora Inicio -->
+                                        <div class="col-12 col-md-3">
+                                            <h6 class="d-md-none">Hora Inicio</h6>
+                                            <input id="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </div>
 
-                                            <select class="form-select" id="dia3Est2">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
+                                        <!-- Hora Fin -->
+                                        <div class="col-12 col-md-3">
+                                            <h6 class="d-md-none">Hora Fin</h6>
+                                            <input id="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        </div>
 
-                                            <select class="form-select" id="dia4Est2">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia5Est2">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-                                        </form>    
+                                        <!-- Botón Borrar Horario -->
+                                        <div class="col-12 col-md-1 text-md-center">
+                                            <button type="button" class="btn btn-outline-primary w-100 mt-md-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día <?php echo $i; ?>" onclick="borrarHorario(<?php echo $i; ?>,<?php echo $numeroInstitucion; ?>)">
+                                                <i class="fa-solid fa-eraser"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                    <?php endfor; ?>
+                                </div> <!-- Fin Hs Establecimiento <?php echo $numeroInstitucion; ?> -->
+                            </div> <!-- Card Hs Est <?php echo $numeroInstitucion; ?> -->
+                            <?php if($numeroInstitucion != 4)  {  ?>
+                                <hr id= 'divhsEst<?php echo $numeroInstitucion +1; ?>'></hr>
+                            <?php }  ?>
 
-                                <!-- Horarios de Inicio -->           
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Inicio</H6>
-                                            <input id="horaIni1E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni2E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni3E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni4E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni5E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                        </form> 
-                                    </div>
-                                </div> 
+                        <?php
+                            return ob_get_clean(); // Retornar el contenido almacenado
+                        }
 
-                                <!-- Horarios de Fin -->
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Fin</H6>
-                                            <input id="horaFin1E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin2E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin3E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin4E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin5E2" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            
-                                        </form>  
-                                    </div>
-                                </div> 
-
-                                <div class="col-1">
-                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,2)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,2)"><i class="fa-solid fa-eraser"></i></button>
-
-                                    </div>
-                                </div> 
-
-                                
-                            </div> <!-- Fin Hs Establecimiento 2 -->
-                        </div>  <!-- Card Hs Est 2-->
-
-                        <hr id= 'divhsEst3'></hr>
-                        
-                        <div class="card-body" id= 'hsEst3'>  <!-- Card Hs Est 3 -->
-                            <div class="row">
-                                <div class="pb-3">   <!-- Datalist Instituciones 3 -->
-                                    <label for="institucion3" id="lblinstitucion3"  class="form-label">Tercera Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion3" placeholder="Escriba para buscar...">
-                                </div>
-                                
-                                <div class="col-5">
-                                    <div class="pb-3">   <!-- Div dias -->
-                                        <form >
-                                            <H6>Días</H6>  
-                                            <select class="form-select" id="dia1Est3">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia2Est3">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia3Est3">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia4Est3">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia5Est3">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-                                        </form>    
-                                    </div>
-                                </div>
-
-                                <!-- Horarios de Inicio -->           
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Inicio</H6>
-                                            <input id="horaIni1E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni2E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni3E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni4E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni5E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                        </form> 
-                                    </div>
-                                </div> 
-
-                                <!-- Horarios de Fin -->
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Fin</H6>
-                                            <input id="horaFin1E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin2E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin3E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin4E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin5E3" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            
-                                        </form>  
-                                    </div>
-                                </div> 
-
-                                <div class="col-1">
-                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,3)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,3)"><i class="fa-solid fa-eraser"></i></button>
-
-                                    </div>
-                                </div> 
-
-                                
-                            </div> <!-- Fin Hs Establecimiento 3 -->
-                        </div>  <!-- Card Hs Est 3-->
-
-                        <hr id= 'divhsEst4'></hr>
-
-                        <div class="card-body" id= 'hsEst4'>  <!-- Card Hs Est 4 -->
-                            <div class="row">
-                                <div class="pb-3">   <!-- Datalist Instituciones 4 -->
-                                    <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion4" placeholder="Escriba para buscar...">
-                                </div>
-                                
-                                <div class="col-5">
-                                    <div class="pb-3">   <!-- Div dias -->
-                                        <form >
-                                            <H6>Días</H6>  
-                                            <select class="form-select" id="dia1Est4">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia2Est4">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia3Est4">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia4Est4">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-
-                                            <select class="form-select" id="dia5Est4">
-                                                <?php echo generarOpcionesDias(); ?>
-                                            </select>
-                                        </form>    
-                                    </div>
-                                </div>
-
-                                <!-- Horarios de Inicio -->           
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Inicio</H6>
-                                            <input id="horaIni1E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni2E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni3E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni4E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaIni5E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                        </form> 
-                                    </div>
-                                </div> 
-
-                                <!-- Horarios de Fin -->
-                                <div class="col-3">
-                                    <div class="pb-1">
-                                        <form>
-                                            <H6>Hora  Fin</H6>
-                                            <input id="horaFin1E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin2E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin3E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin4E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            <input id="horaFin5E4" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            
-                                        </form>  
-                                    </div>
-                                </div> 
-
-                                <div class="col-1">
-                                    <div class="btn-group-vertical mt-4" role="group" aria-label="Vertical button group">
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 1" onclick="borrarHorario(1,4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 2" onclick="borrarHorario(2,4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 3" onclick="borrarHorario(3,4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 4" onclick="borrarHorario(4,4)"><i class="fa-solid fa-eraser"></i></button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día 5" onclick="borrarHorario(5,4)"><i class="fa-solid fa-eraser"></i></button>
-
-                                    </div>
-                                </div> 
-
-                                
-                            </div> <!-- Fin Hs Establecimiento 4 -->
-                        </div>  <!-- Card Hs Est 4-->
+                        // Generar bloques de instituciones
+                        for ($j = 1; $j <= 4; $j++) {
+                            echo generarBloqueInstitucion($j);
+                        }
+                        ?>                        
                         
                     </div>
                 </div>
@@ -606,11 +372,12 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                     <div class="d-flex flex-wrap gap-2">  
                         <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
+                        <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
+                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                     </div>
                 </div>
             </div>
@@ -650,6 +417,35 @@
         //<hr id= 'div-hsEst4'></hr>
         //<div class="card-body" id= 'hsEst4'>  <!-- Card Hs Est 4 -->
     }
+
+    // Evento con función lamda para cambiar el valor de la fecha de fin a "abierto" segun check
+    document.getElementById("checkAbierto").addEventListener("change", function() {
+        var fechaFinInput = document.getElementById("fechaFin");
+        if (this.checked) {
+            fechaFinInput.value = "Abierto";
+        } else {
+            fechaFinInput.value = ""; // Limpiar el campo si se desmarca el checkbox
+        }
+    });
+
+    // Función para sincronizar el valor de la institucion sede en horario
+    function syncFields(source, target) {
+        target.value = source.value;
+    }
+
+    // Obtener los elementos de los campos
+    const institucionSede = document.getElementById("institucionSede");
+    const institucion1 = document.getElementById("institucion1");
+
+    // Agregar event listeners para sincronizar los valores en ambos sentidos
+    institucionSede.addEventListener("input", function() {
+        syncFields(institucionSede, institucion1);
+    });
+
+    institucion1.addEventListener("input", function() {
+        syncFields(institucion1, institucionSede);
+    });
+    //----- Fin sincronizar el valor de la institucion sede en horario -------
 
     // Función para borrar horarios
     function borrarHorario(dia, inst) {
