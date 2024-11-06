@@ -212,7 +212,7 @@
                                             <!-- Checkbox de ¿Abierto? -->
                                             <div class="form-check d-flex align-items-center">
                                                 <input type="checkbox" class="form-check-input" id="checkAbierto" style="margin-right: 5px;">
-                                                <label class="form-check-label" for="checkAbierto">¿Abierto?</label>
+                                                <label class="form-check-label" for="checkAbierto">¿Fin Abierto?</label>
                                             </div>
                                         </div>
                                         

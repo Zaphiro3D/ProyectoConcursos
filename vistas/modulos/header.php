@@ -90,7 +90,7 @@
                         <!-- item-->
                         <a href="auth-logout.html" class="dropdown-item notify-item">
                             <i class="mdi mdi-location-exit fs-16 align-middle"></i>
-                            <span>Logout</span>
+                            <span>Salir</span>
                         </a>
 
                     </div>

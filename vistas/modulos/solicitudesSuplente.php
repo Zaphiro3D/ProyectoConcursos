@@ -70,12 +70,11 @@
                                 <td><?php echo $instituciones[3] ?></td>
                                 <td><?php echo $horario ?></td>
                                 <td><?php echo $value["observaciones"] ?></td>
-                                <td><a href="detalles_solsuplente" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Ver detalles"><i class="fas fa-file-lines"></i> </a> 
-                                    <a href="editar_solsuplente" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
-                                    </a> <button href="eliminar_cargo" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
+                                <td><a href="editar_solsuplente" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
+                                    </a> <button href="eliminar_solsuplente" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
                                     &nbsp;|&nbsp; 
                                     <button href="aprobar_solic" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Aprobar"><i class="fas fa-circle-check"></i>
-                                    </button> <button href="rechazar_solicitud" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rechazar"><i class="fas fa-circle-xmark"></i></button> 
+                                    </button> <button href="rechazar_solic" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rechazar"><i class="fas fa-circle-xmark"></i></button> 
                                 </td>
                                 <?php endforeach;?>
                             </tr>
