@@ -39,22 +39,20 @@ $url = ControladorPlantilla::url();
         
     </head>
 
-    <!-- body start -->
+    <!-- body -->
     <body data-menu-color="dark" data-sidebar="default">
 
-        <!-- Begin page -->
+        <!-- Inicio de Página -->
         <div id="app-layout">
 
-            <!-- Topbar Start -->
+            <!-- Barra Superior -->
             <?php include 'modulos/header.php' ?>
-            <!-- end Topbar -->
 
-            <!-- Left Sidebar Start -->
+            <!-- Barra lateral izquierda -->
             <?php include 'modulos/menu.php' ?>
-            <!-- Left Sidebar End -->
 
             <!-- ============================================================== -->
-            <!-- Start Page Content here -->
+            <!-- Inicio del Contenido -->
             <!-- ============================================================== -->
          
             <div class="content-page">
@@ -102,13 +100,12 @@ $url = ControladorPlantilla::url();
 
                     ?>
 
-                <!-- Footer Start -->
+                <!-- Footer -->
                <?php include 'modulos/footer.php' ?>
-                <!-- end Footer -->
 
             </div>
             <!-- ============================================================== -->
-            <!-- End Page content -->
+            <!-- Fin del contenido -->
             <!-- ============================================================== -->
 
 

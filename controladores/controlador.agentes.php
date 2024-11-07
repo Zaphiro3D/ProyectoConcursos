@@ -25,59 +25,79 @@ class ControladorAgentes{
     // ==============================================================
     // Agregar Agentes
     // ==============================================================
-    public function ctrAgregarProductos()
+    public function ctrAgregarAgente()
     {
-        if (isset($_POST["nombre"])) {
+        if (isset($_POST["dni"])) {
 
+            if(isset($_POST["dlInstituciones"])){
+                $id = "";
+            } else{
+                if(isset($_POST["dlZonas"])){
+                    $id = "";
+                } else{
+                    if (htmlspecialchars($_POST["id_Rol"]) == ""){
+                        $id = "";
+                    }
+                }
+            }
             $datos = array(
-                "nombre" => $_POST["nombre"],
-                "stock" => $_POST["stock"],
-                "precio" => $_POST["precio"],
-                "id_categoria" => $_POST["categoria"]
+                "apellido" => htmlspecialchars($_POST["apellido"]),
+                "nombre" => htmlspecialchars($_POST["nombre"]),
+                "dni" => htmlspecialchars($_POST["dni"]),
+                "telefono" => htmlspecialchars($_POST["telefono"]),
+                "direccion" => htmlspecialchars($_POST["direccion"]),
+                "email" => htmlspecialchars($_POST["email"]),
+                "usuario" => htmlspecialchars($_POST["email"]),
+                "password" => htmlspecialchars($_POST["contrasena"]),
+                "id_Rol" => htmlspecialchars($_POST["rol"])
+                
             );
+            
+            // print_r($datos);
 
-            //print_r($datos);
-
-            //return;
+            // return;
 
             //podemos volver a la página de datos
 
-            $url = ControladorPlantilla::url() . "productos";
+            $url = ControladorPlantilla::url() . "agente";
             $respuesta = ModeloAgentes::mdlAgregarAgente($datos);
 
             if ($respuesta == "ok") {
                 echo '<script>
                     fncSweetAlert(
                     "success",
-                    "El producto se agregó correctamente",
+                    "El agente ${apellido}, ${nombre} se agregó correctamente",
                     "' . $url . '"
                     );
                     </script>';
             }
-        }
+            else{
+                print_r("error");
+            }
+        } else{ print_r("not post"); }
     }
 
     // ==============================================================
     // Editar Agentes
     // ==============================================================
-    public function ctrEditarProducto()
+    public function ctrEditarAgente()
     {
-        if (isset($_POST["id_producto"])) {
+        if (isset($_POST["id_agente"])) {
             $datos = array(
                 "nombre" => $_POST["nombre"],
                 "stock" => $_POST["stock"],
                 "precio" => $_POST["precio"],
                 "id_categoria" => $_POST["categoria"],
-                "id_producto" => $_POST["id_producto"]
+                "id_agente" => $_POST["id_agente"]
             );
-            $url = ControladorPlantilla::url() . "productos";
+            $url = ControladorPlantilla::url() . "agentes";
 
             $respuesta = ModeloAgentes::mdlEditarAgente($datos);
             if ($respuesta == "ok") {
                 echo '<script>
                 fncSweetAlert(
                 "success",
-                "El producto se actualizó correctamente",
+                "El agente ${apellido}, ${nombre} se actualizó correctamente",
                 "' . $url . '"
                 );
                 </script>';
@@ -88,19 +108,19 @@ class ControladorAgentes{
     // ==============================================================
     // Eliminar Agentes
     // ==============================================================
-    static public function ctrEliminarProducto()
+    static public function ctrEliminarAgente()
     {
      
-        if (isset($_GET["id_producto_eliminar"])) {
+        if (isset($_GET["id_agente_eliminar"])) {
 
-            $url = ControladorPlantilla::url() . "productos";
-            $dato = $_GET["id_producto_eliminar"];
+            $url = ControladorPlantilla::url() . "agentes";
+            $dato = $_GET["id_agente_eliminar"];
 
             $respuesta = ModeloAgentes::mdlEliminarAgente($dato);
 
             if ($respuesta == "ok") {
                 echo '<script>
-                fncSweetAlert("success", "El producto se eliminó correctamente", "' . $url . '");
+                fncSweetAlert("success", "El agente ${apellido}, ${nombre} se eliminó correctamente", "' . $url . '");
                 </script>';
                         }
                     }
