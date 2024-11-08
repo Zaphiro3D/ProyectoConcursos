@@ -13,7 +13,7 @@ class ModeloAgentes{
         if ($agente != null) {
   
             try {
-                $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and $agente = :$agente;");
+                $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
                 $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ class ModeloAgentes{
 
         } else {
             try {
-                $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;");
+                $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0;");
                 $agentes->execute();
                 return $agentes->fetchAll(PDO::FETCH_ASSOC);
 
@@ -151,11 +151,12 @@ class ModeloAgentes{
     static public function mdlEliminarAgente($datos)
     {
         try {
+            $elim = 1;
             $stmt = Conexion::conectar()->prepare("UPDATE agentes 
-            SET eliminado = :eliminado where id_producto = :id_producto");
+            SET eliminado = :eliminado where id_Agente = :id_Agente");
             
-            $stmt->bindParam(":id_agente", $datos["id_Agente"], PDO::PARAM_INT);
-            $stmt->bindParam(":eliminado", 1, PDO::PARAM_INT);
+            $stmt->bindParam(":id_Agente", $datos, PDO::PARAM_INT);
+            $stmt->bindParam(":eliminado", $elim , PDO::PARAM_INT);
             
             if ($stmt->execute()) {
                 return "ok";

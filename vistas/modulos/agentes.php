@@ -44,16 +44,14 @@
                                 <td> <?php echo $value["telefono"] ?></td>
                                 <td> <?php echo $value["email"] ?></td>
                                 <td><a href="editar_agente/<?php echo $value["id_Agente"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> 
-                                <button class="btn btn-danger btn-sm" id_Agente=<?php echo $value["id_Agente"]; ?>><i class="fas fa-trash"></i></button></td>
+                                <button class="btn btn-danger btn-sm btnEliminarAgente" id_Agente=<?php echo $value["id_Agente"]; ?> apellido=<?php echo $value["apellido"]; ?> nombre=<?php echo $value["nombre"]; ?> ><i class="fas fa-trash"></i></button></td>
                             </tr>
-                            
-                            <!-- Campo escondido que guarda el ID -->
-                            
-
+                           
                             <?php } ?>
                             
                         </tbody>
                     </table>
+                    <!-- Campo escondido que guarda el url -->
                     <input type="hidden" id="url" value="<?php echo $url; ?>">
                 </div>
 

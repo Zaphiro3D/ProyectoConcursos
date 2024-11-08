@@ -204,8 +204,8 @@
                             <div class="d-flex flex-wrap gap-2">
                                 <input type="hidden" name="id_Agente" value="<?php echo $agente_selec["id_Agente"]; ?>">
 
-                                <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
+                                <button type="button" class="btn btn-outline-dark btnVolver" pag = "agentes"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
+                                <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                             </div>
                         </div>
                     </div>

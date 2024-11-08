@@ -72,7 +72,13 @@ class ControladorAgentes{
                     </script>';
             }
             else{
-                print_r("error");
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron agregar los datos del agente.',
+                    icon: 'error'
+                });
+                </script>";
             }
         } else{ print_r("not post"); }
     }
@@ -110,7 +116,13 @@ class ControladorAgentes{
                     </script>';
             }
             else{
-                print_r("error");
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron actualizar los datos del agente.',
+                    icon: 'error'
+                });
+                </script>";
             }
         } 
     }
@@ -132,9 +144,64 @@ class ControladorAgentes{
                 echo '<script>
                 fncSweetAlert(
                 "success", 
-                "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se eliminó correctamente",
+                "El agente se eliminó correctamente",
                 "' . $url . '");
                 </script>';
+            }
+            else{
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar el agente.',
+                    icon: 'error'
+                });
+                </script>";
+            }
+        }
+    }
+
+    /*=============================================
+    INGRESO DE USUARIO
+    =============================================*/
+    static public function ctrIngresoAgente()
+    {
+        if (isset($_POST["email"])) {
+        
+            if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
+
+                $encriptar = crypt(trim($_POST["password"]),'$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
+
+                $item = "email";
+
+                $valor = $_POST["email"];
+                $respuesta = ModeloAgentes::mdlMostrarAgentes(                 
+                    $item,
+                    $valor
+                );
+
+                if (is_array($respuesta) && ($respuesta["email"] ==
+                    $_POST["email"] && $respuesta["password"] == $encriptar)) {
+
+                    echo '<script>
+                        fncSweetAlert("loading", "Ingresando..", "")
+                        </script>';
+
+                    $_SESSION["iniciarSesion"] = "ok";
+                    $_SESSION["id_usuario"] = $respuesta["id_usuario"];
+                    $_SESSION["nombre"] = $respuesta["nombre"];
+
+                    echo '<script>
+                    window.location = "inicio";
+                    </script>';
+                } else {
+                    echo "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error de credenciales. Intente nuevamente',
+                            icon: 'error'
+                        });
+                        </script>";
+                }
             }
         }
     }

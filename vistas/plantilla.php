@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $url = ControladorPlantilla::url();
 
 ?>
@@ -40,103 +40,105 @@ $url = ControladorPlantilla::url();
         <!-- Alertas -->    
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="<?php echo $url; ?>vistas/assets/js/alerts.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/js/alerts_Eliminar.js"></script>
+        <script src="<?php echo $url; ?>vistas/assets/js/alerts_Confirmaciones.js"></script>
         
     </head>
 
     <!-- body -->
-    <body data-menu-color="dark" data-sidebar="default">
 
-        <!-- Inicio de Página -->
-        <div id="app-layout">
+    <?php if (isset($_SESSION["iniciarSesion"])) { ?>
+        <body data-menu-color="dark" data-sidebar="default">
 
-            <!-- Barra Superior -->
-            <?php include 'modulos/header.php' ?>
+            <!-- Inicio de Página -->
+            <div id="app-layout">
 
-            <!-- Barra lateral izquierda -->
-            <?php include 'modulos/menu.php' ?>
+                <!-- Barra Superior -->
+                <?php include 'modulos/header.php' ?>
 
-            <!-- ============================================================== -->
-            <!-- Inicio del Contenido -->
-            <!-- ============================================================== -->
-         
-            <div class="content-page">
-                    <?php
+                <!-- Barra lateral izquierda -->
+                <?php include 'modulos/menu.php' ?>
 
-                    if (isset($_GET["pagina"]))
-                    {
-                        $rutas = explode('/',$_GET["pagina"]);
-                        if (
-                            // Agentes
-                            $rutas[0] == "agentes" ||
-                            $rutas[0] == "nuevo_agente" ||
-                            $rutas[0] == "editar_agente" ||
+                <!-- ============================================================== -->
+                <!-- Inicio del Contenido -->
+                <!-- ============================================================== -->
+            
+                <div class="content-page">
+                        <?php
 
-                            // Cargos
-                            $rutas[0] == "cargos" ||
-                            $rutas[0] == "nuevo_cargo" ||
-                            $rutas[0] == "editar_cargo" ||
+                        if (isset($_GET["pagina"]))
+                        {
+                            $rutas = explode('/',$_GET["pagina"]);
+                            if (
+                                // Agentes
+                                $rutas[0] == "agentes" ||
+                                $rutas[0] == "nuevo_agente" ||
+                                $rutas[0] == "editar_agente" ||
 
-                            // Instituciones
-                            $rutas[0] == "instituciones" ||
-                            $rutas[0] == "nueva_institucion" ||
-                            $rutas[0] == "editar_institucion" ||
+                                // Cargos
+                                $rutas[0] == "cargos" ||
+                                $rutas[0] == "nuevo_cargo" ||
+                                $rutas[0] == "editar_cargo" ||
 
-                            // Zonas
-                            $rutas[0] == "zonasSupervision" ||
-                            $rutas[0] == "nueva_zona" ||
-                            $rutas[0] == "editar_zona" ||
+                                // Instituciones
+                                $rutas[0] == "instituciones" ||
+                                $rutas[0] == "nueva_institucion" ||
+                                $rutas[0] == "editar_institucion" ||
 
-                            // Solicitudes de Suplente
-                            $rutas[0] == "solicitudesSuplente"||                            
-                            $rutas[0] == "nueva_solsuplente" ||
-                            $rutas[0] == "editar_solsuplente" ||
+                                // Zonas
+                                $rutas[0] == "zonasSupervision" ||
+                                $rutas[0] == "nueva_zona" ||
+                                $rutas[0] == "editar_zona" ||
 
-                            // otros
-                            $rutas[0] == "elementos_formularios" ||
-                            $rutas[0] == "login"
-                            
-                        ) {
-                            include "vistas/modulos/" . $rutas[0] . ".php";
-                        }else{
-                            include "vistas/modulos/404.php";
+                                // Solicitudes de Suplente
+                                $rutas[0] == "solicitudesSuplente"||                            
+                                $rutas[0] == "nueva_solsuplente" ||
+                                $rutas[0] == "editar_solsuplente" 
+                                
+                            ) {
+                                include "vistas/modulos/" . $rutas[0] . ".php";
+                            }else{
+                                include "vistas/modulos/404.php";
+                            }
                         }
-                    }
 
-                    ?>
+                        ?>
 
-                <!-- Footer -->
-               <?php include 'modulos/footer.php' ?>
+                    <!-- Footer -->
+                <?php include 'modulos/footer.php' ?>
+
+                </div>
+                <!-- ============================================================== -->
+                <!-- Fin del contenido -->
+                <!-- ============================================================== -->
+
 
             </div>
-            <!-- ============================================================== -->
-            <!-- Fin del contenido -->
-            <!-- ============================================================== -->
+            <!-- END wrapper -->
 
+            <!-- Vendor -->
+            <script src="<?php echo $url; ?>vistas/assets/libs/jquery/jquery.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/simplebar/simplebar.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/node-waves/waves.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/waypoints/lib/jquery.waypoints.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/libs/feather-icons/feather.min.js"></script>
 
-        </div>
-        <!-- END wrapper -->
+            <!-- Flatpickr Timepicker Plugin js -->
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>  <!-- Traduccion al español -->
+            <script src="<?php echo $url; ?>vistas/assets/js/pages/form-picker.js"></script>
+            
+            <!-- DataTables.net web -->
+            <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.js"></script>
+            
+            <!-- App js-->
+            <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
 
-        <!-- Vendor -->
-        <script src="<?php echo $url; ?>vistas/assets/libs/jquery/jquery.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/node-waves/waves.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/waypoints/lib/jquery.waypoints.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
-        <script src="<?php echo $url; ?>vistas/assets/libs/feather-icons/feather.min.js"></script>
+        </body>
+    <?php } else {
+        include "vistas/modulos/login.php";
+    }
 
-        <!-- Flatpickr Timepicker Plugin js -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>  <!-- Traduccion al español -->
-        <script src="<?php echo $url; ?>vistas/assets/js/pages/form-picker.js"></script>
-        
-        <!-- DataTables.net web -->
-        <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.js"></script>
-        
-        <!-- App js-->
-        <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
-
-    </body>
-    
+    ?>
 </html>
