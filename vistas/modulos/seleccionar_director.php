@@ -16,7 +16,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $agentes = ControladorAgentes::ctrMostrarDirectores();
+                                $agentes = ModeloAgentes::mdlMostrarAgentes(NULL, NULL);
                                 foreach ($agentes as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">

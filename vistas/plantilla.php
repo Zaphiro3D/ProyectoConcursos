@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 $url = ControladorPlantilla::url();
 
 ?>
@@ -45,8 +45,6 @@ $url = ControladorPlantilla::url();
     </head>
 
     <!-- body -->
-
-    <?php if (isset($_SESSION["iniciarSesion"])) { ?>
         <body data-menu-color="dark" data-sidebar="default">
 
             <!-- Inicio de Página -->
@@ -136,9 +134,5 @@ $url = ControladorPlantilla::url();
             <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
 
         </body>
-    <?php } else {
-        include "vistas/modulos/login.php";
-    }
 
-    ?>
 </html>

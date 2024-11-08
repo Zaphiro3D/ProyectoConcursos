@@ -8,19 +8,6 @@ class ControladorAgentes{
         $respuesta = ModeloAgentes::mdlMostrarAgentes($agente, $valor);
         return $respuesta;
     }
-    static public function ctrMostrarDirectores(){
-        $respuesta = ModeloAgentes::mdlMostrarDirectores();
-        return $respuesta;
-    }
-    static public function ctrMostrarSupervisores(){
-        $respuesta = ModeloAgentes::mdlMostrarSupervisores();
-        return $respuesta;
-    }
-
-    static public function ctrMostrarAgentes_noS(){
-        $respuesta = ModeloAgentes::mdlMostrarAgentes_noS();
-        return $respuesta;
-    }
 
     // ==============================================================
     // Agregar Agentes
@@ -169,8 +156,8 @@ class ControladorAgentes{
         
             if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
 
-                $encriptar = crypt(trim($_POST["password"]),'$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
-
+                $encriptar = crypt(trim($_POST["password"]),'seVp7YQT6f37JEX@R*JL$70jstXZO6!a2r6DQu9pR&kE@oSCWW');           
+                print_r($encriptar);
                 $item = "email";
 
                 $valor = $_POST["email"];
@@ -181,13 +168,13 @@ class ControladorAgentes{
 
                 if (is_array($respuesta) && ($respuesta["email"] ==
                     $_POST["email"] && $respuesta["password"] == $encriptar)) {
-
+                    
                     echo '<script>
                         fncSweetAlert("loading", "Ingresando..", "")
                         </script>';
-
+                    
                     $_SESSION["iniciarSesion"] = "ok";
-                    $_SESSION["id_usuario"] = $respuesta["id_usuario"];
+                    $_SESSION["id_agente"] = $respuesta["id_agente"];
                     $_SESSION["nombre"] = $respuesta["nombre"];
 
                     echo '<script>

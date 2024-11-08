@@ -34,7 +34,7 @@
                     <!-- Opciones Datalist Agentes -->       
                     <datalist id="OpcionesSupervisor">
                         <?php
-                            $agentes = ControladorAgentes::ctrMostrarAgentes_noS();
+                            $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
                             foreach ($agentes as $key => $value) {   
                         ?>
                         <option ><?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> </option>

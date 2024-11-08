@@ -1,4 +1,7 @@
 <body class="bg-color">
+    <?php
+        //echo $encriptar;
+    ?>
     <div class="container-fluid">
         <div class="row vh-100">
             <div class="col-12">
