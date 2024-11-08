@@ -69,8 +69,8 @@
                 <div class="col-lg-6">
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
-                            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
+                            <button type="button" class="btn btn-outline-dark btnVolver" pag = "zonasSupervision"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
+                            <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
                         </div>
                     </div>
                 </div>
