@@ -7,15 +7,30 @@ class ModeloAgentes{
     // ==============================================================
     // Mostrar todos los Agentes
     // ==============================================================
-    static public function mdlMostrarAgentes()
+    static public function mdlMostrarAgentes($agente, $valor)
     {
-        try {
-            $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;");
-            $agentes->execute();
-            return $agentes->fetchAll(PDO::FETCH_ASSOC);
+        //Si se manda un agente por parametro hace la consulta para un solo registro, sino trae todos. 
+        if ($agente != null) {
+  
+            try {
+                $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and $agente = :$agente;");
+                $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->fetch(PDO::FETCH_ASSOC);
 
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
+            } catch (Exception $e) {
+                return "Error: " .$e ->getMessage();
+            }
+
+        } else {
+            try {
+                $agentes = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;");
+                $agentes->execute();
+                return $agentes->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                return "Error: " .$e ->getMessage();
+            }
         }
 
     }
@@ -80,7 +95,7 @@ class ModeloAgentes{
             $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
             $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
             $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
-            $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR); // Cambiar a STR si es necesario
+            $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
             $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
             $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
             $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
@@ -103,19 +118,26 @@ class ModeloAgentes{
     static public function mdlEditarAgente($datos)
     {
         try {
-            $stmt = Conexion::conectar()->prepare("UPDATE SET nombre = :nombre, precio = :precio, stock = :stock, id_categoria = :id_categoria WHERE id_producto = :id_producto");
+            $stmt = Conexion::conectar()->prepare("UPDATE agentes SET 
+            apellido = :apellido, nombre = :nombre, dni = :dni, telefono = :telefono, 
+            direccion = :direccion, email = :email, usuario = :usuario, 
+            password = :password, id_Rol = :id_Rol
+            WHERE id_Agente = :id_Agente");
 
+            $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
             $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-            $stmt->bindParam(":precio", $datos["precio"], PDO::PARAM_STR);
-            $stmt->bindParam(":stock", $datos["stock"], PDO::PARAM_INT);
-            $stmt->bindParam(":id_categoria", $datos["id_categoria"], PDO::PARAM_INT);
-            $stmt->bindParam(":id_producto", $datos["id_producto"], PDO::PARAM_INT);
+            $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
+            $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
+            $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
+            $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
+            $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
+            $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
+            $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
+            $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
 
             if ($stmt->execute()) {
-
                 return "ok";
             } else {
-
                 return print_r(Conexion::conectar()->errorInfo());
             }
         } catch (Exception $e) {
@@ -129,9 +151,11 @@ class ModeloAgentes{
     static public function mdlEliminarAgente($datos)
     {
         try {
-            $stmt = Conexion::conectar()->prepare("DELETE FROM WHERE id_producto = :id_producto");
+            $stmt = Conexion::conectar()->prepare("UPDATE agentes 
+            SET eliminado = :eliminado where id_producto = :id_producto");
             
-            $stmt->bindParam(":id_producto", $datos, PDO::PARAM_INT);
+            $stmt->bindParam(":id_agente", $datos["id_Agente"], PDO::PARAM_INT);
+            $stmt->bindParam(":eliminado", 1, PDO::PARAM_INT);
             
             if ($stmt->execute()) {
                 return "ok";

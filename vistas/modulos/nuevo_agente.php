@@ -1,6 +1,6 @@
 <?php
-$zonas = ControladorZonas::ctrMostrarZonas();
-$instituciones = ControladorInstituciones::ctrMostrarInstituciones();
+    $zonas = ControladorZonas::ctrMostrarZonas();
+    $instituciones = ControladorInstituciones::ctrMostrarInstituciones();
 ?>
 
 <div class="container-xxl">

@@ -4,8 +4,8 @@ class ControladorAgentes{
     // ==============================================================
     // Mostrar Agentes
     // ==============================================================
-    static public function ctrMostrarAgentes(){
-        $respuesta = ModeloAgentes::mdlMostrarAgentes();
+    static public function ctrMostrarAgentes($agente, $valor){
+        $respuesta = ModeloAgentes::mdlMostrarAgentes($agente, $valor);
         return $respuesta;
     }
     static public function ctrMostrarDirectores(){
@@ -59,14 +59,14 @@ class ControladorAgentes{
 
             //podemos volver a la página de datos
 
-            $url = ControladorPlantilla::url() . "agente";
+            $url = ControladorPlantilla::url() . "agentes";
             $respuesta = ModeloAgentes::mdlAgregarAgente($datos);
 
             if ($respuesta == "ok") {
                 echo '<script>
                     fncSweetAlert(
                     "success",
-                    "El agente ${apellido}, ${nombre} se agregó correctamente",
+                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
                     "' . $url . '"
                     );
                     </script>';
@@ -82,27 +82,37 @@ class ControladorAgentes{
     // ==============================================================
     public function ctrEditarAgente()
     {
-        if (isset($_POST["id_agente"])) {
+        if (isset($_POST["id_Agente"])) {
             $datos = array(
-                "nombre" => $_POST["nombre"],
-                "stock" => $_POST["stock"],
-                "precio" => $_POST["precio"],
-                "id_categoria" => $_POST["categoria"],
-                "id_agente" => $_POST["id_agente"]
+                "apellido" => htmlspecialchars($_POST["apellido"]),
+                "nombre" => htmlspecialchars($_POST["nombre"]),
+                "dni" => htmlspecialchars($_POST["dni"]),
+                "telefono" => htmlspecialchars($_POST["telefono"]),
+                "direccion" => htmlspecialchars($_POST["direccion"]),
+                "email" => htmlspecialchars($_POST["email"]),
+                "usuario" => htmlspecialchars($_POST["email"]),
+                "password" => htmlspecialchars($_POST["contrasena"]),
+                "id_Rol" => htmlspecialchars($_POST["rol"]),
+                "id_Agente" => htmlspecialchars($_POST["id_Agente"])
+                
             );
-            $url = ControladorPlantilla::url() . "agentes";
 
+            $url = ControladorPlantilla::url() . "agentes";
             $respuesta = ModeloAgentes::mdlEditarAgente($datos);
-            if ($respuesta == "ok") {
+            
+            if ($respuesta == "ok") {                
                 echo '<script>
-                fncSweetAlert(
-                "success",
-                "El agente ${apellido}, ${nombre} se actualizó correctamente",
-                "' . $url . '"
-                );
-                </script>';
+                    fncSweetAlert(
+                    "success",
+                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                    "' . $url . '"
+                    );
+                    </script>';
             }
-        }
+            else{
+                print_r("error");
+            }
+        } 
     }
 
     // ==============================================================
@@ -111,19 +121,22 @@ class ControladorAgentes{
     static public function ctrEliminarAgente()
     {
      
-        if (isset($_GET["id_agente_eliminar"])) {
+        if (isset($_GET["id_Agente_Eliminar"])) {
 
             $url = ControladorPlantilla::url() . "agentes";
-            $dato = $_GET["id_agente_eliminar"];
+            $dato = $_GET["id_Agente_Eliminar"];
 
             $respuesta = ModeloAgentes::mdlEliminarAgente($dato);
 
             if ($respuesta == "ok") {
                 echo '<script>
-                fncSweetAlert("success", "El agente ${apellido}, ${nombre} se eliminó correctamente", "' . $url . '");
+                fncSweetAlert(
+                "success", 
+                "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se eliminó correctamente",
+                "' . $url . '");
                 </script>';
-                        }
-                    }
+            }
+        }
     }
 }
 
