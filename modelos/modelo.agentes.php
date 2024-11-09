@@ -48,7 +48,7 @@ class ModeloAgentes{
             $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
             $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
             $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-            $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
+            $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
             $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
 
             if ($stmt->execute()) {
@@ -80,7 +80,7 @@ class ModeloAgentes{
             $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
             $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
             $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-            $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
+            $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
             $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
             $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
 
@@ -117,6 +117,15 @@ class ModeloAgentes{
         }
     }
 
-    
-    
+
+    static public function mdlBuscarAgentes($agente, $valor){
+        try {
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
+            $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
 }

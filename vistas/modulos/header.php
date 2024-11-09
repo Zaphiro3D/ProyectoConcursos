@@ -17,7 +17,7 @@
                 -->
             </ul>
             <ul class="list-unstyled topnav-menu mb-0 d-flex align-items-center">
-    
+
                 <li class="dropdown notification-list topbar-dropdown">
                     <!-- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i data-feather="bell" class="noti-icon"></i>
@@ -49,22 +49,22 @@
                                 </p>
                             </a>
 
-                            
 
-                        <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                            Ver todos
-                            <i class="fe-arrow-right"></i>
-                        </a>
 
-                    </div>
-                </li>  
+                            <!-- All-->
+                            <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+                                Ver todos
+                                <i class="fe-arrow-right"></i>
+                            </a>
+
+                        </div>
+                </li>
 
                 <li class="dropdown notification-list topbar-dropdown">
                     <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <!-- <img src="vistas/assets/images/users/user-11.jpg" alt="user-image" class="rounded-circle"> -->
                         <span class="pro-user-name ms-1">
-                            DDE Concordia <i class="mdi mdi-chevron-down"></i> 
+                            DDE Concordia <i class="mdi mdi-chevron-down"></i>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -88,7 +88,7 @@
                         <div class="dropdown-divider"></div>
 
                         <!-- item-->
-                        <a href="auth-logout.html" class="dropdown-item notify-item">
+                        <a href="?pagina=salir" class="dropdown-item notify-item">
                             <i class="mdi mdi-location-exit fs-16 align-middle"></i>
                             <span>Salir</span>
                         </a>
@@ -100,5 +100,5 @@
         </div>
 
     </div>
-    
+
 </div>
