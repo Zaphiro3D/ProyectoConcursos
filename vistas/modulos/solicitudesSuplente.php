@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="tablaSolSuplente" class="table table-striped">                    
+                    <table id="tablaSolSuplente" class="table table-striped compact">                    
                         <thead>
                             <tr>
                                 <th></th>
@@ -33,6 +33,7 @@
                                 <th>Institución 4</th>
                                 <th>Horarios</th>
                                 <th>Observaciones</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -70,6 +71,89 @@
                                 <td><?php echo $instituciones[3] ?></td>
                                 <td><?php echo $horario ?></td>
                                 <td><?php echo $value["observaciones"] ?></td>
+                                <!-- Col Estado -->
+                                <td class= "align-center">
+                                    <?php
+                                    switch ($value["id_EstadoSol"]) {
+                                        // Borrador
+                                        case 1:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-light text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-clipboard"></i><?php echo " " . $value["estado"]; ?>
+                                                </span></h5> 
+                                            <?php 
+                                            break;
+
+                                        // Pendiente en supervisión
+                                        case 2:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-info text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-clock"></i><?php echo " " . "Pendiente"; ?>
+                                                </span></h5>
+                                            <?php 
+                                            break;
+
+                                        // Pendiente en administracion
+                                        case 3:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-primary text-light"  data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-clock"></i><?php echo " " . "Pendiente";  ?>
+                                                </span></h4>
+                                            <?php 
+                                            break;
+
+                                        // Rechazado por Supervisión
+                                        case 4:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-danger text-dark"  data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-xmark"></i><?php echo " " . "Rechazado"; ?>
+                                                </span></h5> 
+                                            <?php 
+                                            break;
+                                        
+                                        // Rechazado por Administración
+                                        case 5:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-warning text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-xmark"></i><?php echo " " . "Rechazado"; ?>
+                                                </span></h5>
+                                            <?php 
+                                            break;
+
+                                        // A Concursar
+                                        case 6:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-success text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-check"></i><?php echo " " . $value["estado"]; ?>
+                                                </span></h5>
+                                            <?php 
+                                            break;
+
+                                        // Ya Concursado
+                                        case 7:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-secondary text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-clipboard-check"></i><?php echo " " . $value["estado"]; ?>
+                                                </span></h5>
+                                            <?php 
+                                            break;
+
+
+                                        // Eliminado
+                                        case 8:
+                                            ?>
+                                                <h5><span class="badge rounded-pill bg-dark text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<?php echo $value["estado"]; ?>">
+                                                    <i class="fa-solid fa-delete-left"></i><?php echo " " . $value["estado"]; ?>
+                                                </span></h5>
+                                            <?php 
+                                            break;
+
+
+                                        default:
+                                        $value["estado"];
+                                    }?>
+                                </td>
+                                <!-- Fin columna estado -->
                                 <td><a href="editar_solsuplente" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
                                     </a> <button href="eliminar_solsuplente" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
                                     &nbsp;|&nbsp; 
@@ -91,7 +175,7 @@
 </div>
 
 <script>
-    // Función de formato para los detalles
+    // Función de formato para los detalles de la tabla
     function format(d) {
         return (
             '<div><b>Hs Cátedra:</b> ' + d[3] + 

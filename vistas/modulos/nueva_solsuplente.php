@@ -66,7 +66,7 @@
                                     <label for="cargo">Cargo</label>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-5">
                                 <div class="form-floating mb-3">
                                     <datalist id="opocionesturno">
                                         <?php 
@@ -106,6 +106,15 @@
                                     </datalist>
                                     <input class="form-control fs-14" list="opocionesDivision" id="opocionesDivision" placeholder="Escriba para buscar..." ></input>
                                     <label for="division">División</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-1">
+                                <div class="form-floating mb-3">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="hsCat" placeholder="hsCat">
+                                        <label for="nombreAgente">Hs. Cát.</label>
+                                    </div>
                                 </div>
                             </div>
 
