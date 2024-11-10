@@ -157,7 +157,8 @@ class ControladorAgentes{
             if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
 
                 $encriptar = crypt(trim($_POST["password"]), '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
-                //print_r($encriptar);
+                // print_r($encriptar);
+                // return;
                 $item = "email";
 
                 $valor = $_POST["email"];

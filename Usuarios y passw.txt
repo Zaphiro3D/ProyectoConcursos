@@ -1,0 +1,48 @@
+- Zona A
+zonaa@gmail.com
+SupervisorA
+
+- Zona B
+zonaa@gmail.com
+SupervisorB
+
+- Zona C
+zonaa@gmail.com
+SupervisorC
+
+- Zona D
+zonaa@gmail.com
+SupervisorD
+
+- Zona E
+zonaa@gmail.com
+SupervisorE
+
+- Zona Especial C
+especialc@mail.com
+SupervisorEspC
+
+- Zona JyA
+adultosvi@mail.com
+SupervisorJyA
+
+
+- Zona NI V	
+inicialV@mail.com
+SupervisorNIV
+
+- Zona NI XVI
+inicialXVI@mail.com
+SupervisorNIXVI
+
+- Director prueba
+agente1@director.com
+Dire1
+
+- Administrativo 1
+admin1@mail.com
+Admin1-
+
+- Usuario DDE
+dde.cd@entrerios.edu
+DDE123

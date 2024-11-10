@@ -88,7 +88,7 @@
                         <div class="dropdown-divider"></div>
 
                         <!-- item-->
-                        <a href="?pagina=salir" class="dropdown-item notify-item">
+                        <a href="salir" class="dropdown-item notify-item">
                             <i class="mdi mdi-location-exit fs-16 align-middle"></i>
                             <span>Salir</span>
                         </a>

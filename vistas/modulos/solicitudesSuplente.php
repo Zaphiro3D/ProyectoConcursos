@@ -72,7 +72,7 @@
                                 <td><?php echo $horario ?></td>
                                 <td><?php echo $value["observaciones"] ?></td>
                                 <!-- Col Estado -->
-                                <td class= "align-center">
+                                <td class= "justify-content-center">
                                     <?php
                                     switch ($value["id_EstadoSol"]) {
                                         // Borrador

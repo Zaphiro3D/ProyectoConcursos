@@ -46,11 +46,11 @@ $url = ControladorPlantilla::url();
     </head>
 
     <?php
-        if (isset($_GET["pagina"]) && $_GET["pagina"] === "salir") {
-            session_destroy();
-            header("Location: login");
-            exit();
-        }
+        // if (isset($_GET["pagina"]) && $_GET["pagina"] === "salir") {
+        //     session_destroy();
+        //     header("Location: login");
+        //     exit();
+        // }
     ?>
     <!-- body -->
     <?php if (isset($_SESSION["iniciarSesion"])) { ?>
@@ -100,13 +100,19 @@ $url = ControladorPlantilla::url();
                             $rutas[0] == "solicitudesSuplente" ||
                             $rutas[0] == "nueva_solsuplente" ||
                             $rutas[0] == "editar_solsuplente"||
-                            $rutas[0] == "inicio"
+
+                            // General
+                            $rutas[0] == "inicio" ||
+                            $rutas[0] == "salir"
+
 
                         ) {
                             include "vistas/modulos/" . $rutas[0] . ".php";
                         } else {
                             include "vistas/modulos/404.php";
                         }
+                    }else{
+                        include "vistas/modulos/inicio.php";
                     }
 
                     ?>
