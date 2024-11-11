@@ -46,11 +46,11 @@ $url = ControladorPlantilla::url();
     </head>
 
     <?php
-        // if (isset($_GET["pagina"]) && $_GET["pagina"] === "salir") {
-        //     session_destroy();
-        //     header("Location: login");
-        //     exit();
-        // }
+         if (isset($_GET["pagina"]) && $_GET["pagina"] === "salir") {
+             session_destroy();
+             header("Location: login");
+             exit();
+         }
     ?>
     <!-- body -->
     <?php if (isset($_SESSION["iniciarSesion"])) { ?>
