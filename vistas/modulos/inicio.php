@@ -7,7 +7,7 @@
                         
                         <div class="text-center">
                             <div class="mb-4 text-center">
-                                <a class='auth-logo' href='/kadso/html/'>
+                                <a class='auth-logo' href='inicio'>
                                     <img src="<?php echo $url; ?>vistas/assets/images/logo-dark.png" alt="logo-dark" class="mx-auto" height="28" />
                                 </a>
                             </div>

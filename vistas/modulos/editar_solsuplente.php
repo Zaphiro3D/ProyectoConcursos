@@ -1,4 +1,6 @@
-
+<?php
+$solicitud = ModeloSolSuplente::mdlMostrarSolSuplente();
+?>
 <div class="container-xxl">
 
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -23,7 +25,7 @@
                                     <!-- Escuela Sede -->
                                     <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
                                     <div>
-                                        <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="Dirección Departamental de Escuelas dpto. Concordia CUE: 3009962">
+                                        <input type="text" class="form-control" id="institucion1-deshab" disabled="" value="<?php  ?>">
                                     </div>
                                 </fieldset>
 
@@ -243,7 +245,7 @@
                     <div class="card-header">
                         <h5 class="card-title mb-0">Horarios</h5>
                     </div><!-- end card header -->
-
+ 
                     
                     <!-- Opciones Datalist Instituciones        -->
                     <datalist id="OpcionesInstitucion">

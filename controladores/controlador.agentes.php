@@ -67,7 +67,7 @@ class ControladorAgentes{
                 });
                 </script>";
             }
-        } else{ print_r("not post"); }
+        } else{ /*print_r("not post");*/ }
     }
 
     // ==============================================================
@@ -190,6 +190,11 @@ class ControladorAgentes{
                 }
             }
         }
+    }
+
+    static public function ctrMostrorRolAgentes(){
+        $respuesta = ModeloAgentes::mdlMostrarRolAgentes();
+        return $respuesta;
     }
 }
 

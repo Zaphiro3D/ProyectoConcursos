@@ -128,4 +128,14 @@ class ModeloAgentes{
             return "Error: " . $e->getMessage();
         }
     }
+
+    static public function mdlMostrarRolAgentes(){
+        try{
+        $stmt= Conexion::conectar()->prepare("SELECT r.id_Rol as idrol,r.rol FROM roles AS r WHERE r.rol!='Jefe'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            return "Error:" . $e ->getMessage();
+        }
+    }
 }
