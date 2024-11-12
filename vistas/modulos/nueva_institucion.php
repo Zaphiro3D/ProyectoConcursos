@@ -1,3 +1,8 @@
+<?php
+    $agente = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
+    $zonas = ControladorZonas::ctrMostrarZonas();
+?>
+
 <div class="container-xxl">
 
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -63,18 +68,18 @@
                         </div>
 
                         <div class="col-lg-6"> 
-                            <!-- <h6 class="fs-15 mb-3">Tipo</h6> -->
                             <div class="form-floating mb-3">
-                                <select class="form-select" id="zona" aria-label="Floating label select example">
-                                    <option selected>Ver opciones</option>
-                                    <option value="1">Zona A</option>
-                                    <option value="2">Zona B</option>
-                                    <option value="3">...</option>
+                                <select class="form-select" id="zona" aria-label="Zona de Supervision">
+                                    <option selected></option>
+                                    <?php
+                                    foreach ($zona as $key => $value) {
+                                    ?>
+                                        <option value="<?php echo $value["id_ZonaSupervision"]; ?>"><?php echo $value["zona"] ?> </option>
+                                    <?php } ?>
                                 </select>
                                 <label for="zona">Elegir Zona de Supervisión</label>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -88,8 +93,17 @@
                             <h5 class="card-title mb-0">Seleccione un Director</h5>
                         </div>
                         <div class="card-body">                           
-                            <!-- Pantalla Seleccionar director -->
-                            <?php include 'seleccionar_director.php' ?>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="director" aria-label="Director">
+                                    <option selected></option>
+                                    <?php
+                                    foreach ($agente as $key => $value) {
+                                    ?>
+                                        <option value="<?php echo $value["id_Agente"]; ?>"><?php echo $value["apellido"] . ", " . $value["nombre"] . "- DNI:". $value["dni"] ;?> </option>
+                                    <?php } ?>
+                                </select>
+                                <label for="director">Elegir Director</label>
+                            </div>
                         </div>
                     </div>                    
                 </div>             

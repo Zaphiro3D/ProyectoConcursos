@@ -1,3 +1,6 @@
+<?php
+    $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+?>
 <div class="container-xxl">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
@@ -31,8 +34,7 @@
                         </thead>
                         <tbody>
                             <?php
-
-                                $instituciones = ControladorInstituciones::ctrMostrarInstituciones();
+                                
                                 foreach ($instituciones as $key => $value) { 
                                     $inst= $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}";                       
                             ?>
@@ -52,6 +54,8 @@
                             
                         </tbody>
                     </table>
+                    <!-- Campo escondido que guarda el url -->
+                    <input type="hidden" id="url" value="<?php echo $url; ?>">
                 </div>
 
             </div>
@@ -60,3 +64,7 @@
     
 </div>
 
+<?php 
+    $eliminar = new ControladorInstituciones();
+    $eliminar -> ctrEliminarInstitucion();
+?>
