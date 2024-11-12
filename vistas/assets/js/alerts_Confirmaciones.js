@@ -1,18 +1,16 @@
 $(document).on("click", ".btnEliminarAgente", function () {
-   
-  let id_agente = $(this).attr("id_Agente"); 
-  let apellido = $(this).attr("apellido"); 
-  let nombre = $(this).attr("nombre"); 
+  let id_agente = $(this).attr("id_Agente");
+  let nombre_completo = $(this).attr("nombre_completo");
 
   Swal.fire({
-    title: "¿Está seguro de eliminar el agente: " + apellido + ", " + nombre + "?",
-    text: "Si no lo está, puede cancelar la acción",
+    title: "¿Está seguro de eliminar el agente?",
+    text: nombre_completo,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     cancelButtonText: "Cancelar",
-    confirmButtonText: "Sí, eliminar agente",
+    confirmButtonText: "Sí, eliminar",
   }).then(function (result) {
     if (result.value) {
       window.location =
@@ -136,29 +134,6 @@ $(document).on("click", ".btnEnviarSolic", function () {
   });
 });
 
-$(document).on("click", ".btnEliminarInst", function () {
-   
-  let id_agente = $(this).attr("id_Agente"); 
-  let apellido = $(this).attr("apellido"); 
-  let nombre = $(this).attr("nombre"); 
-
-  Swal.fire({
-    title: "¿Está seguro de eliminar la institución?",
-    text: "Escuela NEP N°2 Almafuerte CUE: 3001861",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Cancelar",
-    confirmButtonText: "Sí, eliminar",
-  }).then(function (result) {
-    if (result.value) {
-      window.location =
-        "index.php?pagina=instituciones";
-    }
-  });
-});
-
 $(document).on("click", ".btnEliminarZona", function () {
    
   let id_agente = $(this).attr("id_Agente"); 
@@ -201,6 +176,28 @@ $(document).on("click", ".btnEliminar", function () {
     if (result.value) {
       window.location =
         "index.php?pagina=cargos";
+    }
+  });
+});
+
+$(document).on("click", ".btnEliminarInst", function () {
+   
+  let id_institucion = $(this).attr("id_Institucion"); 
+  let institucion = $(this).attr("institucion"); 
+
+  Swal.fire({
+    title: "¿Está seguro de eliminar la institución?",
+    text: institucion,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Sí, eliminar",
+  }).then(function (result) {
+    if (result.value) {
+      window.location =
+        "index.php?pagina=instituciones&id_Institucion_Eliminar=" + id_institucion;
     }
   });
 });
