@@ -13,7 +13,7 @@ class ModeloSolSuplente{
                 c.hsCatedra, 
                 g.grado, 
                 d.division,
-                t.turno, 
+                t.turno,ss.numeroTramite, 
                 ss.id_EstadoSol,
                 es.estado,
                 CONCAT(c.apellidoDocente, ', ' ,c.nombreDocente,' (', c.dniDocente, ') ') AS docente,

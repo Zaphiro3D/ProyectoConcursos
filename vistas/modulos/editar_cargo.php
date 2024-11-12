@@ -1,6 +1,6 @@
 <?php
-// Función para opciones de select días
-function generarOpcionesDias()
+/* Función para opciones de select días
+function generaOpcionesDias()
 {
     $dias = ControladorSolSuplente::ctrMostrarDiasSol();
     $opciones = '<option>...</option>';
@@ -8,7 +8,7 @@ function generarOpcionesDias()
         $opciones .= "<option>{$value['nombre']}</option>";
     }
     return $opciones;
-}
+}*/
 
 
 
@@ -43,16 +43,16 @@ function generarOpcionesDias()
                                             <?php $sede = ModeloCargos::mdlMostrarCargos();
                                             foreach ($sede as $key => $value) {
                                                 $insti = explode(',', $value["instituciones"]);
-                                                
+
                                             ?>
-                                            
+
                                         </datalist>
-                                            
-                                            <label for="institucion" id="linstitucion1" class="form-label">Institución Sede</label>
-                                            <input value="<?php echo $insti[0]; ?>" class="form-control" list="institucion" id=institucion1 placeholder="Escriba para buscar..."></input>
-                                            <?php } ?>
-                                       
-                                        <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
+
+                                        <label for="institucion" id="linstitucion1" class="form-label">Institución Sede</label>
+                                        <input value="<?php echo $insti[0]; ?>" class="form-control" list="institucion" id=institucion1 placeholder="Escriba para buscar..."></input>
+                                    <?php } ?>
+
+                                    <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
                                     </div>
                                 </div>
 
@@ -69,14 +69,24 @@ function generarOpcionesDias()
                         <div class="card-body">
                             <div class="row mt-1">
                                 <div class="col-lg-3">
+
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="plaza" placeholder="N° Plaza">
-                                        <label for="plaza">N° Plaza</label>
+                                        <datalist id="optionsol">
+                                            <?php $plaza = ModeloSolSuplente::mdlMostrarSolSuplente();
+                                            foreach ($plaza as $key => $sol) {
+                                            ?>
+                                                <option><?php echo $sol["numeroTramite"]; ?></option>
+
+                                        </datalist>
+                                        <input type="number" class="form-control" list="optionsol" id="optionplaza" placeholder="N° Plaza" value="<?php echo $sol["numeroTramite"]; ?>"></input>
+                                    <?php } ?>
+                                    <label for="plaza">N° Plaza</label>
                                     </div>
+
                                 </div>
                                 <div class="col-lg-9">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cargo" placeholder="Cargo">
+                                        <input value="<?php echo $sol["nombreCargo"] ?>" type="text" class="form-control" id="cargo" placeholder="Cargo">
                                         <label for="cargo">Cargo</label>
                                     </div>
                                 </div>
@@ -88,9 +98,9 @@ function generarOpcionesDias()
                                             foreach ($turno as $key => $value) {
                                             ?>
                                                 <option><?php echo $value["turno"]  ?></option>
-                                            <?php } ?>
+                                            <?php  } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesturno" id="opocionesturno" placeholder="Escriba para buscar..."></input>
+                                        <input value="<?php echo $sol["turno"]  ?>" class="form-control fs-14" list="opocionsol" id="opocionesturno" placeholder="Escriba para buscar..."></input>
                                         <label for="turno">Turno</label>
                                     </div>
                                 </div>
@@ -104,7 +114,7 @@ function generarOpcionesDias()
                                                 <option><?php echo $value["grado"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesAnio" id="opocionesAnio" placeholder="Escriba para buscar..."></input>
+                                        <input value="<?php echo $sol["grado"]  ?>" class="form-control fs-14" list="opocionesAnio" id="opocionesAnio" placeholder="Escriba para buscar..."></input>
                                         <label for="anio">Año</label>
                                     </div>
                                 </div>
@@ -113,19 +123,20 @@ function generarOpcionesDias()
                                         <datalist id="opocionesDivision">
                                             <?php
                                             $Division = ModeloSolSuplente::mdlMostrarDivisionSol();
-                                            foreach ($Division as $key => $value) {
-                                            ?>
-                                                <option><?php echo $value["division"]  ?></option>
+                                            foreach ($Division as $key => $value) { ?>
+
+                                                <option><?php echo $value["division"];  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesDivision" id="opocionesDivision" placeholder="Escriba para buscar..."></input>
+                                        <input value="<?php echo $sol["division"];  ?>" class="form-control fs-14" list="opocionesDivision" id="opocionesDivision" placeholder="Escriba para buscar..."></input>
+
                                         <label for="division">División</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCat" placeholder="hsCat">
+                                            <input value="<?php echo $sol["hsCatedra"];  ?>" list="optionplaza" type="number" class="form-control" id="hsCat" placeholder="hsCat">
                                             <label for="nombreAgente">Hs. Cát.</label>
                                         </div>
                                     </div>
@@ -264,7 +275,7 @@ function generarOpcionesDias()
                                         <div class="pb-3"> <!-- Div dias -->
                                             <?php
                                             // Función para opciones de select días
-                                            function generaOpcionesDias()
+                                            function generarOpcionesDias()
                                             {
                                                 $dias = ControladorSolSuplente::ctrMostrarDiasSol();
                                                 $opciones = '<option>...</option>';
@@ -278,15 +289,15 @@ function generarOpcionesDias()
                                             <form>
                                                 <H6>Días</H6>
                                                 <select class="form-select" id="dia1Est1">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia2Est1">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia3Est1">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia4Est1">
@@ -294,7 +305,7 @@ function generarOpcionesDias()
                                                 </select>
 
                                                 <select class="form-select" id="dia5Est1">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
                                             </form>
                                         </div>
@@ -359,23 +370,23 @@ function generarOpcionesDias()
                                             <form>
                                                 <H6>Días</H6>
                                                 <select class="form-select" id="dia1Est2">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia2Est2">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia3Est2">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia4Est2">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia5Est2">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
                                             </form>
                                         </div>
@@ -440,23 +451,23 @@ function generarOpcionesDias()
                                             <form>
                                                 <H6>Días</H6>
                                                 <select class="form-select" id="dia1Est3">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia2Est3">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia3Est3">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia4Est3">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia5Est3">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
                                             </form>
                                         </div>
@@ -521,23 +532,23 @@ function generarOpcionesDias()
                                             <form>
                                                 <H6>Días</H6>
                                                 <select class="form-select" id="dia1Est4">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia2Est4">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia3Est4">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia4Est4">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
 
                                                 <select class="form-select" id="dia5Est4">
-                                                    <?php echo generaOpcionesDias(); ?>
+                                                    <?php echo generarOpcionesDias(); ?>
                                                 </select>
                                             </form>
                                         </div>
@@ -620,17 +631,21 @@ function generarOpcionesDias()
         // Institucion 2
         institucion2.style.display = radios[1].checked || radios[2].checked || radios[3].checked ? "block" : "none";
         lblinstitucion2.style.display = institucion2.style.display;
-        // document.getElementById("divhsEst2").style.display = institucion2.style.display;
+        //document.getElementById("divhsEst2").style.display = institucion2.style.display;
+        
 
         // Institucion 3
         institucion3.style.display = radios[2].checked || radios[3].checked ? "block" : "none";
         lblinstitucion3.style.display = institucion3.style.display;
-        // document.getElementById("divhsEst3").style.display = institucion3.style.display;
+        //document.getElementById("divhsEst3").style.display = institucion3.style.display;
+        
 
         // Institucion 4
         institucion4.style.display = radios[3].checked ? "block" : "none";
         lblinstitucion4.style.display = institucion4.style.display;
-        // document.getElementById("divhsEst4").style.display = institucion4.style.display;
+        //document.getElementById("divhsEst4").style.display = institucion4.style.display;
+        
+
     }
 
     // Función para sincronizar el valor de la institucion sede en horario
