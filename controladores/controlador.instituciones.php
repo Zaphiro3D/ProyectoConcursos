@@ -23,19 +23,21 @@ class ControladorInstituciones{
     public function ctrAgregarInstitucion()
     {
         if (isset($_POST["cue"])) {
-            
+            $id_dire = htmlspecialchars($_POST["director_id"]) == "" ? NULL : htmlspecialchars($_POST["director_id"]);
+            $id_Zona = htmlspecialchars($_POST["zona"])  == "" ? NULL : htmlspecialchars($_POST["zona"]) ;
+
             $datos = array(
                 "id_Tipo" => htmlspecialchars($_POST["tipo"]),
                 "cue" => htmlspecialchars($_POST["cue"]),
                 "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
-                "id_Director" => htmlspecialchars($_POST["director"]),
-                "id_ZonaSupervison" => htmlspecialchars($_POST["zona"])                
+                "id_Director" => $id_dire,
+                "id_ZonaSupervison" => $id_Zona                
             );
             
-             print_r($datos);
+            // print_r($datos);
 
-             return;
+            // return;
 
             //podemos volver a la página de datos
 
@@ -75,7 +77,7 @@ class ControladorInstituciones{
                 "cue" => htmlspecialchars($_POST["cue"]),
                 "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
-                "id_Director" => htmlspecialchars($_POST["director"]),
+                "id_Director" => htmlspecialchars($_POST["director_id"]),
                 "id_ZonaSupervison" => htmlspecialchars($_POST["zona"])    
                 
             );

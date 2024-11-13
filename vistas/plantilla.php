@@ -44,7 +44,7 @@ $url = ControladorPlantilla::url();
         <script src="<?php echo $url; ?>vistas/assets/js/alerts_Confirmaciones.js"></script>
 
         <!-- Autocompletar Datalist -->
-        <!-- <script src="autocompletar_dl.js"></script> -->
+        <script src="<?php echo $url; ?>vistas/assets/js/autocompletar_dl.js"></script>
 
     </head>
 

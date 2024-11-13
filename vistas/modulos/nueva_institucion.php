@@ -94,7 +94,7 @@
                                     <?php
                                         foreach ($agentes as $key => $value) {               
                                     ?>
-                                    <option value = <?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"] ?> data-id="<?php echo $value["id_Agente"] ?>" ></option>
+                                    <option value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" data-id="<?php echo $value["id_Agente"] ?>" ></option>
                                     <?php } ?>
                                 </datalist>  
                             
