@@ -250,7 +250,7 @@ $solicitud = ModeloSolSuplente::mdlMostrarSolSuplente();
                     <!-- Opciones Datalist Instituciones        -->
                     <datalist id="OpcionesInstitucion">
                         <?php
-                            $institucion = ControladorInstituciones::ctrMostrarInstituciones();
+                            $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
                             foreach ($institucion as $key => $value) {   
                                 // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
                         ?>

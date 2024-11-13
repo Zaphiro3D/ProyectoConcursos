@@ -17,7 +17,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $institucion = ControladorInstituciones::ctrMostrarInstituciones();
+                                $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
                                 foreach ($institucion as $key => $value) {                         
                             ?>
                             <tr style = "background-color:#000888">

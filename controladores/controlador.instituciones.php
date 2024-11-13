@@ -4,8 +4,16 @@ class ControladorInstituciones{
     // ==============================================================
     // Mostrar Instituciones
     // ==============================================================
-    static public function ctrMostrarInstituciones(){
-        $respuesta = ModeloInstituciones::mdlMostrarInstituciones();
+    static public function ctrMostrarInstituciones($id_institucion, $valor){
+        $respuesta = ModeloInstituciones::mdlMostrarInstituciones($id_institucion, $valor);
+        return $respuesta;
+    }
+
+    // ==============================================================
+    // Mostrar Tipos
+    // ==============================================================
+    static public function ctrMostrarTipos(){
+        $respuesta = ModeloInstituciones::mdlMostrarTipos();
         return $respuesta;
     }
 
@@ -14,35 +22,20 @@ class ControladorInstituciones{
     // ==============================================================
     public function ctrAgregarInstitucion()
     {
-        if (isset($_POST["dni"])) {
-
-            if(isset($_POST["dlInstituciones"])){
-                $id = "";
-            } else{
-                if(isset($_POST["dlZonas"])){
-                    $id = "";
-                } else{
-                    if (htmlspecialchars($_POST["id_Rol"]) == ""){
-                        $id = "";
-                    }
-                }
-            }
+        if (isset($_POST["cue"])) {
+            
             $datos = array(
-                "apellido" => htmlspecialchars($_POST["apellido"]),
+                "id_Tipo" => htmlspecialchars($_POST["tipo"]),
+                "cue" => htmlspecialchars($_POST["cue"]),
+                "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
-                "dni" => htmlspecialchars($_POST["dni"]),
-                "telefono" => htmlspecialchars($_POST["telefono"]),
-                "direccion" => htmlspecialchars($_POST["direccion"]),
-                "email" => htmlspecialchars($_POST["email"]),
-                "usuario" => htmlspecialchars($_POST["email"]),
-                "password" => htmlspecialchars($_POST["contrasena"]),
-                "id_Rol" => htmlspecialchars($_POST["rol"])
-                
+                "id_Director" => htmlspecialchars($_POST["director"]),
+                "id_ZonaSupervison" => htmlspecialchars($_POST["zona"])                
             );
             
-            // print_r($datos);
+             print_r($datos);
 
-            // return;
+             return;
 
             //podemos volver a la página de datos
 
@@ -53,7 +46,7 @@ class ControladorInstituciones{
                 echo '<script>
                     fncSweetAlert(
                     "success",
-                    "La institución ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
+                    "La institución ' . htmlspecialchars($_POST["nombre"]) . '- CUE: ' . htmlspecialchars($_POST["cue"]) . ' se agregó correctamente",
                     "' . $url . '"
                     );
                     </script>';
@@ -62,7 +55,7 @@ class ControladorInstituciones{
                 echo "<script>
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudieron agregar los datos del agente.',
+                    text: 'No se pudieron agregar los datos de la institución.',
                     icon: 'error'
                 });
                 </script>";
@@ -71,33 +64,30 @@ class ControladorInstituciones{
     }
 
     // ==============================================================
-    // Editar Agentes
+    // Editar Institucion
     // ==============================================================
-    public function ctrEditarAgente()
+    public function ctrEditarInstitucion()
     {
-        if (isset($_POST["id_Agente"])) {
+        if (isset($_POST["id_Institucion"])) {
             $datos = array(
-                "apellido" => htmlspecialchars($_POST["apellido"]),
+                "id_Institucion" => htmlspecialchars($_POST["id_Institucion"]),
+                "id_Tipo" => htmlspecialchars($_POST["tipo"]),
+                "cue" => htmlspecialchars($_POST["cue"]),
+                "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
-                "dni" => htmlspecialchars($_POST["dni"]),
-                "telefono" => htmlspecialchars($_POST["telefono"]),
-                "direccion" => htmlspecialchars($_POST["direccion"]),
-                "email" => htmlspecialchars($_POST["email"]),
-                "usuario" => htmlspecialchars($_POST["email"]),
-                "password" => htmlspecialchars($_POST["contrasena"]),
-                "id_Rol" => htmlspecialchars($_POST["rol"]),
-                "id_Agente" => htmlspecialchars($_POST["id_Agente"])
+                "id_Director" => htmlspecialchars($_POST["director"]),
+                "id_ZonaSupervison" => htmlspecialchars($_POST["zona"])    
                 
             );
 
-            $url = ControladorPlantilla::url() . "agentes";
-            $respuesta = ModeloAgentes::mdlEditarAgente($datos);
+            $url = ControladorPlantilla::url() . "instituciones";
+            $respuesta = ModeloInstituciones::mdlEditarInstitucion($datos);
             
             if ($respuesta == "ok") {                
                 echo '<script>
                     fncSweetAlert(
                     "success",
-                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                    "La institución ' . htmlspecialchars($_POST["nombre"]) . '- CUE: ' . htmlspecialchars($_POST["cue"]) . ' se actualizó correctamente",
                     "' . $url . '"
                     );
                     </script>';
@@ -106,7 +96,7 @@ class ControladorInstituciones{
                 echo "<script>
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudieron actualizar los datos del agente.',
+                    text: 'No se pudieron actualizar los datos de la institución.',
                     icon: 'error'
                 });
                 </script>";

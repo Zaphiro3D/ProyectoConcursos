@@ -5,7 +5,7 @@ $valor = $rutas[1];
 
 $agente_selec = ControladorAgentes::ctrMostrarAgentes($agente, $valor);
 $zonas = ControladorZonas::ctrMostrarZonas();
-$instituciones = ControladorInstituciones::ctrMostrarInstituciones();
+$instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 
 if ($agente_selec) {
 ?>
@@ -204,8 +204,6 @@ if ($agente_selec) {
                                 <div class="d-flex flex-wrap gap-2">
                                     <input type="hidden" name="id_Agente" value="<?php echo $agente_selec["id_Agente"]; ?>">
 
-
-                                    <!--button type="button" class="btn btn-outline-dark btnVolver" pag="agentes"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button-->
                                     <a class="btn btn-outline-dark btnVolver" pag="agentes"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</a>
                                     <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                                 </div>

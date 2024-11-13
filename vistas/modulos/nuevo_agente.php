@@ -1,6 +1,6 @@
 <?php
 $zonas = ControladorZonas::ctrMostrarZonas();
-$instituciones = ControladorInstituciones::ctrMostrarInstituciones();
+$instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $rol = ControladorAgentes::ctrMostrorRolAgentes();
 ?>
 

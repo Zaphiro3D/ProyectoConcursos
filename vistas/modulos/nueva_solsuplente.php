@@ -295,9 +295,8 @@
                     <!-- Opciones Datalist Instituciones        -->
                     <datalist id="OpcionesInstitucion">
                         <?php
-                            $institucion = ControladorInstituciones::ctrMostrarInstituciones();
-                            foreach ($institucion as $key => $value) {   
-                                // $cadena = "{$value["TipoInstitucion"]} N°{$value["numero"]}". '"' . "{$value["institucion"]}".'" '."CUE: {$value["cue"]}" ;                 
+                            $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+                            foreach ($institucion as $key => $value) {                    
                         ?>
                         <option ><?php echo $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
                         <?php } ?>
