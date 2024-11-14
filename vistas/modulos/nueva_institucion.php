@@ -26,14 +26,14 @@
                             <div class="col-lg-2"> 
                                 <!-- <h6 class="fs-15 mb-3">Número</h6> -->
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numero" name="numero" placeholder="numero">
+                                    <input type="number" class="form-control" id="numero" name="numero" placeholder="numero" value="<?= $_POST["numero"] ?? '' ?>">
                                     <label for="numero">N°</label>
                                 </div>
                             </div>
                             <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
                             <div class="col-lg-6"> 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= $_POST["nombre"] ?? '' ?>" required>
                                     <label for="nombre">Nombre</label>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                             <div class="col-lg-4"> 
                                 <!-- <h6 class="fs-15 mb-3">CUE</h6> -->
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="cue" name="cue" placeholder="CUE" required>
+                                    <input type="number" class="form-control" id="cue" name="cue" placeholder="CUE" value="<?= $_POST["cue"] ?? '' ?>" required>
                                     <label for="cue">CUE</label>
                                 </div>
                             </div>

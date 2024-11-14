@@ -33,14 +33,14 @@ if ($institucion) {
                             <div class="col-lg-2"> 
                                 <!-- <h6 class="fs-15 mb-3">Número</h6> -->
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numero" name="numero" placeholder="numero">
+                                    <input type="number" class="form-control" id="numero" name="numero" placeholder="numero" value = "<?php echo $institucion["numero"]; ?>">
                                     <label for="numero">N°</label>
                                 </div>
                             </div>
                             <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
                             <div class="col-lg-6"> 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value = "<?php echo $institucion["nombre"]; ?>" required>
                                     <label for="nombre">Nombre</label>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@ if ($institucion) {
                             <div class="col-lg-4"> 
                                 <!-- <h6 class="fs-15 mb-3">CUE</h6> -->
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="cue" name="cue" placeholder="CUE" required>
+                                    <input type="number" class="form-control" id="cue" name="cue" placeholder="CUE" value = "<?php echo $institucion["cue"]; ?>" required>
                                     <label for="cue">CUE</label>
                                 </div>
                             </div>
@@ -58,7 +58,10 @@ if ($institucion) {
                             <div class="col-lg-6"> 
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="tipo" name="tipo" aria-label="Tipo" required>
-                                        <option selected></option>
+                                        <option value="<?php echo $institucion["id_Tipo"]; ?>" selected>
+                                            <?php echo $institucion["Tipo"]; ?>
+                                        </option>
+
                                         <?php
                                         foreach ($tipos as $key => $value) {
                                         ?>
@@ -72,7 +75,9 @@ if ($institucion) {
                             <div class="col-lg-6"> 
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="zona" name="zona" aria-label="Zona de Supervision">
-                                        <option selected></option>
+                                        <option value="<?php echo $institucion["id_ZonaSupervision"]; ?>" selected>
+                                            <?php echo $institucion["zona"]; ?>
+                                        </option>
                                         <?php
                                         foreach ($zonas as $key => $value) {
                                         ?>
@@ -98,10 +103,11 @@ if ($institucion) {
                             <div class="card-body">     
                                 <!-- Opciones Datalist Instituciones        -->
                                 <datalist id="OpcAgentes">
+                                    <option selected value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" ></option>
                                     <?php
                                         foreach ($agentes as $key => $value) {               
                                     ?>
-                                    <option value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" data-id="<?php echo $value["id_Agente"] ?>" ></option>
+                                    <option value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" ></option>
                                     <?php } ?>
                                 </datalist>  
                             

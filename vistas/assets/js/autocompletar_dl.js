@@ -1,3 +1,6 @@
+// ===================================================================
+// Función para seleccionar la mejor coincidencia en los datalist
+// ===================================================================
 function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
     const input = document.getElementById(inputId);
     const datalist = document.getElementById(datalistId);
@@ -19,6 +22,12 @@ function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
     // Seleccionar la mejor coincidencia al salir del campo
     input.addEventListener("blur", function() {
         const inputValue = this.value.toLowerCase();
+
+        // Si el campo está vacío, no realizar ninguna acción
+        if (!inputValue.trim()) {
+            hiddenInput.value = "";
+            return;
+        }
 
         let bestMatch = null;
         let bestMatchID = null;

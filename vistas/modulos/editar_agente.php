@@ -6,6 +6,7 @@ $valor = $rutas[1];
 $agente_selec = ControladorAgentes::ctrMostrarAgentes($agente, $valor);
 $zonas = ControladorZonas::ctrMostrarZonas();
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+$rol = ControladorAgentes::ctrMostrorRolAgentes();
 
 if ($agente_selec) {
 ?>
@@ -99,10 +100,11 @@ if ($agente_selec) {
                                             <option value="<?php echo $agente_selec["id_Rol"]; ?>" selected>
                                                 <?php echo $agente_selec["rol"]; ?>
                                             </option>
-
-                                            <option value="1">Director</option>
-                                            <option value="2">Supervisor</option>
-                                            <option value="3">Administrativo</option>
+                                            <?php
+                                            foreach ($rol as $key => $value) {
+                                            ?>
+                                                <option value="<?php echo $value["idrol"]; ?>"><?php echo $value["rol"];?> </option>
+                                            <?php } ?>
                                         </select>
                                         <label for="rol">Elegir rol</label>
                                     </div>
@@ -119,7 +121,7 @@ if ($agente_selec) {
                                         </div>
                                         <div class="col-md">
                                             <div class="form-floating mb-3">
-                                                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?php echo $agente_selec["password"]; ?>" required>
+                                                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" value="Sin cambios" required>
                                                 <label for="contrasena">Contraseña</label>
                                             </div>
                                         </div>

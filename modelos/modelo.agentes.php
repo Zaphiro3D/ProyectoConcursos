@@ -67,6 +67,41 @@ class ModeloAgentes{
     static public function mdlEditarAgente($datos)
     {
         try {
+
+            if ($datos["password"] = "Sin cambios"){
+                $stmt = Conexion::conectar()->prepare("UPDATE agentes SET 
+                apellido = :apellido, nombre = :nombre, dni = :dni, telefono = :telefono, 
+                direccion = :direccion, email = :email, usuario = :usuario, id_Rol = :id_Rol
+                WHERE id_Agente = :id_Agente");
+    
+                $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
+                $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
+                $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
+                $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
+                $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
+                $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
+                $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
+                $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
+            }else{
+                $stmt = Conexion::conectar()->prepare("UPDATE agentes SET 
+                apellido = :apellido, nombre = :nombre, dni = :dni, telefono = :telefono, 
+                direccion = :direccion, email = :email, usuario = :usuario, 
+                password = :password, id_Rol = :id_Rol
+                WHERE id_Agente = :id_Agente");
+    
+                $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
+                $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
+                $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
+                $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
+                $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
+                $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
+                $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
+                $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
+                $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
+            }
+
             $stmt = Conexion::conectar()->prepare("UPDATE agentes SET 
             apellido = :apellido, nombre = :nombre, dni = :dni, telefono = :telefono, 
             direccion = :direccion, email = :email, usuario = :usuario, 
