@@ -1,8 +1,8 @@
 <?php
-$cue = "cue";
+$id = "id_institucion";
 $valor = $rutas[1];
 
-$institucion = ControladorInstituciones::ctrMostrarInstituciones($cue , $valor);
+$institucion = ControladorInstituciones::ctrMostrarInstituciones($id , $valor);
 $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
 $zonas = ControladorZonas::ctrMostrarZonas();
 $tipos = ControladorInstituciones::ctrMostrarTipos();
@@ -40,7 +40,7 @@ if ($institucion) {
                             <!-- <h6 class="fs-15 mb-3">Nombre</h6> -->
                             <div class="col-lg-6"> 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value = "<?php echo $institucion["nombre"]; ?>" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value = "<?php echo $institucion["institucion"]; ?>" required>
                                     <label for="nombre">Nombre</label>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@ if ($institucion) {
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="tipo" name="tipo" aria-label="Tipo" required>
                                         <option value="<?php echo $institucion["id_Tipo"]; ?>" selected>
-                                            <?php echo $institucion["Tipo"]; ?>
+                                            <?php echo $institucion["tipo"]; ?>
                                         </option>
 
                                         <?php
@@ -103,7 +103,7 @@ if ($institucion) {
                             <div class="card-body">     
                                 <!-- Opciones Datalist Instituciones        -->
                                 <datalist id="OpcAgentes">
-                                    <option selected value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" ></option>
+                                    <option selected value = "<?php echo $institucion["apellido"] . ", " . $institucion["nombre"]. ' - DNI: ' . $institucion["dni"]; ?>" data-id="<?php echo $institucion["id_Director"]; ?>" ></option>
                                     <?php
                                         foreach ($agentes as $key => $value) {               
                                     ?>
@@ -114,11 +114,11 @@ if ($institucion) {
                                 <div class="form-floating mb-3">
                                     <div class="pb-3"> <!-- Datalist Agentes -->
                                         <label for="director" id="lblDirector" class="form-label">Agentes</label>
-                                        <input class="form-control" list="OpcAgentes" id="director" name="director" placeholder="Escriba para buscar...">
+                                        <input class="form-control" list="OpcAgentes" id="director" name="director" placeholder="Escriba para buscar..." value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" >
                                     </div>
                                 </div>
                                 <!-- Campo oculto para almacenar solo el ID del director -->
-                                <input type="hidden" id="director_id" name="director_id">
+                                <input type="hidden" id="director_id" name="director_id" value = <?php echo $institucion["id_Director"] ?> >
                             </div>
                         </div>                    
                     </div>             

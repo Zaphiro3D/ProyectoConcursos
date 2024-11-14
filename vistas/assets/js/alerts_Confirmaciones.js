@@ -157,7 +157,7 @@ $(document).on("click", ".btnEliminarZona", function () {
   });
 });
 
-$(document).on("click", ".btnEliminar", function () {
+$(document).on("click", ".btnEliminarCargo", function () {
    
   let id_agente = $(this).attr("id_Agente"); 
   let apellido = $(this).attr("apellido"); 

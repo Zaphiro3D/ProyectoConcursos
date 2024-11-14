@@ -37,7 +37,7 @@ function generarOpcionesDias()
                                     <div>
 
                                         <label for="institucionSede" id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" placeholder="Escriba para buscar...">
+                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" name="institucionSede" placeholder="Escriba para buscar...">
 
                                         <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
                                     </div>
@@ -57,7 +57,7 @@ function generarOpcionesDias()
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="plaza" placeholder="N° Plaza">
+                                        <input type="number" class="form-control" id="plaza" name="plaza" placeholder="N° Plaza">
                                         <label for="plaza">N° Plaza</label>
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@ function generarOpcionesDias()
                                                 <option><?php echo $value["nombreCargo"]; ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input type="text" class="form-control" list="opcionescargo" id="opcionescargo" placeholder="Cargo">
+                                        <input type="text" class="form-control" list="opcionescargo" id="opcionescargo" name="opcionescargo" placeholder="Cargo">
                                         <label for="cargo">Cargo</label>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@ function generarOpcionesDias()
                                                 <option><?php echo $value["turno"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opcionesturno" id="opcionesturno" placeholder="Escriba para buscar..."></input>
+                                        <input class="form-control fs-14" list="opcionesturno" id="opcionesturno" name="opcionesturno" placeholder="Escriba para buscar..."></input>
                                         <label for="turno">Turno</label>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@ function generarOpcionesDias()
                                                 <option><?php echo $value["grado"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opcionesAnio" id="opcionesAnio" placeholder="Escriba para buscar..."></input>
+                                        <input class="form-control fs-14" list="opcionesAnio" id="opcionesAnio" name="opcionesAnio" placeholder="Escriba para buscar..."></input>
                                         <label for="anio">Año</label>
                                     </div>
                                 </div>
@@ -112,14 +112,14 @@ function generarOpcionesDias()
                                                 <option><?php echo $value["division"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opcionesDivision" id="opcionesDivision" placeholder="Escriba para buscar..."></input>
+                                        <input class="form-control fs-14" list="opcionesDivision" id="opcionesDivision" name="opcionesDivision" placeholder="Escriba para buscar..."></input>
                                         <label for="division">División</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCat" placeholder="hsCat">
+                                            <input type="number" class="form-control" id="hsCat" name="hsCat" placeholder="hsCat">
                                             <label for="nombreAgente">Hs. Cát.</label>
                                         </div>
                                     </div>
@@ -144,14 +144,14 @@ function generarOpcionesDias()
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="nombreAgente" placeholder="Nombre">
+                                        <input type="text" class="form-control" id="nombreAgente" name="nombreAgente" placeholder="Nombre">
                                         <label for="nombreAgente">Nombre</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="apellidoAgente" placeholder="Apellido">
+                                        <input type="text" class="form-control" id="apellidoAgente" name="apellidoAgente" placeholder="Apellido">
                                         <label for="apellidoAgente">Apellido</label>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@ function generarOpcionesDias()
                                 <div class="col-lg-3">
                                     <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                     <div class="form-floating mb-1">
-                                        <input type="number" class="form-control" id="dniAgente" placeholder="DNI">
+                                        <input type="number" class="form-control" id="dniAgente" name="dniAgente" placeholder="DNI">
                                         <label for="dniAgente">Número de DNI sin puntos</label>
                                     </div>
                                 </div>
@@ -186,27 +186,27 @@ function generarOpcionesDias()
                                 <!-- <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend> -->
                                 <div class="row row-cols-lg-auto g-2 align-items-center">
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" value="option1" checked>
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" name="noComparte" value="option1" checked>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte1" value="option1" unchecked>
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte1" name="comparte1" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
                                         </label>
                                     </div>
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" value="option1" unchecked>
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" name="comparte2" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte3" value="option1" unchecked>
+                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte3" name="comparte3" value="option1" unchecked>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
                                         </label>
@@ -221,12 +221,12 @@ function generarOpcionesDias()
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Horarios</h5>
+                            <h5 class="card-title mb-0">Instituciones</h5>
                         </div><!-- end card header -->
 
 
                         <!-- Opciones Datalist Instituciones        -->
-                        <datalist id="OpcionesInstitucion">
+                        <datalist id="OpcionesInstitucion" name="OpcionesInstitucion">
                             <?php
                             $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
                             foreach ($institucion as $key => $value) {
@@ -239,29 +239,29 @@ function generarOpcionesDias()
 
                             <div class="row" id='hsEst1'> <!-- Est 1 -->
                                 <div class="pb-2"> <!-- Datalist Instituciones 1 -->
-                                    <label for="institucion1" id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion1" placeholder="Escriba para buscar...">
+                                    <label for="institucion1" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion1" name="institucion1" placeholder="Escriba para buscar...">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 1 -->
 
                             <div class="row" id='hsEst2'><!-- Est 2 -->
                                 <div class="pb-2"> <!-- Datalist Instituciones 2 -->
-                                    <label for="institucion2" id="lblinstitucion2" class="form-label">Segunda Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion2" placeholder="Escriba para buscar...">
+                                    <label for="institucion2" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion2" name="institucion2" placeholder="Escriba para buscar...">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 2 -->
 
                             <div class="row" id='hsEst3'><!-- Est 3 -->
                                 <div class="pb-3"> <!-- Datalist Instituciones 3 -->
                                     <label for="institucion3" id="lblinstitucion3" class="form-label">Tercera Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion3" placeholder="Escriba para buscar...">
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion3" name="institucion3" placeholder="Escriba para buscar...">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 3 -->
 
                             <div class="row" id='hsEst4'><!-- Est 4 -->
                                 <div class="pb-3"> <!-- Datalist Instituciones 4 -->
                                     <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion4" placeholder="Escriba para buscar...">
+                                    <input class="form-control" list="OpcionesInstitucion" id="institucion4" name="institucion4" placeholder="Escriba para buscar...">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 4 -->
                         </div>

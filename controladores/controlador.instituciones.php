@@ -84,6 +84,9 @@ class ControladorInstituciones{
                 "id_ZonaSupervison" => $id_Zona   
                 
             );
+            print_r($datos);
+
+            return;
 
             $url = ControladorPlantilla::url() . "instituciones";
             $respuesta = ModeloInstituciones::mdlEditarInstitucion($datos);

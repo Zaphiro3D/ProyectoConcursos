@@ -11,6 +11,7 @@ class ModeloCargos{
             "SELECT 
                 c.id_Cargo, 
                 nc.nombreCargo, 
+                p.numeroPlaza,
                 c.hsCatedra,
                 g.grado, 
                 d.division, 
