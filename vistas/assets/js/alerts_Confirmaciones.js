@@ -63,10 +63,7 @@ $(document).on("click", ".btnPermisos", function () {
       title: "Error",
       text: "Permisos Insuficientes.",
       icon: "error",
-      showCancelButton: false,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: "Cancelar",
       confirmButtonText: "OK",
   }).then(function (result) {
       if (result.isConfirmed) {
@@ -90,7 +87,7 @@ $(document).on("click", ".btnAprobarSolicSuperv", function () {
   }).then(function (result) {
       if (result.isConfirmed) {
         window.location =
-        "index.php?pagina=solicitudesSuplente";
+        "solicitudesSuplente";
       }
   });
 });
@@ -109,11 +106,58 @@ $(document).on("click", ".btnAprobarSolic", function () {
   }).then(function (result) {
       if (result.isConfirmed) {
         window.location =
-        "index.php?pagina=solicitudesSuplente";
+        "solicitudesSuplente";
       }
   });
 });
 
+$(document).on("click", ".btnYaConcursado", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "Solicitud Ya Concursada",
+      text: "La solicitud ha sido marcada como ya concursada.",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "solicitudesSuplente";
+      }
+  });
+});
+
+$(document).on("click", ".btnRechazarSolicSuperv", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "Solicitud Rechazada",
+      text: "La solicitud ha sido rechazada. Se enviará a la escuela para su corrección.",
+      icon: "error",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "solicitudesSuplente";
+      }
+  });
+});
+
+$(document).on("click", ".btnRechazarSolic", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "Solicitud Rechazada",
+      text: "La solicitud ha sido rechazada. Se enviará a la supervisión para su corrección.",
+      icon: "error",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "solicitudesSuplente";
+      }
+  });
+});
 
 $(document).on("click", ".btnEnviarSolic", function () {
   let pag = $(this).attr("pag"); 
@@ -199,5 +243,178 @@ $(document).on("click", ".btnEliminarInst", function () {
       window.location =
         "index.php?pagina=instituciones&id_Institucion_Eliminar=" + id_institucion;
     }
+  });
+});
+
+$(document).on("click", ".btnEliminarSolic", function () {
+   
+  let id_institucion = $(this).attr("id_Institucion"); 
+  let institucion = $(this).attr("institucion"); 
+
+  Swal.fire({
+    title: "¿Está seguro de eliminar la solicitud de suplente?",
+    text: "Maestro de Educación Física - Perez, Lucas (21245465)",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Sí, eliminar",
+  }).then(function (result) {
+    if (result.value) {
+      window.location =
+        "solicitudesSuplente";
+    }
+  });
+});
+
+$(document).on("click", ".btnConfRechazoSolic", function () {
+   
+  let id_institucion = $(this).attr("id_Institucion"); 
+  let institucion = $(this).attr("institucion"); 
+
+  Swal.fire({
+    title: "¿Está seguro de rechazar la solicitud?",
+    text: "Será devuelta para su corrección",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Sí, rechazar",
+  }).then(function (result) {
+    if (result.value) {
+      window.location =
+        "solicitudesSuplente";
+    }
+  });
+});
+
+
+$(document).on("click", ".btnZonaAgregada", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "La zona de supervisión: \"Supervisión Escolar de Zona A\" se agregó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "zonasSupervision";
+      }
+  });
+});
+
+$(document).on("click", ".btnZonaActualizada", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "La zona de supervisión: \"Supervisión Escolar de Zona A\" se actualizó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "zonasSupervision";
+      }
+  });
+});
+
+$(document).on("click", ".btnCargoEliminado", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "El cargo con plaza N° 324567 se eliminó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
+  });
+});
+
+$(document).on("click", ".btnCargoAgregado", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "El cargo con plaza N° 324567 se agregó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
+  });
+});
+
+$(document).on("click", ".btnCargoActualizado", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "El cargo con plaza N° 324567 se actualizó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
+  });
+});
+
+$(document).on("click", ".btnSolicEliminada", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "La solicitud de Maestro de Educación Física - Perez, Lucas (21245465) se eliminó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
+  });
+});
+
+$(document).on("click", ".btnSolicAgregada", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "La solicitud de Maestro de Educación Física - Perez, Lucas (21245465) se agregó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
+  });
+});
+
+$(document).on("click", ".btnSolicActualizada", function () {
+  let pag = $(this).attr("pag"); 
+  Swal.fire({
+      title: "OK",
+      text: "La solicitud de Maestro de Educación Física - Perez, Lucas (21245465) se actualizó correctamente",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+  }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location =
+        "cargos";
+      }
   });
 });
