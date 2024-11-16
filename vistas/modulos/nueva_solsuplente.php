@@ -113,7 +113,7 @@
                                 <div class="form-floating mb-3">
                                     <div class="form-floating">
                                         <input type="number" class="form-control" id="hsCat" placeholder="hsCat">
-                                        <label for="nombreAgente">Hs. Cát.</label>
+                                        <label for="hsCat">Hs. Cát.</label>
                                     </div>
                                 </div>
                             </div>
@@ -240,6 +240,26 @@
         </div>
 
         <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Observaciones</h5>
+                    </div><!-- end card header -->
+                    
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="observaciones" placeholder="Nombre">
+                                <label for="observaciones">Observaciones</label>
+                            </div>
+                        </div>
+                            
+
+                    </div>
+                </div>  <!-- card datos sede -->
+            </div>  <!-- col -->   
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
