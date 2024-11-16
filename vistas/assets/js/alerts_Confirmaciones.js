@@ -13,8 +13,7 @@ $(document).on("click", ".btnEliminarAgente", function () {
     confirmButtonText: "Sí, eliminar",
   }).then(function (result) {
     if (result.value) {
-      window.location =
-        "index.php?pagina=agentes&id_Agente_Eliminar=" + id_agente;
+      window.location = id_agente;
     }
   });
 });
@@ -52,7 +51,7 @@ $(document).on("click", ".btnVolver", function () {
       confirmButtonText: "Sí, salir",
   }).then(function (result) {
       if (result.isConfirmed) {
-        window.location = 'index.php?pagina='+pag;
+        window.location = pag;
       }
   });
 });
@@ -67,8 +66,7 @@ $(document).on("click", ".btnPermisos", function () {
       confirmButtonText: "OK",
   }).then(function (result) {
       if (result.isConfirmed) {
-        window.location =
-        "index.php?pagina=login";
+        window.location = "login";
       }
   });
 });
@@ -173,7 +171,7 @@ $(document).on("click", ".btnEnviarSolic", function () {
   }).then(function (result) {
       if (result.isConfirmed) {
         window.location =
-        "index.php?pagina=solicitudesSuplente";
+        "solicitudesSuplente";
       }
   });
 });
@@ -196,7 +194,7 @@ $(document).on("click", ".btnEliminarZona", function () {
   }).then(function (result) {
     if (result.value) {
       window.location =
-        "index.php?pagina=zonasSupervision";
+        "zonasSupervision";
     }
   });
 });
@@ -219,7 +217,7 @@ $(document).on("click", ".btnEliminarCargo", function () {
   }).then(function (result) {
     if (result.value) {
       window.location =
-        "index.php?pagina=cargos";
+        "cargos";
     }
   });
 });
@@ -241,7 +239,7 @@ $(document).on("click", ".btnEliminarInst", function () {
   }).then(function (result) {
     if (result.value) {
       window.location =
-        "index.php?pagina=instituciones&id_Institucion_Eliminar=" + id_institucion;
+        "instituciones&id_Institucion_Eliminar=" + id_institucion;
     }
   });
 });

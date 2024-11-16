@@ -250,7 +250,7 @@
                     <div class="card-body">
                         <div class="col-lg-12">
                             <div class="form-floating my-3">
-                                <input type="text" class="form-control" id="observaciones" placeholder="Nombre">
+                                <input type="text" class="form-control" id="observaciones" placeholder="observaciones">
                                 <label for="observaciones">Observaciones</label>
                             </div>
                         </div>
@@ -405,7 +405,7 @@
                     <div class="d-flex flex-wrap gap-2">  
                         <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
                         <button type="button" class="btn btn-outline-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
-                        <button type="button" class="btn btn-primary btnSolicActualizada"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
+                        <button type="button" class="btn btn-primary btnEliminar"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                     </div>
                 </div>
             </div>
