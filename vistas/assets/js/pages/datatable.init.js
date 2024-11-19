@@ -1,14 +1,15 @@
-"use strict";$(document).ready(function(){$("#datatable").DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-        }
+"use strict";
+// archivo de idioma .js
+import espanol from './espanol.js';
+
+$(document).ready(function(){$("#datatable").DataTable({
+        language: espanol
     });
 var a=$("#datatable-buttons").DataTable({lengthChange:!1,buttons:["copy","print"]});
 $("#key-table").DataTable({keys:!0}),
 $("#responsive-datatable").DataTable(),
 $("#selection-datatable").DataTable({select:{style:"multi"}}),
-$("#alternative-page-datatable").DataTable({pagingType:"full_numbers", language: {
-            "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"}}),
+$("#alternative-page-datatable").DataTable({pagingType:"full_numbers", language: espanol}),
 $("#scroll-vertical-datatable").DataTable({scrollY:"350px",scrollCollapse:!0,paging:!1}),
 $("#scroll-horizontal-datatable").DataTable({scrollX:!0}),
 $("#complex-header-datatable").DataTable({columnDefs:[{visible:!1,targets:-1}]}),
