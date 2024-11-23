@@ -26,6 +26,7 @@ class ModeloSolSuplente{
                 ss.fechaInicio,
                 ss.fechaFin,
                 ss.observaciones,
+                ss.id_SolSuplente,
                 ms.motivo,
                 GROUP_CONCAT(
                     CONCAT('Esc. N°', i.numero, ': ',

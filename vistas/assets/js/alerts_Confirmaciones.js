@@ -1,23 +1,6 @@
-$(document).on("click", ".btnEliminarAgente", function () {
-  let id_agente = $(this).attr("id_Agente");
-  let nombre_completo = $(this).attr("nombre_completo");
-
-  Swal.fire({
-    title: "¿Está seguro de eliminar el agente?",
-    text: nombre_completo,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Cancelar",
-    confirmButtonText: "Sí, eliminar",
-  }).then(function (result) {
-    if (result.value) {
-      window.location = id_agente;
-    }
-  });
-});
-
+// ---------------------------------------------------
+// Guardar
+// ---------------------------------------------------
 $(document).on("click", ".btnGuardar", function (e) {
   e.preventDefault(); // Previene el envío automático del formulario
 
@@ -38,6 +21,9 @@ $(document).on("click", ".btnGuardar", function (e) {
   });
 });
 
+// ---------------------------------------------------
+// Volver
+// ---------------------------------------------------
 $(document).on("click", ".btnVolver", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -56,6 +42,9 @@ $(document).on("click", ".btnVolver", function () {
   });
 });
 
+// ---------------------------------------------------
+// Permisos insuficientes
+// ---------------------------------------------------
 $(document).on("click", ".btnPermisos", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -71,6 +60,9 @@ $(document).on("click", ".btnPermisos", function () {
   });
 });
 
+// ---------------------------------------------------
+// Aprobar Solicitud - Supervisor
+// ---------------------------------------------------
 $(document).on("click", ".btnAprobarSolicSuperv", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -90,6 +82,9 @@ $(document).on("click", ".btnAprobarSolicSuperv", function () {
   });
 });
 
+// ---------------------------------------------------
+// Aprobar Solicitud - Administrativo
+// ---------------------------------------------------
 $(document).on("click", ".btnAprobarSolic", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -109,6 +104,9 @@ $(document).on("click", ".btnAprobarSolic", function () {
   });
 });
 
+// ---------------------------------------------------
+// Estado Ya Concursado
+// ---------------------------------------------------
 $(document).on("click", ".btnYaConcursado", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -125,6 +123,9 @@ $(document).on("click", ".btnYaConcursado", function () {
   });
 });
 
+// ---------------------------------------------------
+// Rechazar Solicitud - Supervisor
+// ---------------------------------------------------
 $(document).on("click", ".btnRechazarSolicSuperv", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -141,6 +142,9 @@ $(document).on("click", ".btnRechazarSolicSuperv", function () {
   });
 });
 
+// ---------------------------------------------------
+// Rechazar Solicitud - Administrativo
+// ---------------------------------------------------
 $(document).on("click", ".btnRechazarSolic", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -157,6 +161,9 @@ $(document).on("click", ".btnRechazarSolic", function () {
   });
 });
 
+// ---------------------------------------------------
+// Enviar Solicitud
+// ---------------------------------------------------
 $(document).on("click", ".btnEnviarSolic", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({
@@ -173,6 +180,32 @@ $(document).on("click", ".btnEnviarSolic", function () {
         window.location =
         "solicitudesSuplente";
       }
+  });
+});
+
+// ---------------------------------------------------
+// Eliminar
+// ---------------------------------------------------
+$(document).on("click", ".btnEliminar", function () {
+  let id_eliminar = $(this).attr("id_eliminar");
+  let categoria = $(this).attr("categoria"); 
+  let valorElim = $(this).attr("valorElim"); 
+  let pag = $(this).attr("pag"); 
+
+  Swal.fire({
+    title: "¿Está seguro de eliminar el registro?",
+    text: categoria +  ": " + valorElim,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Sí, eliminar",
+  }).then(function (result) {
+    if (result.value) {
+      window.location =
+        pag + "?id_eliminar=" + id_eliminar;
+    }
   });
 });
 
@@ -266,6 +299,9 @@ $(document).on("click", ".btnEliminarSolic", function () {
   });
 });
 
+// ---------------------------------------------------
+// Confirmar Rechazo Solicitud
+// ---------------------------------------------------
 $(document).on("click", ".btnConfRechazoSolic", function () {
    
   let id_institucion = $(this).attr("id_Institucion"); 
@@ -288,7 +324,9 @@ $(document).on("click", ".btnConfRechazoSolic", function () {
   });
 });
 
-
+// ---------------------------------------------------
+// Zona Agregada
+// ---------------------------------------------------
 $(document).on("click", ".btnZonaAgregada", function () {
   let pag = $(this).attr("pag"); 
   Swal.fire({

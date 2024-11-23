@@ -118,10 +118,10 @@ class ControladorInstituciones{
     static public function ctrEliminarInstitucion()
     {
      
-        if (isset($_GET["id_Institucion_Eliminar"])) {
+        if (isset($_GET["id_eliminar"])) {
 
             $url = ControladorPlantilla::url() . "instituciones";
-            $dato = $_GET["id_Institucion_Eliminar"];
+            $dato = $_GET["id_eliminar"];
 
             $respuesta = ModeloInstituciones::mdlEliminarInstitucion($dato);
 

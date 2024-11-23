@@ -120,10 +120,10 @@ class ControladorAgentes{
     static public function ctrEliminarAgente()
     {
      
-        if (isset($_GET["id_Agente_Eliminar"])) {
+        if (isset($_GET["id_eliminar"])) {
 
             $url = ControladorPlantilla::url() . "agentes";
-            $dato = $_GET["id_Agente_Eliminar"];
+            $dato = $_GET["id_eliminar"];
 
             $respuesta = ModeloAgentes::mdlEliminarAgente($dato);
 

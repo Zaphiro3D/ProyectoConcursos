@@ -47,7 +47,7 @@
                                 <td> <?php echo $value["dni"] ?></td>
                                 <td> <?php echo $value["zona"] ?></td>
                                 <td><a href="editar_institucion/<?php echo $value["id_institucion"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> 
-                                <button class="btn btn-danger btn-sm btnEliminarInst" id_Institucion=<?php echo $value["id_institucion"]; ?> institucion="<?php echo $value["tipo"] . " N°" . $value["numero"]. " " . $value["institucion"] . " - CUE: {$value["cue"]}"; ?>"><i class="fas fa-trash"></i></button></td>
+                                <button class="btn btn-danger btn-sm btnEliminar" id_eliminar=<?php echo $value["id_institucion"]; ?> pag= "instituciones" categoria = "Institución" valorElim = "<?php echo $value["tipo"] . " N°" . $value["numero"]. " " . $value["institucion"] . " - CUE: {$value["cue"]}"; ?>"><i class="fas fa-trash"></i></button></td>
                             </tr>
 
                             <?php } ?>
