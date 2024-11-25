@@ -68,69 +68,19 @@ class ModeloSolSuplente{
         }
 
     }
-    static public function mdlMostrarDiasSol()
-    {
-        try {
-            $diasSOli = Conexion::conectar()->prepare("SELECT `nombre` FROM `dias` ");
-            $diasSOli->execute();
-            return $diasSOli->fetchAll(PDO::FETCH_ASSOC);
 
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
-        }
-
+    static public function mdlMostrarDatosSol($tabla, $columnas = "*", $condicion = "")
+{
+    try {
+        $conexion = Conexion::conectar();
+        $query = "SELECT $columnas FROM `$tabla` $condicion";
+        $stmt = $conexion->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return "Error: " . $e->getMessage();
     }
-
-    static public function mdlMostrarMotivoSol()
-    {
-        try {
-            $motivoSol = Conexion::conectar()->prepare("SELECT * FROM `motivos_suplencia` ");
-            $motivoSol->execute();
-            return $motivoSol->fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
-        }
-
-    }
-
-    static public function mdlMostrarGradoSol()
-    {
-        try {
-            $gradoSol = Conexion::conectar()->prepare("SELECT * FROM grados as g  ;");
-            $gradoSol->execute();
-            return $gradoSol->fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
-        }
-
-    }
-    
-    static public function mdlMostrarTurnoSol()
-    {
-        try {
-            $TurnoSol = Conexion::conectar()->prepare("SELECT * FROM Turnos as t  ;");
-            $TurnoSol->execute();
-            return $TurnoSol->fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
-        }
-
-    }
-    static public function mdlMostrarDivisionSol()
-    {
-        try {
-            $DivisionSol = Conexion::conectar()->prepare("SELECT * FROM Divisiones as d  ;");
-            $DivisionSol->execute();
-            return $DivisionSol->fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
-        }
-
-    }
+}
 
     
 }

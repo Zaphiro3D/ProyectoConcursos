@@ -142,7 +142,7 @@ $rol = ControladorAgentes::ctrMostrorRolAgentes();
                                             <?php
                                             foreach ($instituciones as $key => $value) {
                                             ?>
-                                                <option id="<?php echo $value["id_institucion"]; ?>"><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
+                                                <option id="<?php echo $value["id_institucion"]; ?>" data-id="<?php echo $value["id_institucion"]; ?>"><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
                                             <?php } ?>
                                         </datalist>
 
@@ -174,7 +174,7 @@ $rol = ControladorAgentes::ctrMostrorRolAgentes();
                                             <?php
                                             foreach ($zonas as $key => $value) {
                                             ?>
-                                                <option><?php echo $value["zona"] ?> </option>
+                                                <option data-id="<?php echo $value["id_ZonaSupervision"]; ?>" ><?php echo $value["zona"] ?> </option>
                                             <?php } ?>
                                         </datalist>
 
@@ -184,7 +184,8 @@ $rol = ControladorAgentes::ctrMostrorRolAgentes();
                                                 <label for="dlZonas">Escriba para buscar...</label>
                                             </div>
                                         </div>
-
+                                        <!-- Campo oculto para almacenar solo el ID de la institucion o del agente para autocompletar el datalist-->
+                                        <input type="hidden" id="id_autocompletar" name="id_autocompletar">
                                     </div>
                                 </div>
                             </div>
@@ -206,10 +207,17 @@ $rol = ControladorAgentes::ctrMostrorRolAgentes();
                             </div>
                         </div>
                     </div>
-
                 </div>
+            </div>
+        </div>
     </form>
 </div> <!-- container-fluid -->
 
+<script>
+// Función para guardar el id en el campo oculto y 
+// seleccionar automaticamente la mejor coincidencia en datalist
 
-<script src="<?php echo $url; ?>vistas/assets/js/agente.js"></script>
+//                  input         opciones      campo oculto
+autoSelectBestMatch("dlInstituciones", "OpcInstituciones", "id_autocompletar");
+autoSelectBestMatch("dlZonas", "OpcZonas", "id_autocompletar");
+</script>

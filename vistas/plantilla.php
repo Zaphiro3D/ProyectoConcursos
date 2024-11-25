@@ -150,6 +150,11 @@ $url = ControladorPlantilla::url();
             <!-- DataTables.net web -->
             <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/kt-2.12.1/r-3.0.3/sl-2.1.0/datatables.min.js"></script>
 
+            <!-- Scripts js específicos para modificaciones dinámicas de formularios -->
+            <script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>
+            <script src="<?php echo $url; ?>vistas/assets/js/agente.js"></script>
+
+
             <!-- App js-->
             <script src="<?php echo $url; ?>vistas/assets/js/app.js"></script>
 

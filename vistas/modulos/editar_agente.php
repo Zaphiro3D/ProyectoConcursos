@@ -213,12 +213,9 @@ if ($agente_selec) {
                         </div>
                     </div>
                 </div>
-
             </div>
         </form>
     </div> <!-- container-fluid -->
 <?php } else { ?>
     <h3>Agente no disponible</h3>
 <?php } ?>
-
-<script src="<?php echo $url; ?>vistas/assets/js/agente.js"></script>

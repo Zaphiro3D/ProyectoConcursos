@@ -94,7 +94,7 @@
                                     <?php
                                         foreach ($agentes as $key => $value) {               
                                     ?>
-                                    <option value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>" data-id="<?php echo $value["id_Agente"] ?>" ></option>
+                                    <option value = "<?php echo $value["apellido"] . ", " . $value["nombre"]. ' - DNI: ' . $value["dni"]; ?>" data-id="<?php echo $value["id_Agente"]; ?>"></option>
                                     <?php } ?>
                                 </datalist>  
                             
@@ -137,5 +137,7 @@
 <script>
 // Función para guardar el id en el campo oculto y 
 // seleccionar automaticamente la mejor coincidencia en datalist
+
+//                  input       opciones      campo oculto
 autoSelectBestMatch("director", "OpcAgentes", "director_id");
 </script>
