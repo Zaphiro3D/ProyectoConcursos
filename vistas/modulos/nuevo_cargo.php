@@ -2,13 +2,14 @@
 // Función para opciones de select días
 function generarOpcionesDias()
 {
-    $dias = ControladorSolSuplente::ctrMostrarDiasSol();
+    $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
     $opciones = '<option>...</option>';
     foreach ($dias as $value) {
         $opciones .= "<option>{$value['nombre']}</option>";
     }
     return $opciones;
 }
+
 ?>
 
 <div class="container-xxl">
@@ -57,70 +58,101 @@ function generarOpcionesDias()
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="plaza" name="plaza" placeholder="N° Plaza">
+
+
+                                        <datalist id="numeroPlaza">
+                                            <?php /*
+                                            $numeroplaza = ControladorSolSuplente::ctrMostrarDatosSol("plazas", "*", null);
+                                            foreach ($numeroplaza as $value) { */ ?>
+                                            <option value="<?php // echo $value["numeroPlaza"]; 
+                                                            ?>"></option>
+                                            <?php //} 
+                                            ?>
+                                        </datalist>
+                                        <input type="number" class="form-control" name="numeroPlaza" placeholder="N° Plaza">
                                         <label for="plaza">N° Plaza</label>
                                     </div>
                                 </div>
+
+
                                 <div class="col-lg-9">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opcionescargo">
-                                            <?php $cargo = ModeloCargos::mdlMostrarCargos();
-                                                foreach ($cargo as $key => $value) {
-                                                ?>
-                                                <option><?php echo $value["nombreCargo"]; ?></option>
+                                        <select class="form-select" id="nombrecargo" name="id_Nombrecargo" aria-label="Floating label select example" required>
+                                            <option selected></option>
+                                            <?php
+
+                                            $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
+                                            foreach ($cargos as $key => $value) {
+                                            ?>
+                                                <option value="<?php $value["id_NombreCargo"] ?>"><?php echo $value["nombreCargo"]; ?></option>
+
                                             <?php } ?>
-                                        </datalist>
-                                        <input type="text" class="form-control" list="opcionescargo" id="opcionescargo" name="opcionescargo" placeholder="Cargo">
+
+
+
+
+                                        </select>
                                         <label for="cargo">Cargo</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opcionesturno">
+                                        <select class="form-select" id="turnos" name="id_Turno" aria-label="Floating label select example" required>
+                                            <option selected></option>
                                             <?php
-                                            $turno = ModeloSolSuplente::mdlMostrarTurnoSol();
+                                            $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
                                             foreach ($turno as $key => $value) {
                                             ?>
-                                                <option><?php echo $value["turno"]  ?></option>
+                                                <option value="<?php $value["id_Turno"] ?>"><?php echo $value["turno"]  ?></option>
+
                                             <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opcionesturno" id="opcionesturno" name="opcionesturno" placeholder="Escriba para buscar..."></input>
+
+
+
+
+                                        </select>
                                         <label for="turno">Turno</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opcionesAnio">
+                                        <select class="form-select" id="grados" name="id_Grado" aria-label="Floating label select example" required>
+                                            <option selected></option>
                                             <?php
-                                            $grado = ModeloSolSuplente::mdlMostrarGradoSol();
+                                            $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
                                             foreach ($grado as $key => $value) {
                                             ?>
-                                                <option><?php echo $value["grado"]  ?></option>
+                                                <option value="<?php $value["id_Grado"] ?>"><?php echo $value["grado"]  ?></option>
                                             <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opcionesAnio" id="opcionesAnio" name="opcionesAnio" placeholder="Escriba para buscar..."></input>
+                                        </select>
+
+
                                         <label for="anio">Año</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opcionesDivision">
+                                        <select class="form-select" id="diviciones" name="id_Division" aria-label="Floating label select example" required>
+                                            <option selected></option>
                                             <?php
-                                            $Division = ModeloSolSuplente::mdlMostrarDivisionSol();
+                                            $Division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
                                             foreach ($Division as $key => $value) {
                                             ?>
-                                                <option><?php echo $value["division"]  ?></option>
+                                                <option value="<?php $value["id_Division"] ?>"><?php echo $value["division"]  ?></option>
+
                                             <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opcionesDivision" id="opcionesDivision" name="opcionesDivision" placeholder="Escriba para buscar..."></input>
+
+                                        </select>
+
+
                                         <label for="division">División</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCat" name="hsCat" placeholder="hsCat">
-                                            <label for="nombreAgente">Hs. Cát.</label>
+                                            <input type="number" class="form-control" id="hsCatedra" name="hsCatedra" placeholder="hsCat">
+                                            <label for="hsCatedra">Hs. Cát.</label>
                                         </div>
                                     </div>
                                 </div>
@@ -144,23 +176,23 @@ function generarOpcionesDias()
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="nombreAgente" name="nombreAgente" placeholder="Nombre">
-                                        <label for="nombreAgente">Nombre</label>
+                                        <input type="text" class="form-control" id="nombreDocente" name="nombreDocente" placeholder="Nombre">
+                                        <label for="nombreDocente">Nombre</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="apellidoAgente" name="apellidoAgente" placeholder="Apellido">
-                                        <label for="apellidoAgente">Apellido</label>
+                                        <input type="text" class="form-control" id="apellidoDocente" name="apellidoDocente" placeholder="Apellido">
+                                        <label for="apellidoDocente">Apellido</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3">
                                     <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                     <div class="form-floating mb-1">
-                                        <input type="number" class="form-control" id="dniAgente" name="dniAgente" placeholder="DNI">
-                                        <label for="dniAgente">Número de DNI sin puntos</label>
+                                        <input type="number" class="form-control" id="dniDocente" name="dniDocente" placeholder="DNI">
+                                        <label for="dniDocente">Número de DNI sin puntos</label>
                                     </div>
                                 </div>
 
@@ -232,6 +264,7 @@ function generarOpcionesDias()
                             foreach ($institucion as $key => $value) {
                             ?>
                                 <option><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
+                                <input type="hidden" id="id_Institucion" name="id_Institucion" value="<?php echo $value["id_Institucion"] ?>">
                             <?php } ?>
                         </datalist>
 
@@ -241,6 +274,7 @@ function generarOpcionesDias()
                                 <div class="pb-2"> <!-- Datalist Instituciones 1 -->
                                     <label for="institucion1" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion1" name="institucion1" placeholder="Escriba para buscar...">
+                                    <input type="hidden" id="Sede" name="Sede" value=1>
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 1 -->
 
@@ -248,6 +282,7 @@ function generarOpcionesDias()
                                 <div class="pb-2"> <!-- Datalist Instituciones 2 -->
                                     <label for="institucion2" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion2" name="institucion2" placeholder="Escriba para buscar...">
+                                    <input type="hidden" id="Sede" name="Sede" value=0>
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 2 -->
 
@@ -255,6 +290,7 @@ function generarOpcionesDias()
                                 <div class="pb-3"> <!-- Datalist Instituciones 3 -->
                                     <label for="institucion3" id="lblinstitucion3" class="form-label">Tercera Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion3" name="institucion3" placeholder="Escriba para buscar...">
+                                    <input type="hidden" id="Sede" name="Sede" value=0>
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 3 -->
 
@@ -262,12 +298,20 @@ function generarOpcionesDias()
                                 <div class="pb-3"> <!-- Datalist Instituciones 4 -->
                                     <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion4" name="institucion4" placeholder="Escriba para buscar...">
+                                    <input type="hidden" id="Sede" name="Sede" value=0>
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 4 -->
                         </div>
                     </div>
                 </div> <!-- col -->
 
+                <?php
+                $guardar = new ControladorCargos();
+                $guardar->ctrAgregarCargo();
+                
+                ?>
+                
+                
             </div>
 
             <div class="row">
@@ -275,12 +319,20 @@ function generarOpcionesDias()
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-outline-dark btnVolver" pag="cargos"> <i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
-                            <button type="button" class="btn btn-outline-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
+                            <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <?php
+            $id_cargo = "id_Cargo";
+            $valor=$rutas[1];
+            $cargoid=ControladorCargos::ctrMostrarCargos($id_cargo,$valor);
+            //$cargoid["id_Cargo"];
+            $plaza = new ControladorCargos();
+            $plaza->ctrAgregarNumPla();
+        ?>
     </form>
 </div> <!-- container-fluid -->
 
