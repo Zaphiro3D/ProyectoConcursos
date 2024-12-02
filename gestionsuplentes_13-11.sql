@@ -20,10 +20,11 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `gestionsuplentes`
 --
+
 CREATE DATABASE IF NOT EXISTS `gestionsuplentes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `gestionsuplentes`;
 
--- --------------------------------------------------------
+-- -------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `agentes`
@@ -226,7 +227,7 @@ CREATE TABLE `instituciones` (
   `numero` smallint(6) UNSIGNED DEFAULT NULL,
   `nombre` varchar(100) NOT NULL,
   `id_Director` int(11) UNSIGNED DEFAULT NULL,
-  `id_ZonaSupervison` smallint(6) UNSIGNED DEFAULT NULL,
+  `id_ZonaSupervision` smallint(6) UNSIGNED DEFAULT NULL,
   `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -234,7 +235,7 @@ CREATE TABLE `instituciones` (
 -- Volcado de datos para la tabla `instituciones`
 --
 
-INSERT INTO `instituciones` (`id_Institucion`, `id_Tipo`, `cue`, `numero`, `nombre`, `id_Director`, `id_ZonaSupervison`, `eliminado`) VALUES
+INSERT INTO `instituciones` (`id_Institucion`, `id_Tipo`, `cue`, `numero`, `nombre`, `id_Director`, `id_ZonaSupervision`, `eliminado`) VALUES
 (1, 1, 3009962, NULL, 'Dirección Departamental de Escuelas dpto. Concordia', 2, 1, 0),
 (2, 1, 3003006, NULL, 'Servicio Educativo Domiciliario y Hospitalario', 2, 1, 0),
 (3, 2, 3001330, 1, 'Vélez Sarsfield', 12, 6, 0),
@@ -699,7 +700,7 @@ ALTER TABLE `instituciones`
   ADD PRIMARY KEY (`id_Institucion`),
   ADD UNIQUE KEY `id_Institucion` (`id_Institucion`),
   ADD KEY `Instituciones_fk4` (`id_Director`),
-  ADD KEY `Instituciones_fk5` (`id_ZonaSupervison`),
+  ADD KEY `Instituciones_fk5` (`id_ZonaSupervision`),
   ADD KEY `id_Tipo` (`id_Tipo`);
 
 --
@@ -902,7 +903,7 @@ ALTER TABLE `hs_semanal`
 --
 ALTER TABLE `instituciones`
   ADD CONSTRAINT `Instituciones_fk4` FOREIGN KEY (`id_Director`) REFERENCES `agentes` (`id_Agente`),
-  ADD CONSTRAINT `Instituciones_fk5` FOREIGN KEY (`id_ZonaSupervison`) REFERENCES `zonas_supervision` (`id_ZonaSupervision`),
+  ADD CONSTRAINT `Instituciones_fk5` FOREIGN KEY (`id_ZonaSupervision`) REFERENCES `zonas_supervision` (`id_ZonaSupervision`),
   ADD CONSTRAINT `instituciones_ibfk_1` FOREIGN KEY (`id_Tipo`) REFERENCES `tipo_institucion` (`id_Tipo`);
 
 --

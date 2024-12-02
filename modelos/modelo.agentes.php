@@ -10,7 +10,7 @@ class ModeloAgentes{
         if ($agente != null) {
   
             try {
-                $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
+                $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and $agente = :$agente and eliminado = 0 ;");
                 $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetch(PDO::FETCH_ASSOC);

@@ -32,7 +32,7 @@ class ModeloInstituciones{
                 FROM `instituciones` as i 
                 inner join `tipo_institucion` as tipo on tipo.id_Tipo = i.id_Tipo
                 left join `agentes` as a on i.id_Director = a.id_Agente
-                left join `zonas_supervision` as z on i.id_ZonaSupervison = z.id_ZonaSupervision
+                left join `zonas_supervision` as z on i.id_ZonaSupervision = z.id_ZonaSupervision
                 where i.eliminado = 0 order by tipo.id_Tipo, i.numero;");
                 
                 $instituciones->execute();
@@ -140,5 +140,6 @@ class ModeloInstituciones{
             return "Error: " . $e->getMessage();
         }
     }
-    
+ 
+
 }

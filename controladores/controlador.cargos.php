@@ -29,7 +29,8 @@ class ControladorCargos{
             $url = ControladorPlantilla::url() . "cargos";
             $respuesta = ModeloCargos::mdlAgregarCargos($datos);
 
-            if ($respuesta == "ok") {
+            if ($respuesta[1] == "ok") {
+                 
                 echo '<script>
                     fncSweetAlert(
                     "success",
@@ -37,6 +38,7 @@ class ControladorCargos{
                     "' . $url . '"
                     );
                     </script>';
+                    
             } else {
                 echo "<script>
                 Swal.fire({
@@ -54,6 +56,8 @@ class ControladorCargos{
     {
         if (isset($_POST["numeroPlaza"])) {
 
+            
+           
 
             $datos = array(
 

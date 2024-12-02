@@ -32,12 +32,12 @@ class ControladorInstituciones{
                 "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
                 "id_Director" => $id_dire,
-                "id_ZonaSupervison" => $id_Zona                
+                "id_ZonaSupervision" => $id_Zona                
             );
             
-            // print_r($datos);
+            //print_r($datos);
 
-            // return;
+             //return;
 
             //podemos volver a la página de datos
 
@@ -48,7 +48,7 @@ class ControladorInstituciones{
                 echo '<script>
                     fncSweetAlert(
                     "success",
-                    "La institución ' . htmlspecialchars($_POST["nombre"]) . '- CUE: ' . htmlspecialchars($_POST["cue"]) . ' se agregó correctamente",
+                    "La institución ' . htmlspecialchars($_POST["nombre"]) . '- CUE: ' . intval($_POST["cue"]) . ' se agregó correctamente",
                     "' . $url . '"
                     );
                     </script>';
@@ -81,12 +81,12 @@ class ControladorInstituciones{
                 "numero" => htmlspecialchars($_POST["numero"]),
                 "nombre" => htmlspecialchars($_POST["nombre"]),
                 "id_Director" => $id_dire,
-                "id_ZonaSupervison" => $id_Zona   
+                "id_ZonaSupervision" => $id_Zona   
                 
             );
-            print_r($datos);
+            //print_r($datos);
 
-            return;
+            //return;
 
             $url = ControladorPlantilla::url() . "instituciones";
             $respuesta = ModeloInstituciones::mdlEditarInstitucion($datos);

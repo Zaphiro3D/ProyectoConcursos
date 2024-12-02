@@ -58,18 +58,15 @@ function generarOpcionesDias()
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-
-
                                         <datalist id="numeroPlaza">
-                                            <?php /*
+                                            <?php
                                             $numeroplaza = ControladorSolSuplente::ctrMostrarDatosSol("plazas", "*", null);
-                                            foreach ($numeroplaza as $value) { */ ?>
-                                            <option value="<?php // echo $value["numeroPlaza"]; 
-                                                            ?>"></option>
-                                            <?php //} 
+                                            foreach ($numeroplaza as $value) {  ?>
+                                                <option value="<?php echo $value["numeroPlaza"]; ?>"></option>
+                                            <?php }
                                             ?>
                                         </datalist>
-                                        <input type="number" class="form-control" name="numeroPlaza" placeholder="N° Plaza">
+                                        <input type="number" class="form-control" list="numeroPlaza" name="numeroPlaza" placeholder="N° Plaza">
                                         <label for="plaza">N° Plaza</label>
                                     </div>
                                 </div>
@@ -274,7 +271,7 @@ function generarOpcionesDias()
                                 <div class="pb-2"> <!-- Datalist Instituciones 1 -->
                                     <label for="institucion1" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion1" name="institucion1" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede" name="Sede" value=1>
+                                    <input type="hidden" id="Sede" name="Sede" value="1">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 1 -->
 
@@ -282,7 +279,7 @@ function generarOpcionesDias()
                                 <div class="pb-2"> <!-- Datalist Instituciones 2 -->
                                     <label for="institucion2" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion2" name="institucion2" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede" name="Sede" value=0>
+                                    <input type="hidden" id="Sede2" name="Sede" value="0">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 2 -->
 
@@ -290,7 +287,7 @@ function generarOpcionesDias()
                                 <div class="pb-3"> <!-- Datalist Instituciones 3 -->
                                     <label for="institucion3" id="lblinstitucion3" class="form-label">Tercera Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion3" name="institucion3" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede" name="Sede" value=0>
+                                    <input type="hidden" id="Sede3" name="Sede" value="0">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 3 -->
 
@@ -298,7 +295,7 @@ function generarOpcionesDias()
                                 <div class="pb-3"> <!-- Datalist Instituciones 4 -->
                                     <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
                                     <input class="form-control" list="OpcionesInstitucion" id="institucion4" name="institucion4" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede" name="Sede" value=0>
+                                    <input type="hidden" id="Sede4" name="Sede" value="0">
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 4 -->
                         </div>
@@ -309,9 +306,7 @@ function generarOpcionesDias()
                 $guardar = new ControladorCargos();
                 $guardar->ctrAgregarCargo();
                 
-                ?>
-                
-                
+               ?>
             </div>
 
             <div class="row">
@@ -325,14 +320,6 @@ function generarOpcionesDias()
                 </div>
             </div>
         </div>
-        <?php
-            $id_cargo = "id_Cargo";
-            $valor=$rutas[1];
-            $cargoid=ControladorCargos::ctrMostrarCargos($id_cargo,$valor);
-            //$cargoid["id_Cargo"];
-            $plaza = new ControladorCargos();
-            $plaza->ctrAgregarNumPla();
-        ?>
     </form>
 </div> <!-- container-fluid -->
 

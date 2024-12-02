@@ -115,6 +115,7 @@ dniDocente*/
             $stmt->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
             $stmt->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
 
+            
             if ($stmt->execute()) {
                 return "ok";
             } else {
@@ -126,6 +127,7 @@ dniDocente*/
     }
 
     static public function mdlAgregarNumPla($datos)
+    
     {
         try {
             // SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;
@@ -137,7 +139,7 @@ dniDocente*/
 
 
             $stmt->bindParam(":numeroPlaza", $datos["numeroPLaza"], PDO::PARAM_INT);
-            $stmt->bindParam(":id_Cargo", $datos["id_cargo"], PDO::PARAM_INT);
+            $stmt->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
             $stmt->bindParam(":id_Institucion", $datos["id_Institucion"], PDO::PARAM_INT);
             $stmt->bindParam(":Sede", $datos["Sede"], PDO::PARAM_INT);
             
