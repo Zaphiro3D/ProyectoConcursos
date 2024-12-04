@@ -4,6 +4,22 @@
 $(document).on("click", ".btnGuardar", function (e) {
   e.preventDefault(); // Previene el envío automático del formulario
 
+  
+  // Verificar si gridRadiosComparte existe
+  if ($('[name="gridRadiosComparte"]').length > 0) {
+    const radios = $('[name="gridRadiosComparte"]');
+    if (radios.is(':checked')) {
+        // Implementa tu lógica específica si el radio button está presente y seleccionado
+        console.log("gridRadiosComparte existe y está seleccionado.");
+    } else {
+        console.log("gridRadiosComparte existe, pero no se seleccionó ningún valor.");
+    }
+  } else {
+    console.log("gridRadiosComparte no existe en este formulario.");
+  }
+
+
+  // Confirmación con SweetAlert
   Swal.fire({
       title: "¿Está seguro que desea guardar?",
       text: "Confirme si desea guardar los cambios.",
@@ -16,7 +32,8 @@ $(document).on("click", ".btnGuardar", function (e) {
   }).then(function (result) {
       if (result.isConfirmed) {
           // Enviar el formulario manualmente si se confirma
-          $("form").submit();
+            $("form").submit(); 
+          
       }
   });
 });

@@ -1,5 +1,7 @@
 <?php
 
+require 'validador.php';
+
 class ControladorAgentes{
     // ==============================================================
     // Mostrar Agentes
@@ -14,60 +16,86 @@ class ControladorAgentes{
     // ==============================================================
     public function ctrAgregarAgente()
     {
-        if (isset($_POST["dni"])) {
+        $errores = []; // Inicializar arreglo de errores
+        $validado = ""; // Inicializar clase de validación
 
-            if(isset($_POST["dlInstituciones"])){
-                $id = "";
-            } else{
-                if(isset($_POST["dlZonas"])){
-                    $id = "";
-                } else{
-                    if (htmlspecialchars($_POST["id_Rol"]) == ""){
-                        $id = "";
-                    }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $validador = new validador();
+
+            // Array con los nombres de los campos a validar
+            $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena'];
+
+            // Validar campos vacíos
+            foreach ($campos as $campo) {
+                if ($validador->string($_POST[$campo] ?? '')) {   
+                    $errores[$campo] = "Por favor, complete este campo.";
                 }
             }
-            $datos = array(
-                "apellido" => htmlspecialchars($_POST["apellido"]),
-                "nombre" => htmlspecialchars($_POST["nombre"]),
-                "dni" => htmlspecialchars($_POST["dni"]),
-                "telefono" => htmlspecialchars($_POST["telefono"]),
-                "direccion" => htmlspecialchars($_POST["direccion"]),
-                "email" => htmlspecialchars($_POST["email"]),
-                "usuario" => htmlspecialchars($_POST["email"]),
-                "password" => htmlspecialchars($_POST["contrasena"]),
-                "id_Rol" => htmlspecialchars($_POST["rol"])
+        
+            if (empty($errores)) {
+                if(isset($_POST["dlInstituciones"])){
+                    $id = "";
+                } else{
+                    if(isset($_POST["dlZonas"])){
+                        $id = "";
+                    } else{
+                        if (htmlspecialchars($_POST["id_Rol"]) == ""){
+                            $id = "";
+                        }
+                    }
+                }
+                $datos = array(
+                    "apellido" => htmlspecialchars($_POST["apellido"]),
+                    "nombre" => htmlspecialchars($_POST["nombre"]),
+                    "dni" => htmlspecialchars($_POST["dni"]),
+                    "telefono" => htmlspecialchars($_POST["telefono"]),
+                    "direccion" => htmlspecialchars($_POST["direccion"]),
+                    "email" => htmlspecialchars($_POST["email"]),
+                    "usuario" => htmlspecialchars($_POST["email"]),
+                    "password" => htmlspecialchars($_POST["contrasena"]),
+                    "id_Rol" => htmlspecialchars($_POST["rol"])
+                    
+                );
                 
-            );
-            
-            // print_r($datos);
+                // print_r($datos);
 
-            // return;
+                // return;
 
-            //podemos volver a la página de datos
+                //podemos volver a la página de datos
 
-            $url = ControladorPlantilla::url() . "agentes";
-            $respuesta = ModeloAgentes::mdlAgregarAgente($datos);
 
-            if ($respuesta == "ok") {
-                echo '<script>
-                    fncSweetAlert(
-                    "success",
-                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
-                    "' . $url . '"
-                    );
-                    </script>';
+                $url = ControladorPlantilla::url() . "agentes";
+                $respuesta = ModeloAgentes::mdlAgregarAgente($datos);
+
+                if ($respuesta == "ok") {
+                    echo '<script>
+                        fncSweetAlert(
+                        "success",
+                        "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
+                        "' . $url . '"
+                        );
+                        </script>';
+                }
+                else{
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron agregar los datos del agente.',
+                        icon: 'error'
+                    });
+                    </script>";
+                }
             }
             else{
-                echo "<script>
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudieron agregar los datos del agente.',
-                    icon: 'error'
-                });
-                </script>";
+                $validado = "was-validated";
             }
-        } else{ /*print_r("not post");*/ }
+        }
+
+        // Retornar resultados para usarlos en el HTML
+        return [
+            'errores' => $errores,
+            'validado' => $validado
+        ];
     }
 
     // ==============================================================
@@ -75,43 +103,70 @@ class ControladorAgentes{
     // ==============================================================
     public function ctrEditarAgente()
     {
-        if (isset($_POST["id_Agente"])) {
-            $datos = array(
-                "apellido" => htmlspecialchars($_POST["apellido"]),
-                "nombre" => htmlspecialchars($_POST["nombre"]),
-                "dni" => htmlspecialchars($_POST["dni"]),
-                "telefono" => htmlspecialchars($_POST["telefono"]),
-                "direccion" => htmlspecialchars($_POST["direccion"]),
-                "email" => htmlspecialchars($_POST["email"]),
-                "usuario" => htmlspecialchars($_POST["email"]),
-                "password" => htmlspecialchars($_POST["contrasena"]),
-                "id_Rol" => htmlspecialchars($_POST["rol"]),
-                "id_Agente" => htmlspecialchars($_POST["id_Agente"])
-                
-            );
 
-            $url = ControladorPlantilla::url() . "agentes";
-            $respuesta = ModeloAgentes::mdlEditarAgente($datos);
-            
-            if ($respuesta == "ok") {                
-                echo '<script>
-                    fncSweetAlert(
-                    "success",
-                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
-                    "' . $url . '"
-                    );
-                    </script>';
+        $errores = []; // Inicializar arreglo de errores
+        $validado = ""; // Inicializar clase de validación
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $validador = new validador();
+
+            // Array con los nombres de los campos a validar
+            $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena'];
+
+            // Validar campos vacíos
+            foreach ($campos as $campo) {
+                if ($validador->string($_POST[$campo] ?? '')) {   
+                    $errores[$campo] = "Por favor, complete este campo.";
+                }
+            }
+        
+            if (empty($errores)) {
+                $datos = array(
+                    "apellido" => htmlspecialchars($_POST["apellido"]),
+                    "nombre" => htmlspecialchars($_POST["nombre"]),
+                    "dni" => htmlspecialchars($_POST["dni"]),
+                    "telefono" => htmlspecialchars($_POST["telefono"]),
+                    "direccion" => htmlspecialchars($_POST["direccion"]),
+                    "email" => htmlspecialchars($_POST["email"]),
+                    "usuario" => htmlspecialchars($_POST["email"]),
+                    "password" => htmlspecialchars($_POST["contrasena"]),
+                    "id_Rol" => htmlspecialchars($_POST["rol"]),
+                    "id_Agente" => htmlspecialchars($_POST["id_Agente"])
+                    
+                );
+
+                $url = ControladorPlantilla::url() . "agentes";
+                $respuesta = ModeloAgentes::mdlEditarAgente($datos);
+                
+                if ($respuesta == "ok") {                
+                    echo '<script>
+                        fncSweetAlert(
+                        "success",
+                        "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                        "' . $url . '"
+                        );
+                        </script>';
+                }
+                else{
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron actualizar los datos del agente.',
+                        icon: 'error'
+                    });
+                    </script>";
+                }
             }
             else{
-                echo "<script>
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudieron actualizar los datos del agente.',
-                    icon: 'error'
-                });
-                </script>";
+                $validado = "was-validated";
             }
         } 
+
+        // Retornar resultados para usarlos en el HTML
+        return [
+            'errores' => $errores,
+            'validado' => $validado
+        ];
     }
 
     // ==============================================================

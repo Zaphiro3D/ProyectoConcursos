@@ -1,7 +1,7 @@
 <?php
     // Función para opciones de select días
     function generarOpcionesDias() {
-        $dias = ControladorSolSuplente::ctrMostrarDiasSol();
+        $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "nombre");
         $opciones = '<option>...</option>';
         foreach ($dias as $value) { 
             $opciones .= "<option>{$value['nombre']}</option>";
@@ -9,9 +9,9 @@
         return $opciones;
     }
 
-    $grado = ModeloSolSuplente::mdlMostrarDatosSol("grados"); // Obtiene todas las columnas de la tabla "grados"
-    $turno = ModeloSolSuplente::mdlMostrarDatosSol("Turnos"); // Obtiene todas las columnas de la tabla "Turnos"
-    $division = ModeloSolSuplente::mdlMostrarDatosSol("Divisiones"); // Obtiene todas las columnas de la tabla "Divisiones"
+    $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados"); // Obtiene todas las columnas de la tabla "grados"
+    $turno = ControladorSolSuplente::ctrMostrarDatosSol("Turnos"); // Obtiene todas las columnas de la tabla "Turnos"
+    $division = ControladorSolSuplente::ctrMostrarDatosSol("Divisiones"); // Obtiene todas las columnas de la tabla "Divisiones"
 ?>
 
 <div class="container-xxl">
@@ -27,25 +27,19 @@
                 <div class="col-lg-12">
                     <div class="col-lg-12">
                         <div class="card">
-
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Institución Sede</h5>
                             </div><!-- end card header -->
                             
                             <div class="card-body">
-
-                                    <fieldset class="row mb-2 mt-1"> 
-                                        <!-- Escuela Sede -->
-                                        <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
-                                        <div>
-                                        
+                                <fieldset class="row mb-2 mt-1"> 
+                                    <!-- Escuela Sede -->
+                                    <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
+                                    <div>
                                         <label for="institucionSede"  id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" placeholder="Escriba para buscar...">
-                                    
-                                            <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
-                                        </div>
-                                    </fieldset>
-
+                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" name="institucionSede" placeholder="Escriba para buscar...">
+                                    </div>
+                                </fieldset>
                             </div>
                         </div>  <!-- card datos sede -->
                     </div>  <!-- col -->   
@@ -60,19 +54,19 @@
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="plaza" placeholder="N° Plaza">
+                                        <input type="number" class="form-control" id="plaza" name="plaza" placeholder="N° Plaza">
                                         <label for="plaza">N° Plaza</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-9">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cargo" placeholder="Cargo">
+                                        <input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo">
                                         <label for="cargo">Cargo</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opocionesturno">
+                                        <datalist id="opcionesturno">
                                             <?php 
                                                 
                                                 foreach($turno as $key => $value){
@@ -80,13 +74,13 @@
                                             <option><?php echo $value["turno"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesturno" id="opocionesturno" placeholder="Escriba para buscar..." ></input>
+                                        <input class="form-control fs-14" list="opcionesturno" id="turno" name="turno" placeholder="Escriba para buscar..." ></input>
                                         <label for="turno">Turno</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <datalist id="opocionesAnio">
+                                        <datalist id="opcionesAnio">
                                             <?php 
                                                 
                                                 foreach($grado as $key => $value){
@@ -94,7 +88,7 @@
                                             <option><?php echo $value["grado"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesAnio" id="opocionesAnio" placeholder="Escriba para buscar..." ></input>
+                                        <input class="form-control fs-14" list="opcionesAnio" id="anio" name="anio" placeholder="Escriba para buscar..." ></input>
                                         <label for="anio">Año</label>
                                     </div>
                                 </div>
@@ -108,7 +102,7 @@
                                             <option><?php echo $value["division"]  ?></option>
                                             <?php } ?>
                                         </datalist>
-                                        <input class="form-control fs-14" list="opocionesDivision" id="opocionesDivision" placeholder="Escriba para buscar..." ></input>
+                                        <input class="form-control fs-14" list="opocionesDivision" id="division" name="division" placeholder="Escriba para buscar..." ></input>
                                         <label for="division">División</label>
                                     </div>
                                 </div>
@@ -116,7 +110,7 @@
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCat" placeholder="hsCat">
+                                            <input type="number" class="form-control" id="hsCat" name="hsCat" placeholder="hsCat">
                                             <label for="hsCat">Hs. Cát.</label>
                                         </div>
                                     </div>
@@ -141,14 +135,14 @@
                                 <div class="col-lg-12">
                                     <div class="col-lg-12">
                                         <div class="form-floating my-3">
-                                            <input type="text" class="form-control" id="nombreAgente" placeholder="Nombre">
+                                            <input type="text" class="form-control" id="nombreAgente" name="nombreAgente" placeholder="Nombre">
                                             <label for="nombreAgente">Nombre</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="apellidoAgente" placeholder="Apellido">
+                                            <input type="text" class="form-control" id="apellidoAgente" name="apellidoAgente" placeholder="Apellido">
                                             <label for="apellidoAgente">Apellido</label>
                                         </div>
                                     </div>
@@ -156,7 +150,7 @@
                                     <div class="col-lg-12">
                                         <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="dniAgente" placeholder="DNI">
+                                            <input type="number" class="form-control" id="dniAgente" name="dniAgente" placeholder="DNI">
                                             <label for="dniAgente">Número de DNI sin puntos</label>
                                         </div>
 
@@ -183,7 +177,7 @@
                                     <!-- Opciones Datalist Motivo -->       
                                     <datalist id="opcionesMotivo">
                                         <?php
-                                            $motivoSol = ControladorSolSuplente::ctrMostrarMotivoSol();
+                                            $motivoSol = ControladorSolSuplente::ctrMostrarDatosSol("motivos_suplencia");
                                             foreach ($motivoSol as $key => $value) {   
                                         ?>
                                         <option ><?php echo $value["articulo"] . ' "' . $value["inciso"] . '" - ' . $value["resolucion"] . " - ". $value["motivo"] ?> </option>
@@ -193,7 +187,7 @@
                                     <div class="pb-1">   <!-- Datalist Motivo-->
                                         <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
                                         <div class="form-floating">
-                                            <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
+                                            <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" name="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
                                             <label for="opcionesMotivo">Escriba para buscar...</label>
                                         </div>   
                                     </div>     
@@ -213,7 +207,7 @@
                                 <div class="row ">
                                     <div class="col-lg-6 mb-1">
                                         <label class="form-label">Fecha Inicio</label>
-                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" placeholder="Fecha Inicio">
+                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" name="fechaInicio" placeholder="Fecha Inicio">
                                     </div>         
                                     
                                     <div class="col-lg-6 mb-1">
@@ -223,14 +217,14 @@
 
                                             <!-- Checkbox de ¿Abierto? -->
                                             <div class="form-check d-flex align-items-center">
-                                                <input type="checkbox" class="form-check-input" id="checkAbierto" style="margin-right: 5px;">
+                                                <input type="checkbox" class="form-check-input" id="checkAbierto" name="checkAbierto" style="margin-right: 5px;">
                                                 <label class="form-check-label" for="checkAbierto">¿Fin Abierto?</label>
                                             </div>
                                         </div>
                                         
                                         <!-- Campo de entrada para la fecha -->
                                         <div class="mt-2">
-                                            <input type="text" class="form-control AR-datepicker" id="fechaFin" placeholder="Fecha Fin">
+                                            <input type="text" class="form-control AR-datepicker" id="fechaFin" name="fechaFin" placeholder="Fecha Fin">
                                         </div> 
                                     </div>
 
@@ -252,7 +246,7 @@
                         <div class="card-body">
                             <div class="col-lg-12">
                                 <div class="form-floating my-3">
-                                    <input type="text" class="form-control" id="observaciones" placeholder="observaciones">
+                                    <input type="text" class="form-control" id="observaciones" name="observaciones" placeholder="observaciones">
                                     <label for="observaciones">Observaciones</label>
                                 </div>
                             </div>
@@ -324,7 +318,7 @@
 
                         <div class="card-body">
                             <?php
-                            // Función para generar el bloque de institución
+                            // Función para generar el bloque de horarios de institución
                             function generarBloqueInstitucion($numeroInstitucion) {
                                 ob_start(); // Iniciar el almacenamiento en búfer
                             ?>
@@ -334,8 +328,8 @@
                                         
                                         <!-- Datalist Instituciones <?php echo $numeroInstitucion; ?> -->
                                         <div class="col-12 pb-2">   
-                                            <label for="institucion<?php echo $numeroInstitucion; ?>" id="lblinstitucion<?php echo $numeroInstitucion; ?>" class="form-label">Institución <?php echo $numeroInstitucion; ?></label>
-                                            <input class="form-control" list="OpcionesInstitucion" id="institucion<?php echo $numeroInstitucion; ?>" placeholder="Escriba para buscar...">
+                                            <label for="institucion<?php echo $numeroInstitucion; ?>" id="lblinstitucion<?php echo $numeroInstitucion; ?>"  class="form-label">Institución <?php echo $numeroInstitucion; ?></label>
+                                            <input class="form-control" list="OpcionesInstitucion" id="institucion<?php echo $numeroInstitucion; ?>" name="institucion<?php echo $numeroInstitucion; ?>" placeholder="Escriba para buscar...">
                                         </div>
 
                                         <!-- Encabezados para pantallas grandes -->
@@ -352,7 +346,7 @@
                                             <!-- Días -->
                                             <div class="col-12 col-md-5">
                                                 <h6 class="d-md-none">Día <?php echo $i; ?></h6>
-                                                <select class="form-select" id="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>">
+                                                <select class="form-select" id="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>" name="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>">
                                                     <?php echo generarOpcionesDias(); ?>
                                                 </select>
                                             </div>
@@ -360,13 +354,13 @@
                                             <!-- Hora Inicio -->
                                             <div class="col-12 col-md-3">
                                                 <h6 class="d-md-none">Hora Inicio</h6>
-                                                <input id="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                                <input id="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" name="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
                                             </div>
 
                                             <!-- Hora Fin -->
                                             <div class="col-12 col-md-3">
                                                 <h6 class="d-md-none">Hora Fin</h6>
-                                                <input id="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                                <input id="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" name="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
                                             </div>
 
                                             <!-- Botón Borrar Horario -->
@@ -392,11 +386,9 @@
                                 echo generarBloqueInstitucion($j);
                             }
                             ?>                        
-                            
                         </div>
                     </div>
                 </div>  <!-- col -->
-
             </div>
 
             <div class="row">
@@ -413,3 +405,6 @@
         </div>
     </form>
 </div> <!-- container-fluid -->
+
+<!-- Script js específico para modificaciones dinámicas de formulario -->
+<script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>

@@ -70,17 +70,46 @@ class ModeloSolSuplente{
     }
 
     static public function mdlMostrarDatosSol($tabla, $columnas = "*", $condicion = "")
-{
-    try {
-        $conexion = Conexion::conectar();
-        $query = "SELECT $columnas FROM `$tabla` $condicion";
-        $stmt = $conexion->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        return "Error: " . $e->getMessage();
-    }
+    {
+        try {
+            $conexion = Conexion::conectar();
+            $query = "SELECT $columnas FROM `$tabla` $condicion";
+            $stmt = $conexion->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
 }
+
+    static public function mdlAgregarSolSuplente($datos) {
+        
+        try {
+            $conexion = Conexion::conectar();
+            $stmt = $conexion->prepare("INSERT INTO solicitudes_suplente 
+                (id_Cargo, id_EstadoSol, numeroTramite, fechaInicio, fechaFin, observaciones, id_MotivoSuplencia) 
+                VALUES 
+                (:id_Cargo, :id_EstadoSol, :numeroTramite, :fechaInicio, :fechaFin, :observaciones, :id_MotivoSuplencia)");
+            
+            // Asignación de parámetros
+            $stmt->bindParam(":id_Cargo", $datos['id_Cargo'], PDO::PARAM_INT);
+            $stmt->bindParam(":id_EstadoSol", $datos['id_EstadoSol'], PDO::PARAM_INT);
+            $stmt->bindParam(":numeroTramite", $datos['numeroTramite'], PDO::PARAM_STR);
+            $stmt->bindParam(":fechaInicio", $datos['fechaInicio'], PDO::PARAM_STR);
+            $stmt->bindParam(":fechaFin", $datos['fechaFin'], PDO::PARAM_STR);
+            $stmt->bindParam(":observaciones", $datos['observaciones'], PDO::PARAM_STR);
+            $stmt->bindParam(":id_MotivoSuplencia", $datos['id_MotivoSuplencia'], PDO::PARAM_INT);
+
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
 
     
 }

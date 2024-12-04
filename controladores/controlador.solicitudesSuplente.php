@@ -7,8 +7,14 @@ class ControladorSolSuplente{
         return $respuesta;
     }
     
-    static public function ctrMostrarDatosSol($tabla, $columnas, $condicion){
+    static public function ctrMostrarDatosSol($tabla, $columnas = "*", $condicion = ""){
         $respuesta = ModeloSolSuplente::mdlMostrarDatosSol($tabla,$columnas,$condicion);
         return $respuesta;
     }
+
+    static public function ctrAgregarSolSuplente($datos) {
+        $respuesta = ModeloSolSuplente::mdlAgregarSolSuplente($datos);
+        return $respuesta;
+    }
+    
 }
