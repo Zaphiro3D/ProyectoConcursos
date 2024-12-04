@@ -31,7 +31,19 @@ class ControladorAgentes{
                     $errores[$campo] = "Por favor, complete este campo.";
                 }
             }
-        
+
+            // Validar teléfono
+            if ($_POST['telefono'] != ""){
+                if (!$validador->telefono($_POST['telefono'] ?? '')) {
+                    $errores['telefono'] = "El número de teléfono ingresado no es válido.";
+                }
+            }
+
+            // Validar Rol
+            if (empty($_POST['rol']) || $_POST['rol'] == "") {
+                $errores['rol'] = "Por favor, seleccione un rol válido.";
+            }
+
             if (empty($errores)) {
                 if(isset($_POST["dlInstituciones"])){
                     $id = "";
@@ -111,13 +123,30 @@ class ControladorAgentes{
             $validador = new validador();
 
             // Array con los nombres de los campos a validar
-            $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena'];
+            $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena', 'rol'];
 
             // Validar campos vacíos
             foreach ($campos as $campo) {
                 if ($validador->string($_POST[$campo] ?? '')) {   
                     $errores[$campo] = "Por favor, complete este campo.";
                 }
+            }
+
+            // Validar teléfono
+            if ($_POST['telefono'] != ""){
+                if (!$validador->telefono($_POST['telefono'] ?? '')) {
+                    $errores['telefono'] = "El número de teléfono ingresado no es válido.";
+                }
+            }
+
+            // Validar DNI
+            if (!$validador->dni($_POST['dni'] ?? '')) {
+                $errores['dni'] = "El DNI ingresado no es válido. Debe contener 7 u 8 dígitos.";
+            }
+
+            // Validar Rol
+            if (empty($_POST['rol']) || $_POST['rol'] == "") {
+                $errores['rol'] = "Por favor, seleccione un rol válido.";
             }
         
             if (empty($errores)) {
@@ -247,7 +276,7 @@ class ControladorAgentes{
         }
     }
 
-    static public function ctrMostrorRolAgentes(){
+    static public function ctrMostrarRolAgentes(){
         $respuesta = ModeloAgentes::mdlMostrarRolAgentes();
         return $respuesta;
     }

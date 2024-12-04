@@ -6,7 +6,7 @@ $valor = $rutas[1];
 $agente_selec = ControladorAgentes::ctrMostrarAgentes($agente, $valor);
 $zonas = ControladorZonas::ctrMostrarZonas();
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-$rol = ControladorAgentes::ctrMostrorRolAgentes();
+$rol = ControladorAgentes::ctrMostrarRolAgentes();
 
 $validador = new validador();
 
@@ -25,7 +25,7 @@ if ($agente_selec) {
                 <h4 class="fs-22 fw-bold m-0">Editar Agente</h4>
             </div>
         </div>
-        <form method="POST" class="needs-validation <?php echo $validado; ?>" novalidate>
+        <form method="POST" novalidate>
             <div class="row"> <!-- Floating Labels -->
                 <div class="col-12">
                     <div class="card">
@@ -79,7 +79,7 @@ if ($agente_selec) {
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $agente_selec["telefono"]; ?>">
+                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : 'is-invalid'; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $agente_selec["telefono"]; ?>">
                                         <label for="telefono">Teléfono sin 0 ni 15</label>
                                         <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
                                     </div>
@@ -100,19 +100,40 @@ if ($agente_selec) {
                                 <div class="col-lg-6">
                                     <h6 class="fs-15 mb-3">Rol</h6>
                                     <div class="form-floating mb-3">
-                                        <select class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" id="rol" name="rol" aria-label="Floating label select example" required>
+                                    <select 
+                                        class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" 
+                                        id="rol" 
+                                        name="rol" 
+                                        aria-label="Floating label select example" 
+                                        required>
+                                        <!-- Opción predeterminada no válida -->
+                                        <option value="" disabled <?php echo empty($_POST['rol']) && empty($agente_selec["id_Rol"]) ? 'selected' : ''; ?>>
+                                            Seleccione un rol
+                                        </option>
 
-                                            <option value="<?php echo $agente_selec["id_Rol"]; ?>" selected>
-                                                <?php echo $agente_selec["rol"]; ?>
+                                        <!-- Opciones dinámicas -->
+                                        <?php foreach ($rol as $key => $value): ?>
+                                            <option 
+                                                value="<?php echo $value["idrol"]; ?>" 
+                                                <?php
+                                                    // Priorizar selección del formulario si fue enviado
+                                                    if (isset($_POST['rol']) && $_POST['rol'] == $value["idrol"]) {
+                                                        echo 'selected';
+                                                    }
+                                                    // Si no hay envío, mostrar el rol actual del agente
+                                                    elseif (!isset($_POST['rol']) && $agente_selec["id_Rol"] == $value["idrol"]) {
+                                                        echo 'selected';
+                                                    }
+                                                ?>>
+                                                <?php echo htmlspecialchars($value["rol"]); ?>
                                             </option>
-                                            <?php
-                                            foreach ($rol as $key => $value) {
-                                            ?>
-                                                <option value="<?php echo $value["idrol"]; ?>"><?php echo $value["rol"];?> </option>
-                                            <?php } ?>
-                                        </select>
-                                        <label for="rol">Elegir rol</label>
-                                        <div class="invalid-feedback"><?php echo $errores['rol'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <label for="rol">Elegir rol</label>
+                                    <div class="invalid-feedback">
+                                        <?php echo $errores['rol'] ?? 'Por favor, seleccione un rol válido.'; ?>
+                                    </div>
+
 
                                     </div>
                                 </div>

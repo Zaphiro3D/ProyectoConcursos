@@ -166,7 +166,7 @@ class ModeloAgentes{
 
     static public function mdlMostrarRolAgentes(){
         try{
-        $stmt= Conexion::conectar()->prepare("SELECT r.id_Rol as idrol,r.rol FROM roles AS r WHERE r.rol!='Jefe'");
+        $stmt= Conexion::conectar()->prepare("SELECT r.id_Rol as idrol,r.rol FROM roles AS r");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){

@@ -2,7 +2,7 @@
 
 $zonas = ControladorZonas::ctrMostrarZonas();
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-$rol = ControladorAgentes::ctrMostrorRolAgentes();
+$rol = ControladorAgentes::ctrMostrarRolAgentes();
 
 $validador = new validador();
 
@@ -20,7 +20,7 @@ $validado = $resultado['validado'] ?? '';
             <h4 class="fs-22 fw-bold m-0">Nuevo Agente</h4>
         </div>
     </div>
-    <form method="POST" class="needs-validation <?php echo $validado; ?>" novalidate>
+    <form method="POST" novalidate>
         <div class="row"> <!-- Floating Labels -->
             <div class="col-12">
                 <div class="card">
@@ -33,7 +33,7 @@ $validado = $resultado['validado'] ?? '';
                         <div class="row">
                             <div class="col-lg-3">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?= $_POST["dni"] ?? '' ?>" required>
+                                    <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?php echo htmlspecialchars($_POST['dni'] ?? ''); ?>" required>
                                     <label for="dni">Número de DNI sin puntos</label>
                                     <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div> 
                                 </div>
@@ -49,7 +49,7 @@ $validado = $resultado['validado'] ?? '';
 
                             <div class="col-lg-5">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?= $_POST["nombre"] ?? '' ?>" required>
+                                    <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?php echo htmlspecialchars($_POST['nombre'] ?? ''); ?>" required>
                                     <label for="nombre">Nombre completo</label>
                                     <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div> 
                                 </div>
@@ -59,7 +59,7 @@ $validado = $resultado['validado'] ?? '';
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?= $_POST["email"] ?? '' ?>" required>
+                                    <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
                                     <label for="email">Email</label>
                                     <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div> 
                                 </div>
@@ -67,14 +67,14 @@ $validado = $resultado['validado'] ?? '';
 
                             <div class="col-lg-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control <?php echo isset($errores['direccion']) ? 'is-invalid' : ''; ?>" id="direccion" name="direccion" placeholder="Direccion" value="<?= $_POST["direccion"] ?? '' ?>">
+                                    <input type="text" class="form-control <?php echo isset($errores['direccion']) ? 'is-invalid' : ''; ?>" id="direccion" name="direccion" placeholder="Direccion" value="<?php echo htmlspecialchars($_POST['direccion'] ?? ''); ?>">
                                     <label for="direccion">Dirección</label>
                                 </div>
                             </div>
 
                             <div class="col-lg-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?= $_POST["telefono"] ?? '' ?>">
+                                    <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo htmlspecialchars($_POST['telefono'] ?? ''); ?>">
                                     <label for="telefono">Teléfono sin 0 ni 15</label>
                                     <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
                                 </div>
@@ -98,16 +98,30 @@ $validado = $resultado['validado'] ?? '';
                                     <div class="col-lg-6">
                                         <h6 class="fs-15 mb-3">Rol</h6>
                                         <div class="form-floating mb-3">
-                                            <select class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" id="rol" name="rol" aria-label="Floating label select example" required>
-                                                <option selected></option>
-                                                <?php
-                                                foreach ($rol as $key => $value) {
-                                                ?>
-                                                    <option value="<?php echo $value["idrol"]; ?>"><?php echo $value["rol"];?> </option>
-                                                <?php } ?>
+                                            <select 
+                                                class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" 
+                                                id="rol" 
+                                                name="rol" 
+                                                aria-label="Floating label select example" 
+                                                required>
+                                                <!-- Opción predeterminada no válida -->
+                                                <option value="" disabled <?php echo empty($_POST['rol']) ? 'selected' : ''; ?>>
+                                                    Seleccione un rol
+                                                </option>
+
+                                                <!-- Opciones dinámicas -->
+                                                <?php foreach ($rol as $key => $value): ?>
+                                                    <option 
+                                                        value="<?php echo $value["idrol"]; ?>" 
+                                                        <?php echo (isset($_POST['rol']) && $_POST['rol'] == $value["idrol"]) ? 'selected' : ''; ?>>
+                                                        <?php echo htmlspecialchars($value["rol"]); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             </select>
                                             <label for="rol">Elegir rol</label>
-                                            <div class="invalid-feedback"><?php echo $errores['rol'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                            <div class="invalid-feedback">
+                                                <?php echo $errores['rol'] ?? 'Por favor, seleccione un rol válido.'; ?>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -117,13 +131,13 @@ $validado = $resultado['validado'] ?? '';
                                         <div class="row g-2">
                                             <div class="col-md">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="usuario" name="usuario" disabled="" placeholder="DNI" value="<?= $_POST["email"] ?? '' ?>" required>
+                                                    <input type="text" class="form-control" id="usuario" name="usuario" disabled="" placeholder="DNI" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
                                                     <label for="usuario">Usuario: correo electrónico</label>
                                                 </div>
                                             </div>
                                             <div class="col-md">
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?= $_POST["contraseña"] ?? '' ?>" required>
+                                                    <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?php echo htmlspecialchars($_POST['contrasena'] ?? ''); ?>" required>
                                                     <label for="contrasena">Contraseña</label>
                                                     <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div> 
 
