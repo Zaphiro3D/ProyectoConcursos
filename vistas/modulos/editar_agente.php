@@ -4,7 +4,7 @@ $valor = $rutas[1];
 
 
 $agente_selec = ControladorAgentes::ctrMostrarAgentes($agente, $valor);
-$zonas = ControladorZonas::ctrMostrarZonas();
+$zonas = ControladorZonas::ctrMostrarZonas(null,null);
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $rol = ControladorAgentes::ctrMostrarRolAgentes();
 

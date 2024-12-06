@@ -140,6 +140,8 @@ class ModeloInstituciones{
             return "Error: " . $e->getMessage();
         }
     }
+
+    
  
 
 }

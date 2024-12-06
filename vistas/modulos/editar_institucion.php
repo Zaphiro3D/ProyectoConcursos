@@ -4,9 +4,9 @@ $valor = $rutas[1];
 
 $institucion = ControladorInstituciones::ctrMostrarInstituciones($id , $valor);
 $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
-$zonas = ControladorZonas::ctrMostrarZonas();
+$zonas = ControladorZonas::ctrMostrarZonas(null,null);
 $tipos = ControladorInstituciones::ctrMostrarTipos();
-
+print_r($valor);
 
 if ($institucion) {
 ?>
