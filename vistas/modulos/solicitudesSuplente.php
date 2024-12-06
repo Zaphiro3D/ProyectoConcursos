@@ -193,9 +193,7 @@
     }
 
 
-    $(document).ready(function() {
-
-        
+    $(document).ready(function() {        
         // Inicialización de DataTable
         let table = $('#tablaSolSuplente').DataTable({
             scrollX: true,

@@ -138,7 +138,7 @@ class ControladorAgentes{
                     $errores['telefono'] = "El número de teléfono ingresado no es válido.";
                 }
             }
-
+            
             // Validar DNI
             if (!$validador->dni($_POST['dni'] ?? '')) {
                 $errores['dni'] = "El DNI ingresado no es válido. Debe contener 7 u 8 dígitos.";

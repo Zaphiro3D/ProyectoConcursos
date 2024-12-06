@@ -79,7 +79,7 @@ if ($agente_selec) {
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : 'is-invalid'; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $agente_selec["telefono"]; ?>">
+                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $agente_selec["telefono"]; ?>">
                                         <label for="telefono">Teléfono sin 0 ni 15</label>
                                         <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
                                     </div>

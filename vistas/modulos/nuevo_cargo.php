@@ -3,7 +3,7 @@
 function generarOpcionesDias()
 {
     $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
-    $opciones = '<option>...</option>';
+    $opciones = '<option value="">...</option>';
     foreach ($dias as $value) {
         $opciones .= "<option>{$value['nombre']}</option>";
     }
@@ -38,7 +38,15 @@ function generarOpcionesDias()
                                     <div>
 
                                         <label for="institucionSede" id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" name="institucionSede" placeholder="Escriba para buscar...">
+                                        <input 
+                                            class="form-control" 
+                                            list="OpcionesInstitucion" 
+                                            id="institucionSede" 
+                                            name="institucionSede" 
+                                            placeholder="Escriba para buscar..."
+                                            oninput="actualizarIdInstitucion(this, 'idInstitucion1')"
+                                            required
+                                        >
 
                                         <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
                                     </div>
@@ -58,15 +66,7 @@ function generarOpcionesDias()
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <datalist id="numeroPlaza">
-                                            <?php
-                                            $numeroplaza = ControladorSolSuplente::ctrMostrarDatosSol("plazas", "*", null);
-                                            foreach ($numeroplaza as $value) {  ?>
-                                                <option value="<?php echo $value["numeroPlaza"]; ?>"></option>
-                                            <?php }
-                                            ?>
-                                        </datalist>
-                                        <input type="number" class="form-control" list="numeroPlaza" name="numeroPlaza" placeholder="N° Plaza">
+                                        <input type="number" class="form-control" list="numeroPlaza" name="numeroPlaza" placeholder="N° Plaza" required>
                                         <label for="plaza">N° Plaza</label>
                                     </div>
                                 </div>
@@ -74,19 +74,16 @@ function generarOpcionesDias()
 
                                 <div class="col-lg-9">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="nombrecargo" name="id_Nombrecargo" aria-label="Floating label select example" required>
-                                            <option selected></option>
+                                        <select class="form-select" id="id_NombreCargo" name="id_NombreCargo" aria-label="Floating label select example" required>
+                                            <option value="" selected></option>
                                             <?php
 
                                             $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
                                             foreach ($cargos as $key => $value) {
                                             ?>
-                                                <option value="<?php $value["id_NombreCargo"] ?>"><?php echo $value["nombreCargo"]; ?></option>
+                                                <option value="<?php echo $value['id_NombreCargo']; ?>"><?php echo $value['nombreCargo']; ?></option>
 
                                             <?php } ?>
-
-
-
 
                                         </select>
                                         <label for="cargo">Cargo</label>
@@ -95,17 +92,14 @@ function generarOpcionesDias()
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="turnos" name="id_Turno" aria-label="Floating label select example" required>
-                                            <option selected></option>
+                                            <option value="" selected></option>
                                             <?php
                                             $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
                                             foreach ($turno as $key => $value) {
                                             ?>
-                                                <option value="<?php $value["id_Turno"] ?>"><?php echo $value["turno"]  ?></option>
+                                                <option value="<?php echo $value["id_Turno"] ?>"><?php echo $value["turno"]  ?></option>
 
                                             <?php } ?>
-
-
-
 
                                         </select>
                                         <label for="turno">Turno</label>
@@ -113,13 +107,13 @@ function generarOpcionesDias()
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="grados" name="id_Grado" aria-label="Floating label select example" required>
-                                            <option selected></option>
+                                        <select class="form-select" id="grados" name="id_Grado" aria-label="Floating label select example">
+                                            <option value="" selected></option>
                                             <?php
                                             $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
                                             foreach ($grado as $key => $value) {
                                             ?>
-                                                <option value="<?php $value["id_Grado"] ?>"><?php echo $value["grado"]  ?></option>
+                                                <option value="<?php echo $value["id_Grado"] ?>"><?php echo $value["grado"]  ?></option>
                                             <?php } ?>
                                         </select>
 
@@ -129,18 +123,23 @@ function generarOpcionesDias()
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="diviciones" name="id_Division" aria-label="Floating label select example" required>
-                                            <option selected></option>
-                                            <?php
-                                            $Division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
-                                            foreach ($Division as $key => $value) {
-                                            ?>
-                                                <option value="<?php $value["id_Division"] ?>"><?php echo $value["division"]  ?></option>
+                                        <select class="form-select" id="divisiones" name="id_Division" aria-label="Floating label select example">
+                                            
+                                            <option value="" selected <?php echo empty($_POST['rol']) ? 'selected' : ''; ?>></option>
 
-                                            <?php } ?>
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+                                            foreach ($division as $key => $value): 
+                                            ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Division"]; ?>" 
+                                                    <?php echo (isset($_POST['division']) && $_POST['division'] == $value["id_Division"]) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($value["division"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
 
                                         </select>
-
 
                                         <label for="division">División</label>
                                     </div>
@@ -255,47 +254,100 @@ function generarOpcionesDias()
 
 
                         <!-- Opciones Datalist Instituciones        -->
-                        <datalist id="OpcionesInstitucion" name="OpcionesInstitucion">
-                            <?php
+                        <datalist id="OpcionesInstitucion">
+                            <?php 
                             $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-                            foreach ($institucion as $key => $value) {
-                            ?>
-                                <option><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
-                                <input type="hidden" id="id_Institucion" name="id_Institucion" value="<?php echo $value["id_Institucion"] ?>">
+    
+                            foreach ($institucion as $key => $value) { ?>
+                                <option 
+                                    value="<?php echo $value["tipo"] . ' N°' . $value["numero"] . ' ' . $value["institucion"] . ' CUE: ' . $value["cue"]; ?>" 
+                                    data-id="<?php echo $value["id_institucion"]; ?>">
+                                </option>
                             <?php } ?>
                         </datalist>
 
+
                         <div class="card-body">
 
-                            <div class="row" id='hsEst1'> <!-- Est 1 -->
+                            <div class="row" id='Est1'> <!-- Est 1 -->
                                 <div class="pb-2"> <!-- Datalist Instituciones 1 -->
-                                    <label for="institucion1" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion1" name="institucion1" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede" name="Sede" value="1">
+                                    <label for="instituciones[0][id_Institucion]" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
+                                    <input 
+                                        class="form-control" 
+                                        list="OpcionesInstitucion" 
+                                        id="institucion1" 
+                                        name="instituciones[0][id_Institucion]" 
+                                        placeholder="Escriba para buscar..."
+                                        oninput="actualizarIdInstitucion(this, 'idInstitucion1')"
+                                    >
+                                    <input 
+                                        type="hidden" 
+                                        id="idInstitucion1" 
+                                        name="instituciones[0][id_Institucion]" 
+                                        value=""
+                                    >
+                                    
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 1 -->
 
-                            <div class="row" id='hsEst2'><!-- Est 2 -->
+                            <div class="row" id='Est2'><!-- Est 2 -->
                                 <div class="pb-2"> <!-- Datalist Instituciones 2 -->
-                                    <label for="institucion2" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion2" name="institucion2" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede2" name="Sede" value="0">
+                                    <label for="instituciones[1][id_Institucion]" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
+                                    <input 
+                                        class="form-control" 
+                                        list="OpcionesInstitucion" 
+                                        id="institucion2" 
+                                        name="instituciones[1][id_Institucion]" 
+                                        placeholder="Escriba para buscar..."
+                                        oninput="actualizarIdInstitucion(this, 'idInstitucion2')"
+                                    >
+                                    <input 
+                                        type="hidden" 
+                                        id="idInstitucion2" 
+                                        name="instituciones[1][id_Institucion]" 
+                                        value=""
+                                    >
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 2 -->
 
-                            <div class="row" id='hsEst3'><!-- Est 3 -->
+                            <div class="row" id='Est3'><!-- Est 3 -->
                                 <div class="pb-3"> <!-- Datalist Instituciones 3 -->
-                                    <label for="institucion3" id="lblinstitucion3" class="form-label">Tercera Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion3" name="institucion3" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede3" name="Sede" value="0">
+                                    <label for="instituciones[2][id_Institucion]" id="lblinstitucion3" class="form-label">Tercera Institución</label>
+                                    <input 
+                                        class="form-control" 
+                                        list="OpcionesInstitucion" 
+                                        id="institucion3" 
+                                        name="instituciones[2][id_Institucion]" 
+                                        placeholder="Escriba para buscar..."
+                                        oninput="actualizarIdInstitucion(this, 'idInstitucion3')"
+                                    >
+                                    <input 
+                                        type="hidden" 
+                                        id="idInstitucion3" 
+                                        name="instituciones[2][id_Institucion]" 
+                                        value=""
+                                    >
                                 </div>
-                            </div> <!-- Fin Hs Establecimiento 3 -->
+                            </div> <!-- Fin Establecimiento 3 -->
 
-                            <div class="row" id='hsEst4'><!-- Est 4 -->
+                            <div class="row" id='Est4'><!-- Est 4 -->
                                 <div class="pb-3"> <!-- Datalist Instituciones 4 -->
-                                    <label for="institucion4" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
-                                    <input class="form-control" list="OpcionesInstitucion" id="institucion4" name="institucion4" placeholder="Escriba para buscar...">
-                                    <input type="hidden" id="Sede4" name="Sede" value="0">
+                                    <label for="instituciones[3][id_Institucion]" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
+                                    <input 
+                                        class="form-control" 
+                                        list="OpcionesInstitucion" 
+                                        id="institucion4" 
+                                        name="instituciones[3][id_Institucion]" 
+                                        placeholder="Escriba para buscar..."
+                                        oninput="actualizarIdInstitucion(this, 'idInstitucion4')"
+                                    >
+                                    
+                                    <input 
+                                        type="hidden" 
+                                        id="idInstitucion4" 
+                                        name="instituciones[3][id_Institucion]" 
+                                        value=""
+                                    >
                                 </div>
                             </div> <!-- Fin Hs Establecimiento 4 -->
                         </div>
@@ -325,28 +377,27 @@ function generarOpcionesDias()
 
 <!-- Script para habilitar las opciones segun la cantidad de instituciones  -->
 <script>
-    // Selecciona los radio buttons y los contenedores de cada institución
+    // Selecciona los radio buttons
     const radios = document.getElementsByName("gridRadiosComparte");
+    // Selecciona los contenedores de instituciones usando querySelector
     const institucion2 = document.getElementById("institucion2");
     const institucion3 = document.getElementById("institucion3");
     const institucion4 = document.getElementById("institucion4");
-
+    
     // Función para mostrar u ocultar campos según la opción seleccionada
     function toggleInstituciones() {
         // Institucion 2
         institucion2.style.display = radios[1].checked || radios[2].checked || radios[3].checked ? "block" : "none";
         lblinstitucion2.style.display = institucion2.style.display;
-        // document.getElementById("divhsEst2").style.display = institucion2.style.display;
-
+        
         // Institucion 3
         institucion3.style.display = radios[2].checked || radios[3].checked ? "block" : "none";
         lblinstitucion3.style.display = institucion3.style.display;
-        // document.getElementById("divhsEst3").style.display = institucion3.style.display;
-
+        
         // Institucion 4
         institucion4.style.display = radios[3].checked ? "block" : "none";
         lblinstitucion4.style.display = institucion4.style.display;
-        // document.getElementById("divhsEst4").style.display = institucion4.style.display;
+        
     }
 
     // Función para sincronizar el valor de la institucion sede en horario
@@ -375,4 +426,27 @@ function generarOpcionesDias()
 
     // Oculta inicialmente todos los campos extra
     toggleInstituciones();
+
+    function actualizarIdInstitucion(input, hiddenInputId) {
+        const datalist = document.getElementById('OpcionesInstitucion');
+        const hiddenInput = document.getElementById(hiddenInputId);
+        
+        // Obtén el valor ingresado en el input
+        const valorIngresado = input.value;
+
+        // Busca la opción seleccionada en el datalist
+        const opcionSeleccionada = Array.from(datalist.options).find(
+            (option) => option.value === valorIngresado
+        );
+
+        // Si se encuentra la opción, actualiza el hidden input con el ID
+        if (opcionSeleccionada) {
+            hiddenInput.value = opcionSeleccionada.getAttribute('data-id');
+        } else {
+            // Si el valor ingresado no coincide, limpia el hidden input
+            hiddenInput.value = '';
+        }
+    }
+
 </script>
+
