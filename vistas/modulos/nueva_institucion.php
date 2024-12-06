@@ -1,7 +1,7 @@
 <?php
     
     $agentes = ControladorAgentes::ctrMostrarAgentes(null,null);
-    $zonas = ControladorZonas::ctrMostrarZonas();
+    $zonas = ControladorZonas::ctrMostrarZonas(null,null);
     $tipos = ControladorInstituciones::ctrMostrarTipos();
 ?>
 

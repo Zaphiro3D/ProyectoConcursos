@@ -18,6 +18,35 @@ $(document).on("click", ".btnGuardar", function (e) {
     console.log("gridRadiosComparte no existe en este formulario.");
   }
 
+  // Inicializar arreglo para IDs de instituciones seleccionadas
+  let institucionesSeleccionadas = [];
+
+  // Verificar si existe la tabla de instituciones
+  const tabla = $("#tablaSelectMultiES").DataTable();
+  if ($.fn.DataTable.isDataTable("#tablaSelectMultiES")) {
+      // Capturar los IDs seleccionados si la tabla existe
+      tabla.rows({ selected: true }).every(function () {
+          const data = this.data();
+          institucionesSeleccionadas.push(data[0]); // El ID está en la primera columna
+      });
+
+      // Agregar los IDs seleccionados al input oculto del formulario
+      if ($("#institucionesSeleccionadas").length === 0) {
+          // Crear dinámicamente el input oculto si no existe
+          $("<input>")
+              .attr({
+                  type: "hidden",
+                  id: "institucionesSeleccionadas",
+                  name: "institucionesSeleccionadas",
+                  value: institucionesSeleccionadas.join(","),
+              })
+              .appendTo("form");
+      } else {
+          // Si ya existe, actualizar su valor
+          $("#institucionesSeleccionadas").val(institucionesSeleccionadas.join(","));
+      }
+  }
+
 
   // Confirmación con SweetAlert
   Swal.fire({
