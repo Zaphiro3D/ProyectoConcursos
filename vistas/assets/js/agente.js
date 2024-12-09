@@ -83,3 +83,10 @@ function inicializarScripts() {
 
 // Ejecuta la inicialización al cargar la página
 document.addEventListener("DOMContentLoaded", inicializarScripts);
+
+// Función para guardar el id en el campo oculto y 
+// seleccionar automaticamente la mejor coincidencia en datalist
+
+//                  input         opciones      campo oculto
+autoSelectBestMatch("dlInstituciones", "OpcInstituciones", "id_autocompletar");
+autoSelectBestMatch("dlZonas", "OpcZonas", "id_autocompletar");

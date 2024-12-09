@@ -92,9 +92,6 @@ class ModeloCargos{
             
             $conexion->beginTransaction();
 
-            // var_dump($datos);
-            // die();
-
             // Insertar en la tabla cargos
             $sqlCargos = "INSERT INTO cargos (
                 id_NombreCargo, id_Grado, id_Division, id_Turno, hsCatedra, 
@@ -120,9 +117,7 @@ class ModeloCargos{
             }
 
             // Obtener el ID del cargo recién insertado
-            // $id_Cargo = $conexion->lastInsertId();
-            $id_Cargo = Conexion::conectar()->query("SELECT MAX(id_Cargo) AS id FROM cargos")->fetch(PDO::FETCH_ASSOC)['id'];
-                
+            $id_Cargo = $conexion->lastInsertId(); 
 
             // Insertar en la tabla plazas
             $sqlPlazas = "INSERT INTO plazas (
@@ -132,8 +127,6 @@ class ModeloCargos{
             )";
 
             $stmtPlazas = $conexion->prepare($sqlPlazas);
-            // var_dump($datos["numeroPlaza"]);
-            // die();
 
             foreach ($datos["instituciones"] as $index => $institucion) {
                 $numeroPlaza = $datos["numeroPlaza"] + $index; // Variable intermedia
@@ -142,7 +135,6 @@ class ModeloCargos{
                 $stmtPlazas->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
                 $stmtPlazas->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
 
-                
                 if (!$stmtPlazas->execute()) {
                     throw new Exception("Error al insertar en la tabla plazas.");
                 }

@@ -104,7 +104,7 @@ if ($agente_selec) {
                                         class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" 
                                         id="rol" 
                                         name="rol" 
-                                        aria-label="Floating label select example" 
+                                        aria-label="rol" 
                                         required>
                                         <!-- Opción predeterminada no válida -->
                                         <option value="" disabled <?php echo empty($_POST['rol']) && empty($agente_selec["id_Rol"]) ? 'selected' : ''; ?>>
@@ -246,15 +246,6 @@ if ($agente_selec) {
 <?php } else { ?>
     <h3>Agente no disponible</h3>
 <?php } ?>
-
-<script>
-// Función para guardar el id en el campo oculto y 
-// seleccionar automaticamente la mejor coincidencia en datalist
-
-//                  input         opciones      campo oculto
-autoSelectBestMatch("dlInstituciones", "OpcInstituciones", "id_autocompletar");
-autoSelectBestMatch("dlZonas", "OpcZonas", "id_autocompletar");
-</script>
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/agente.js"></script>

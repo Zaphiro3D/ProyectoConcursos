@@ -7,8 +7,7 @@ class ControladorCargos{
     }
 
     public function ctrAgregarCargo()
-    {
-        
+    {   
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Obtener datos del formulario
             $numeroPlaza = intval($_POST["numeroPlaza"]);
@@ -33,6 +32,16 @@ class ControladorCargos{
                         "sede" => $key === 0 ? 1 : 0, // La primera institución es la sede
                     ];
                 }
+            }
+
+            if ($id_Grado == '' || $id_Grado == 0) {
+                $id_Grado = NULL;
+            }
+            if ($id_Division == '' || $id_Division == 0) {
+                $id_Division = NULL;
+            }
+            if ($dniDocente == '' || $dniDocente == 0) {
+                $dniDocente = NULL;
             }
     
             // Enviar datos al modelo

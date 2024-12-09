@@ -13,7 +13,7 @@ function generarOpcionesDias()
 ?>
 
 <div class="container-xxl">
-    <form method="POST">
+    <form method="POST" novalidate>
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
                 <h4 class="fs-22 fw-bold m-0">Nuevo Cargo</h4>
@@ -37,18 +37,19 @@ function generarOpcionesDias()
                                     <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
                                     <div>
 
-                                        <label for="institucionSede" id="lblinstitucion1" class="form-label">Institución Sede</label>
+                                        <label for="institucionSede" id="lblinstitucionsede" class="form-label">Institución Sede</label>
                                         <input 
-                                            class="form-control" 
+                                            class="form-control <?php echo isset($errores['insti1']) ? 'is-invalid' : ''; ?>" 
                                             list="OpcionesInstitucion" 
                                             id="institucionSede" 
+                                            
                                             name="institucionSede" 
                                             placeholder="Escriba para buscar..."
-                                            oninput="actualizarIdInstitucion(this, 'idInstitucion1')"
+                                            oninput="autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');"
+                                            value="<?php echo htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? ''); ?>"
                                             required
                                         >
-
-                                        <!-- <input type="text" class="form-control" id="nombreInstitucion1" value=""> -->
+                                        <div class="invalid-feedback"><?php echo $errores['insti1'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
                                 </fieldset>
 
@@ -66,88 +67,139 @@ function generarOpcionesDias()
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" list="numeroPlaza" name="numeroPlaza" placeholder="N° Plaza" required>
+                                        <input type="number" class="form-control <?php echo isset($errores['numeroPlaza']) ? 'is-invalid' : ''; ?>" list="numeroPlaza" name="numeroPlaza"  value= "<?php echo $_POST['numeroPlaza'] ?? ''; ?>" placeholder="N° Plaza" required>
                                         <label for="plaza">N° Plaza</label>
+                                        <div class="invalid-feedback"><?php echo $errores['numeroPlaza'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
                                 </div>
 
-
+                                <!-- Nombres de Cargos -->
                                 <div class="col-lg-9">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="id_NombreCargo" name="id_NombreCargo" aria-label="Floating label select example" required>
-                                            <option value="" selected></option>
-                                            <?php
+                                    <div class="form-floating mb-3"> 
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_NombreCargo']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_NombreCargo" 
+                                            name="id_NombreCargo" 
+                                            aria-label="id_NombreCargo" 
+                                            required>
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_NombreCargo']) ? 'selected' : ''; ?>> </option>
 
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
                                             $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
-                                            foreach ($cargos as $key => $value) {
-                                            ?>
-                                                <option value="<?php echo $value['id_NombreCargo']; ?>"><?php echo $value['nombreCargo']; ?></option>
-
-                                            <?php } ?>
-
+                                            foreach ($cargos as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_NombreCargo"]; ?>" 
+                                                    <?php echo (isset($_POST['id_NombreCargo']) && intval($_POST['id_NombreCargo']) == $value["id_NombreCargo"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["nombreCargo"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
                                         </select>
-                                        <label for="cargo">Cargo</label>
+                                        <label for="id_NombreCargo">Cargo</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_NombreCargo'] ?? 'Por favor, seleccione un cargo válido.'; ?>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Turnos -->
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="turnos" name="id_Turno" aria-label="Floating label select example" required>
-                                            <option value="" selected></option>
-                                            <?php
-                                            $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
-                                            foreach ($turno as $key => $value) {
-                                            ?>
-                                                <option value="<?php echo $value["id_Turno"] ?>"><?php echo $value["turno"]  ?></option>
-
-                                            <?php } ?>
-
-                                        </select>
-                                        <label for="turno">Turno</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="grados" name="id_Grado" aria-label="Floating label select example">
-                                            <option value="" selected></option>
-                                            <?php
-                                            $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
-                                            foreach ($grado as $key => $value) {
-                                            ?>
-                                                <option value="<?php echo $value["id_Grado"] ?>"><?php echo $value["grado"]  ?></option>
-                                            <?php } ?>
-                                        </select>
-
-
-                                        <label for="anio">Año</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="divisiones" name="id_Division" aria-label="Floating label select example">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Turno']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Turno" 
+                                            name="id_Turno" 
+                                            aria-label="id_Turno" 
+                                            required>
                                             
-                                            <option value="" selected <?php echo empty($_POST['rol']) ? 'selected' : ''; ?>></option>
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Turno']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
+                                            foreach ($turno as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Turno"]; ?>" 
+                                                    <?php echo (isset($_POST['id_Turno']) && intval($_POST['id_Turno']) == $value["id_Turno"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["turno"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_Turno">Turno</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Turno'] ?? ''; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Grados -->
+                                <div class="col-lg-3">
+                                    <div class="form-floating mb-3">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Grado']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Grado" 
+                                            name="id_Grado" 
+                                            aria-label="id_Grado" 
+                                            required>
+
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Grado']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
+                                            foreach ($grado as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Grado"]; ?>" 
+                                                    <?php echo (isset($_POST['id_Grado']) && intval($_POST['id_Grado']) == $value["id_Grado"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["grado"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_Grado">Grado</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Grado'] ?? ''; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Divisiones -->
+                                <div class="col-lg-3">
+                                    <div class="form-floating mb-3">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Division']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Division" 
+                                            name="id_Division" 
+                                            aria-label="id_Division" 
+                                            required>
+
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Division']) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php 
                                             $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
-                                            foreach ($division as $key => $value): 
-                                            ?>
+                                            foreach ($division as $key => $value): ?>
                                                 <option 
                                                     value="<?php echo $value["id_Division"]; ?>" 
-                                                    <?php echo (isset($_POST['division']) && $_POST['division'] == $value["id_Division"]) ? 'selected' : ''; ?>>
-                                                    <?php echo htmlspecialchars($value["division"]); ?>
+                                                    <?php echo (isset($_POST['id_Division']) && intval($_POST['id_Division']) == $value["id_Division"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["division"]); ?>
                                                 </option>
                                             <?php endforeach; ?>
-
                                         </select>
+                                        <label for="id_Division">División</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Division'] ?? ''; ?>
+                                        </div>
 
-                                        <label for="division">División</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCatedra" name="hsCatedra" placeholder="hsCat">
+                                            <input type="number" class="form-control" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
                                             <label for="hsCatedra">Hs. Cát.</label>
                                         </div>
                                     </div>
@@ -172,33 +224,30 @@ function generarOpcionesDias()
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="nombreDocente" name="nombreDocente" placeholder="Nombre">
+                                        <input type="text" class="form-control" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($_POST['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
                                         <label for="nombreDocente">Nombre</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" id="apellidoDocente" name="apellidoDocente" placeholder="Apellido">
+                                        <input type="text" class="form-control" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($_POST['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
                                         <label for="apellidoDocente">Apellido</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3">
-                                    <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                     <div class="form-floating mb-1">
-                                        <input type="number" class="form-control" id="dniDocente" name="dniDocente" placeholder="DNI">
+                                        <input type="number" class="form-control <?php echo isset($errores['dniDocente']) ? 'is-invalid' : ''; ?>" id="dniDocente" name="dniDocente" value= "<?php echo htmlspecialchars($_POST['dniDocente'] ?? ''); ?>" placeholder="DNI">
                                         <label for="dniDocente">Número de DNI sin puntos</label>
+                                        <div class="invalid-feedback"><?php echo $errores['dniDocente'] ?? ''; ?></div> 
                                     </div>
                                 </div>
 
                             </div> <!-- row -->
-
                         </div> <!-- card body -->
                     </div> <!-- card -->
                 </div> <!-- col -->
-
-
 
             </div>
 
@@ -261,7 +310,9 @@ function generarOpcionesDias()
                             foreach ($institucion as $key => $value) { ?>
                                 <option 
                                     value="<?php echo $value["tipo"] . ' N°' . $value["numero"] . ' ' . $value["institucion"] . ' CUE: ' . $value["cue"]; ?>" 
-                                    data-id="<?php echo $value["id_institucion"]; ?>">
+                                    id="<?php echo $value["id_institucion"]; ?>"
+                                    data-id="<?php echo $value["id_institucion"]; ?>"
+                                >
                                 </option>
                             <?php } ?>
                         </datalist>
@@ -269,87 +320,50 @@ function generarOpcionesDias()
 
                         <div class="card-body">
 
-                            <div class="row" id='Est1'> <!-- Est 1 -->
-                                <div class="pb-2"> <!-- Datalist Instituciones 1 -->
-                                    <label for="instituciones[0][id_Institucion]" id="lblinstitucion1" name="lblinstitucion1" class="form-label">Institución Sede</label>
-                                    <input 
-                                        class="form-control" 
-                                        list="OpcionesInstitucion" 
-                                        id="institucion1" 
-                                        name="instituciones[0][id_Institucion]" 
-                                        placeholder="Escriba para buscar..."
-                                        oninput="actualizarIdInstitucion(this, 'idInstitucion1')"
-                                    >
-                                    <input 
-                                        type="hidden" 
-                                        id="idInstitucion1" 
-                                        name="instituciones[0][id_Institucion]" 
-                                        value=""
-                                    >
-                                    
-                                </div>
-                            </div> <!-- Fin Hs Establecimiento 1 -->
+                        <?php
+                        // Array con las etiquetas para cada institución
+                        $labels = [
+                            'Institución Sede',
+                            'Segunda Institución',
+                            'Tercera Institución',
+                            'Cuarta Institución'
+                        ];
 
-                            <div class="row" id='Est2'><!-- Est 2 -->
-                                <div class="pb-2"> <!-- Datalist Instituciones 2 -->
-                                    <label for="instituciones[1][id_Institucion]" id="lblinstitucion2" name="lblinstitucion2" class="form-label">Segunda Institución</label>
+                        for ($i = 0; $i < count($labels); $i++): 
+                            // Obtener el valor previamente enviado si existe
+                            if($i == 0){
+                                $valorInstitucion = htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? '');
+                            }else{
+                                $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
+                            }
+                            
+                        ?>
+                            <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
+                                <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
+                                    <label for="instituciones[<?= $i ?>][id_Institucion]" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
                                     <input 
-                                        class="form-control" 
+                                        class="form-control <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
                                         list="OpcionesInstitucion" 
-                                        id="institucion2" 
-                                        name="instituciones[1][id_Institucion]" 
+                                        id="institucion<?= $i + 1 ?>" 
+                                        name="instituciones[<?= $i ?>][id_Institucion]" 
                                         placeholder="Escriba para buscar..."
-                                        oninput="actualizarIdInstitucion(this, 'idInstitucion2')"
+                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        oninput="autoSelectBestMatch('institucion<?= $i + 1 ?>', 'OpcionesInstitucion', 'idInstitucion<?= $i + 1 ?>');"
                                     >
                                     <input 
                                         type="hidden" 
-                                        id="idInstitucion2" 
-                                        name="instituciones[1][id_Institucion]" 
-                                        value=""
+                                        id="idInstitucion<?= $i + 1 ?>" 
+                                        name="instituciones[<?= $i ?>][id_Institucion]" 
+                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
                                     >
+                                    <div class="invalid-feedback">
+                                        <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
+                                    </div>
                                 </div>
-                            </div> <!-- Fin Hs Establecimiento 2 -->
+                            </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
+                        <?php endfor; ?>
 
-                            <div class="row" id='Est3'><!-- Est 3 -->
-                                <div class="pb-3"> <!-- Datalist Instituciones 3 -->
-                                    <label for="instituciones[2][id_Institucion]" id="lblinstitucion3" class="form-label">Tercera Institución</label>
-                                    <input 
-                                        class="form-control" 
-                                        list="OpcionesInstitucion" 
-                                        id="institucion3" 
-                                        name="instituciones[2][id_Institucion]" 
-                                        placeholder="Escriba para buscar..."
-                                        oninput="actualizarIdInstitucion(this, 'idInstitucion3')"
-                                    >
-                                    <input 
-                                        type="hidden" 
-                                        id="idInstitucion3" 
-                                        name="instituciones[2][id_Institucion]" 
-                                        value=""
-                                    >
-                                </div>
-                            </div> <!-- Fin Establecimiento 3 -->
 
-                            <div class="row" id='Est4'><!-- Est 4 -->
-                                <div class="pb-3"> <!-- Datalist Instituciones 4 -->
-                                    <label for="instituciones[3][id_Institucion]" id="lblinstitucion4" class="form-label">Cuarta Institución</label>
-                                    <input 
-                                        class="form-control" 
-                                        list="OpcionesInstitucion" 
-                                        id="institucion4" 
-                                        name="instituciones[3][id_Institucion]" 
-                                        placeholder="Escriba para buscar..."
-                                        oninput="actualizarIdInstitucion(this, 'idInstitucion4')"
-                                    >
-                                    
-                                    <input 
-                                        type="hidden" 
-                                        id="idInstitucion4" 
-                                        name="instituciones[3][id_Institucion]" 
-                                        value=""
-                                    >
-                                </div>
-                            </div> <!-- Fin Hs Establecimiento 4 -->
                         </div>
                     </div>
                 </div> <!-- col -->
@@ -375,78 +389,5 @@ function generarOpcionesDias()
     </form>
 </div> <!-- container-fluid -->
 
-<!-- Script para habilitar las opciones segun la cantidad de instituciones  -->
-<script>
-    // Selecciona los radio buttons
-    const radios = document.getElementsByName("gridRadiosComparte");
-    // Selecciona los contenedores de instituciones usando querySelector
-    const institucion2 = document.getElementById("institucion2");
-    const institucion3 = document.getElementById("institucion3");
-    const institucion4 = document.getElementById("institucion4");
-    
-    // Función para mostrar u ocultar campos según la opción seleccionada
-    function toggleInstituciones() {
-        // Institucion 2
-        institucion2.style.display = radios[1].checked || radios[2].checked || radios[3].checked ? "block" : "none";
-        lblinstitucion2.style.display = institucion2.style.display;
-        
-        // Institucion 3
-        institucion3.style.display = radios[2].checked || radios[3].checked ? "block" : "none";
-        lblinstitucion3.style.display = institucion3.style.display;
-        
-        // Institucion 4
-        institucion4.style.display = radios[3].checked ? "block" : "none";
-        lblinstitucion4.style.display = institucion4.style.display;
-        
-    }
-
-    // Función para sincronizar el valor de la institucion sede en horario
-    function syncFields(source, target) {
-        target.value = source.value;
-    }
-
-    // Obtener los elementos de los campos
-    const institucionSede = document.getElementById("institucionSede");
-    const institucion1 = document.getElementById("institucion1");
-
-    // Agregar event listeners para sincronizar los valores en ambos sentidos
-    institucionSede.addEventListener("input", function() {
-        syncFields(institucionSede, institucion1);
-    });
-
-    institucion1.addEventListener("input", function() {
-        syncFields(institucion1, institucionSede);
-    });
-    //----- Fin sincronizar el valor de la institucion sede en horario -------
-
-    // Añade el evento de cambio a cada radio button para ejecutar la función cuando cambie la selección
-    radios.forEach(radio => {
-        radio.addEventListener("change", toggleInstituciones);
-    });
-
-    // Oculta inicialmente todos los campos extra
-    toggleInstituciones();
-
-    function actualizarIdInstitucion(input, hiddenInputId) {
-        const datalist = document.getElementById('OpcionesInstitucion');
-        const hiddenInput = document.getElementById(hiddenInputId);
-        
-        // Obtén el valor ingresado en el input
-        const valorIngresado = input.value;
-
-        // Busca la opción seleccionada en el datalist
-        const opcionSeleccionada = Array.from(datalist.options).find(
-            (option) => option.value === valorIngresado
-        );
-
-        // Si se encuentra la opción, actualiza el hidden input con el ID
-        if (opcionSeleccionada) {
-            hiddenInput.value = opcionSeleccionada.getAttribute('data-id');
-        } else {
-            // Si el valor ingresado no coincide, limpia el hidden input
-            hiddenInput.value = '';
-        }
-    }
-
-</script>
-
+<!-- Script js específico para modificaciones dinámicas de formulario -->
+<script src="<?php echo $url; ?>vistas/assets/js/cargos.js"></script>
