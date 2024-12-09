@@ -40,4 +40,61 @@ class validador
 
         return false; // DNI inválido
     }
+
+    public static function instituciones($instituciones, $modelInstituciones)
+    {
+        $errores = [];
+
+        // Array para verificar duplicados
+        $idsInstituciones = [];
+
+        foreach ($instituciones as $key => $institucion) {
+            $idInstitucion = $institucion ?? '';
+
+            // Validar que no esté vacío el caampo de sede
+            if (empty($idInstitucion) and $key ==0) {
+                $errores["insti" . ($key + 1)] = 'La institución no puede estar vacía.';
+                continue;
+            }
+
+            // Validar que exista en la base de datos
+            if (!$modelInstituciones::mdlExisteInstitucion($idInstitucion)) {
+                $errores["insti" . ($key + 1)] = 'La institución seleccionada no es válida.';
+                continue;
+            }
+
+            // Validar duplicados
+            if (in_array($idInstitucion, $idsInstituciones)) {
+                $errores["insti" . ($key + 1)] = 'La institución ya fue seleccionada anteriormente.';
+            } else {
+                $idsInstituciones[] = $idInstitucion;
+            }
+        }
+
+        return $errores;
+    }
+
+    /**
+     * Validar que un select tenga un valor seleccionado.
+     * 
+     * @param string $valor El valor seleccionado del select.
+     * @param array $opcionesInvalidas (Opcional) Valores considerados inválidos (por defecto: ['0', 'seleccione']).
+     * @return bool Retorna true si el valor es inválido, false si es válido.
+     */
+    public function validarSelect($valor, $opcionesInvalidas = ['0', 'seleccione']) {
+        // Verifica si el valor está vacío o es parte de las opciones inválidas
+        return empty($valor) || in_array($valor, $opcionesInvalidas, true);
+    }
+
+    /**
+     * Verificar si un cargo requiere grado y división.
+     * 
+     * @param string $cargo El nombre del cargo.
+     * @param array $cargosQueRequieren Grupos de cargos que necesitan grado y división.
+     * @return bool Retorna true si el cargo requiere grado y división, false de lo contrario.
+     */
+    public function requiereGradoDivision($cargo, $cargosQueRequieren = ['Maestro de ciclo', '8']) {
+        return in_array(strtolower(trim($cargo)), array_map('strtolower', $cargosQueRequieren));
+    }
+
 }

@@ -52,7 +52,4 @@ radios.forEach(radio => {
 // Oculta inicialmente todos los campos extra
 toggleInstituciones();
 
-// Ejecuta la inicialización al cargar la página
-document.addEventListener("DOMContentLoaded", inicializarScripts);
-
 autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');

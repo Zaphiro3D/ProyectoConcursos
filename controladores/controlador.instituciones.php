@@ -145,5 +145,13 @@ class ControladorInstituciones{
         }
     }
 
+    public static function ctrObtenerNombreInstitucion($idInstitucion) {
+        $institucion = self::ctrMostrarInstituciones("id_institucion", $idInstitucion);
+        if (!empty($institucion)) {
+            return $institucion["tipo"] . ' N°' . $institucion["numero"] . ' ' . $institucion["institucion"] . ' CUE: ' . $institucion["cue"];
+        }
+        return '';
+    }
+
     
 }

@@ -47,9 +47,9 @@
                                     <td> <?php echo $value["division"] ?></td>
                                     <td> <?php echo $value["turno"] ?></td>
                                     <td> <?php echo $value["docente"] ?></td>
-                                    <td><?php echo $instituciones[1] ?></td>
-                                    <td><?php echo $instituciones[2] ?></td>
-                                    <td><?php echo $instituciones[3] ?></td>
+                                    <td><?php echo $instituciones[1] ?? '' ?></td>
+                                    <td><?php echo $instituciones[2] ?? '' ?></td>
+                                    <td><?php echo $instituciones[3] ?? '' ?></td>
 
                                     <td><a href="editar_cargo/<?php echo $value["id_Cargo"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                         <a href="eliminar_cargo" class="btn btn-danger btn-sm btnEliminar" id_eliminar="<?php echo $value["id_Cargo"]; ?>" pag="cargos" categoria="Cargo - Plaza N°" valorElim="<?php echo $value["numeroPlaza"]; ?>"><i class="fas fa-trash"></i></a>

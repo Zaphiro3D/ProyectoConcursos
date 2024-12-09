@@ -141,7 +141,15 @@ class ModeloInstituciones{
         }
     }
 
-    
- 
+    // ==============================================================
+    // Verificar si existe una institucion
+    // ==============================================================
+    public static function mdlExisteInstitucion($idInstitucion)
+    {
+        $stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM instituciones WHERE id_Institucion = :id");
+        $stmt->bindParam(":id", $idInstitucion, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
 
 }

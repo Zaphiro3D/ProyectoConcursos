@@ -10,6 +10,13 @@ function generarOpcionesDias()
     return $opciones;
 }
 
+$validador = new validador();
+
+$controlador = new ControladorCargos();
+$resultado = $controlador->ctrAgregarCargo();
+
+$errores = $resultado['errores'] ?? [];
+$validado = $resultado['validado'] ?? '';
 ?>
 
 <div class="container-xxl">
@@ -262,32 +269,59 @@ function generarOpcionesDias()
                             <fieldset class="row ">
                                 <!-- <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend> -->
                                 <div class="row row-cols-lg-auto g-2 align-items-center">
+                                    <?php
+                                    // Obtener el valor enviado por el usuario, si existe
+                                    $checkSeleccionado = $_POST['gridRadiosComparte'] ?? 'noComparte';
+                                    ?>
+
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" name="noComparte" value="option1" checked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="noComparte" 
+                                            value="noComparte" 
+                                            <?= $checkSeleccionado === 'noComparte' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte1" name="comparte1" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte1" 
+                                            value="comparte1" 
+                                            <?= $checkSeleccionado === 'comparte1' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
                                         </label>
                                     </div>
+
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" name="comparte2" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte2" 
+                                            value="comparte2" 
+                                            <?= $checkSeleccionado === 'comparte2' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte3" name="comparte3" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte3" 
+                                            value="comparte3" 
+                                            <?= $checkSeleccionado === 'comparte3' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
                                         </label>
                                     </div>
+
 
                                 </div>
                             </fieldset>
@@ -332,11 +366,11 @@ function generarOpcionesDias()
                         for ($i = 0; $i < count($labels); $i++): 
                             // Obtener el valor previamente enviado si existe
                             if($i == 0){
-                                $valorInstitucion = htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? '');
+                                $valorInstitucion = htmlspecialchars($_POST['institucion1'] ?? $_POST['institucionSede'] ?? '');
                             }else{
-                                $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
+                                // $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
+                                $valorInstitucion = ControladorInstituciones::ctrObtenerNombreInstitucion($_POST['instituciones'][$i]['id_Institucion'] ?? '');
                             }
-                            
                         ?>
                             <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                 <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
@@ -350,15 +384,16 @@ function generarOpcionesDias()
                                         value="<?= htmlspecialchars($valorInstitucion); ?>"
                                         oninput="autoSelectBestMatch('institucion<?= $i + 1 ?>', 'OpcionesInstitucion', 'idInstitucion<?= $i + 1 ?>');"
                                     >
+                                    <div class="invalid-feedback">
+                                        <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
+                                    </div>
                                     <input 
                                         type="hidden" 
                                         id="idInstitucion<?= $i + 1 ?>" 
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
                                         value="<?= htmlspecialchars($valorInstitucion); ?>"
                                     >
-                                    <div class="invalid-feedback">
-                                        <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
-                                    </div>
+                                    
                                 </div>
                             </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
                         <?php endfor; ?>
@@ -367,12 +402,6 @@ function generarOpcionesDias()
                         </div>
                     </div>
                 </div> <!-- col -->
-
-                <?php
-                $guardar = new ControladorCargos();
-                $guardar->ctrAgregarCargo();
-                
-               ?>
             </div>
 
             <div class="row">
@@ -380,7 +409,7 @@ function generarOpcionesDias()
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-outline-dark btnVolver" pag="cargos"> <i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
-                            <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
+                            <button type="submit" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                         </div>
                     </div>
                 </div>
