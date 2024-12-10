@@ -107,7 +107,7 @@ $url = ControladorPlantilla::url();
 
                             // General
                             $rutas[0] == "inicio" ||
-                            $rutas[0] == "salir"
+                            $rutas[0] == "salir" 
 
 
                         ) {

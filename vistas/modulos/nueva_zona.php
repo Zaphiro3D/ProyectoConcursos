@@ -59,7 +59,7 @@
                             <h5 class="card-title mb-0">Seleccione las Instituciones</h5>
                         </div>
                         <div class="card-body">
-                             Pantalla Seleccionar Supervisor 
+                             <!--Pantalla Seleccionar Supervisor -->
                             <?php include 'seleccionar_institucion.php'
                             ?>
                         </div>

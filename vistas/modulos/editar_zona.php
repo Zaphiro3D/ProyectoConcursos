@@ -52,7 +52,7 @@ if ($zona_select) {
 
                             <div class="pb-3"> <!-- Datalist Agentes-->
                                 <div class="form-floating mb-1 mt-1">
-                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..."></input>
+                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." data-id=<?php echo $zona_select["id_Agente"] ?> value=<?php echo $zona_select["apellido"] . "," . $zona_select["nombre"] . '-DNI:' . $zona_select["dni"] ?>></input>
                                     <label for="datalistSupervisor">Escriba para buscar...</label>
                                 </div>
                             </div>

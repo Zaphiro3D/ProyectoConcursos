@@ -26,9 +26,13 @@ $(document).on("click", ".btnGuardar", function (e) {
   if ($.fn.DataTable.isDataTable("#tablaSelectMultiES")) {
       // Capturar los IDs seleccionados si la tabla existe
       tabla.rows({ selected: true }).every(function () {
-          const data = this.data();
-          institucionesSeleccionadas.push(data[0]); // El ID está en la primera columna
+          const idInstitucion = $(this.node()).data("id_institucion"); // Obtener el id_Institucion desde el atributo data-id_institucion
+          institucionesSeleccionadas.push(idInstitucion);
+        //const data = this.data();
+          //institucionesSeleccionadas.push(data[0]); // El ID está en la primera columna
       });
+    
+    
 
       // Agregar los IDs seleccionados al input oculto del formulario
       if ($("#institucionesSeleccionadas").length === 0) {
