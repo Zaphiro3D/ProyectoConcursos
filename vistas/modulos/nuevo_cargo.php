@@ -356,6 +356,7 @@ $validado = $resultado['validado'] ?? '';
                         </datalist>
 
 
+
                         <div class="card-body">
 
                         <?php
@@ -378,7 +379,7 @@ $validado = $resultado['validado'] ?? '';
                         ?>
                             <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                 <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
-                                    <label for="instituciones[<?= $i ?>][id_Institucion]" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
+                                    <label for="institucion<?= $i + 1 ?>" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
                                     <input 
                                         class="form-control <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
                                         list="OpcionesInstitucion" 

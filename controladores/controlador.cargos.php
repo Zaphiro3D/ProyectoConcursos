@@ -93,7 +93,6 @@ class ControladorCargos{
                 $instituciones = [];
                 foreach ($_POST["instituciones"] as $key => $institucion) {
                     $idInstitucion = intval($institucion["id_Institucion"]);
-
                     // Verificar que el ID de la institución sea mayor a 0
                     if ($idInstitucion > 0) {
                         $instituciones[] = [
@@ -160,6 +159,7 @@ class ControladorCargos{
 
     public function ctrEditarCargo()
     {
+        
         $errores = []; // Inicializar arreglo de errores
         $validado = ""; // Inicializar clase de validación
 
@@ -210,10 +210,12 @@ class ControladorCargos{
                 }
             }
 
+
             // Procesar instituciones
             $instituciones = [];
             foreach ($_POST["instituciones"] as $key => $institucion) {
-                $idInstitucion = intval($institucion["id_Institucion"]);
+                $idInstitucion = intval($institucion["id_Institucion"]);                
+                // Verificar que el ID de la institución sea mayor a 0
                 if ($idInstitucion > 0) {
                     $instituciones[] = [
                         "id_Institucion" => $idInstitucion,
@@ -227,13 +229,23 @@ class ControladorCargos{
                 $numeroPlaza = intval($_POST["numeroPlaza"]);
                 $id_NombreCargo = intval($_POST["id_NombreCargo"]);
                 $id_Turno = intval($_POST["id_Turno"]);
-                $id_Grado = intval($_POST["id_Grado"]) ?: NULL;
-                $id_Division = intval($_POST["id_Division"]) ?: NULL;
+                $id_Grado = intval($_POST["id_Grado"]);
+                $id_Division = intval($_POST["id_Division"]);
                 $hsCatedra = intval($_POST["hsCatedra"]);
                 $nombreDocente = htmlspecialchars($_POST["nombreDocente"]);
                 $apellidoDocente = htmlspecialchars($_POST["apellidoDocente"]);
-                $dniDocente = intval($_POST["dniDocente"]) ?: NULL;
+                $dniDocente = intval($_POST["dniDocente"]);
 
+                if ($id_Grado == '' || $id_Grado == 0) {
+                    $id_Grado = NULL;
+                }
+                if ($id_Division == '' || $id_Division == 0) {
+                    $id_Division = NULL;
+                }
+                if ($dniDocente == '' || $dniDocente == 0) {
+                    $dniDocente = NULL;
+                }
+                
                 // Enviar datos al modelo
                 $respuesta = ModeloCargos::mdlEditarCargo([
                     "id_Cargo" => $id_Cargo,
@@ -248,6 +260,8 @@ class ControladorCargos{
                     "dniDocente" => $dniDocente,
                     "instituciones" => $instituciones,
                 ]);
+
+
 
                 // Responder según resultado
                 $url = ControladorPlantilla::url() . "cargos";

@@ -51,7 +51,7 @@ class validador
         foreach ($instituciones as $key => $institucion) {
             $idInstitucion = $institucion ?? '';
 
-            // Validar que no esté vacío el caampo de sede
+            // Validar que no esté vacío el campo de sede
             if (empty($idInstitucion) and $key ==0) {
                 $errores["insti" . ($key + 1)] = 'La institución no puede estar vacía.';
                 continue;

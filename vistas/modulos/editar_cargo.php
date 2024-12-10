@@ -5,6 +5,7 @@ $cargo_select = ControladorCargos::ctrMostrarCargos($id_cargo, $valor);
 // print_r($cargo_select);
 
 $insti = explode(',', $cargo_select['instituciones']);
+$id_Insti = explode(',', $cargo_select['id_instituciones']);
 
 
 // Función para opciones de select días
@@ -99,7 +100,7 @@ if ($cargo_select) {
                                                 aria-label="id_NombreCargo" 
                                                 required>
                                                 <!-- Opción predeterminada -->
-                                                <option value="" disabled <?php echo empty($_POST['nombreCargo']) && empty($cargo_select["id_NombreCargo"]) ? 'selected' : ''; ?>>
+                                                <option value="" disabled <?php echo empty($_POST['id_NombreCargo']) && empty($cargo_select["id_NombreCargo"]) ? 'selected' : ''; ?>>
                                                     Seleccione un cargo
                                                 </option>
 
@@ -111,11 +112,11 @@ if ($cargo_select) {
                                                         value="<?php echo $value["id_NombreCargo"]; ?>" 
                                                         <?php
                                                             // Priorizar selección del formulario si fue enviado
-                                                            if (isset($_POST['nombreCargo']) && $_POST['nombreCargo'] == $value["id_NombreCargo"]) {
+                                                            if (isset($_POST['id_NombreCargo']) && $_POST['id_NombreCargo'] == $value["id_NombreCargo"]) {
                                                                 echo 'selected';
                                                             }
                                                             // Si no hay envío, mostrar el rol actual del agente
-                                                            elseif (!isset($_POST['nombreCargo']) && $cargo_select["id_NombreCargo"] == $value["id_NombreCargo"]) {
+                                                            elseif (!isset($_POST['id_NombreCargo']) && $cargo_select["id_NombreCargo"] == $value["id_NombreCargo"]) {
                                                                 echo 'selected';
                                                             }
                                                         ?>>
@@ -142,7 +143,7 @@ if ($cargo_select) {
                                                 aria-label="id_Turno" 
                                                 required>
                                                 <!-- Opción predeterminada -->
-                                                <option value="" disabled <?php echo empty($_POST['turno']) && empty($cargo_select["id_Turno"]) ? 'selected' : ''; ?>>
+                                                <option value="" disabled <?php echo empty($_POST['id_Turno']) && empty($cargo_select["id_Turno"]) ? 'selected' : ''; ?>>
                                                     Seleccione un turno
                                                 </option>
 
@@ -154,11 +155,11 @@ if ($cargo_select) {
                                                         value="<?php echo $value["id_Turno"]; ?>" 
                                                         <?php
                                                             // Priorizar selección del formulario si fue enviado
-                                                            if (isset($_POST['turno']) && $_POST['turno'] == $value["id_Turno"]) {
+                                                            if (isset($_POST['id_Turno']) && $_POST['id_Turno'] == $value["id_Turno"]) {
                                                                 echo 'selected';
                                                             }
                                                             // Si no hay envío, mostrar el rol actual del agente
-                                                            elseif (!isset($_POST['turno']) && $cargo_select["id_Turno"] == $value["id_Turno"]) {
+                                                            elseif (!isset($_POST['id_Turno']) && $cargo_select["id_Turno"] == $value["id_Turno"]) {
                                                                 echo 'selected';
                                                             }
                                                         ?>>
@@ -183,9 +184,9 @@ if ($cargo_select) {
                                                 id="id_Grado" 
                                                 name="id_Grado" 
                                                 aria-label="id_Grado" 
-                                                required>
+                                                >
                                                 <!-- Opción predeterminada -->
-                                                <option value="" disabled <?php echo empty($_POST['grado']) && empty($cargo_select["id_Grado"]) ? 'selected' : ''; ?>>
+                                                <option value="" <?php echo empty($_POST['id_Grado']) && empty($cargo_select["id_Grado"]) ? 'selected' : ''; ?>>
                                                 </option>
 
                                                 <!-- Opciones dinámicas -->
@@ -196,11 +197,11 @@ if ($cargo_select) {
                                                         value="<?php echo $value["id_Grado"]; ?>" 
                                                         <?php
                                                             // Priorizar selección del formulario si fue enviado
-                                                            if (isset($_POST['grado']) && $_POST['grado'] == $value["id_Grado"]) {
+                                                            if (isset($_POST['id_Grado']) && $_POST['id_Grado'] == $value["id_Grado"]) {
                                                                 echo 'selected';
                                                             }
                                                             // Si no hay envío, mostrar el rol actual del agente
-                                                            elseif (!isset($_POST['grado']) && $cargo_select["id_Grado"] == $value["id_Grado"]) {
+                                                            elseif (!isset($_POST['id_Grado']) && $cargo_select["id_Grado"] == $value["id_Grado"]) {
                                                                 echo 'selected';
                                                             }
                                                         ?>>
@@ -225,9 +226,9 @@ if ($cargo_select) {
                                                 id="id_Division" 
                                                 name="id_Division" 
                                                 aria-label="id_Division" 
-                                                required>
+                                                >
                                                 <!-- Opción predeterminada -->
-                                                <option value="" disabled <?php echo empty($_POST['division']) && empty($cargo_select["id_Division"]) ? 'selected' : ''; ?>>
+                                                <option value="" <?php echo empty($_POST['id_Division']) && empty($cargo_select["id_Division"]) ? 'selected' : ''; ?>>
                                                 </option>
 
                                                 <!-- Opciones dinámicas -->
@@ -238,11 +239,11 @@ if ($cargo_select) {
                                                         value="<?php echo $value["id_Division"]; ?>" 
                                                         <?php
                                                             // Priorizar selección del formulario si fue enviado
-                                                            if (isset($_POST['division']) && $_POST['division'] == $value["id_Division"]) {
+                                                            if (isset($_POST['id_Division']) && $_POST['id_Division'] == $value["id_Division"]) {
                                                                 echo 'selected';
                                                             }
                                                             // Si no hay envío, mostrar el rol actual del agente
-                                                            elseif (!isset($_POST['division']) && $cargo_select["id_Division"] == $value["id_Division"]) {
+                                                            elseif (!isset($_POST['id_Division']) && $cargo_select["id_Division"] == $value["id_Division"]) {
                                                                 echo 'selected';
                                                             }
                                                         ?>>
@@ -254,7 +255,7 @@ if ($cargo_select) {
                                             </select>
                                             <label for="id_Division">División</label>
                                             <div class="invalid-feedback">
-                                                <?php echo $errores['id_Division'] ?? 'Por favor, seleccione una division válido.'; ?>
+                                                <?php echo $errores['id_Division'] ?? 'Por favor, seleccione una división válido.'; ?>
                                             </div>
 
                                         </div>
@@ -450,11 +451,12 @@ if ($cargo_select) {
 
                                 for ($i = 0; $i < count($labels); $i++): 
                                     // Obtener el valor previamente enviado si existe
-                                    $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $insti[$i] ?? '';
+                                    $valorInstitucion = $_POST['institucion' . $i + 1 ] ?? $insti[$i] ?? '';
+                                    $id_Institucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $id_Insti[$i] ?? '';
                                 ?>
                                     <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                         <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
-                                            <label for="instituciones[<?= $i ?>][id_Institucion]" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
+                                            <label for="institucion<?= $i + 1 ?>" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
                                             <input 
                                                 class="form-control <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
                                                 list="OpcionesInstitucion" 
@@ -471,8 +473,9 @@ if ($cargo_select) {
                                                 type="hidden" 
                                                 id="idInstitucion<?= $i + 1 ?>" 
                                                 name="instituciones[<?= $i ?>][id_Institucion]" 
-                                                value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                                value="<?= htmlspecialchars($id_Institucion); ?>"
                                             >
+                                            
                                         </div>
                                     </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
                                 <?php endfor; ?>
