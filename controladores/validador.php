@@ -87,14 +87,64 @@ class validador
     }
 
     /**
-     * Verificar si un cargo requiere grado y división.
+     * Verificar si un cargo requiere grado y división:
+     * 33 Maestro de ciclo
+     * 8 Maestro de Jóvenes y Adultos
      * 
      * @param string $cargo El nombre del cargo.
      * @param array $cargosQueRequieren Grupos de cargos que necesitan grado y división.
      * @return bool Retorna true si el cargo requiere grado y división, false de lo contrario.
      */
-    public function requiereGradoDivision($cargo, $cargosQueRequieren = ['Maestro de ciclo', '8']) {
-        return in_array(strtolower(trim($cargo)), array_map('strtolower', $cargosQueRequieren));
+    public function requiereGradoDivision($cargo, $cargosQueRequieren = [33, 8]) {
+        return in_array((int)$cargo, $cargosQueRequieren);
+        // return in_array(strtolower(trim($cargo)), array_map('strtolower', $cargosQueRequieren));
     }
+
+     
+    /**
+     * Validar instituciones según el número de instituciones que comparte.
+     * 
+     * @param string $comparte Valor del campo de "Comparte con" (comparte1, comparte2, etc.).
+     * @param array $instituciones Array de instituciones enviadas en el formulario.
+     * @return array Retorna un array con errores, vacío si no hay errores.
+     */
+    public function validarInstitucionesPorComparte($comparte, $instituciones) {
+        $errores = [];
+        
+        // Determina cuántas instituciones se requieren según el valor de "comparte"
+        $numeroInstituciones = 0;
+        if (preg_match('/comparte(\d+)/', $comparte, $matches)) {
+            $numeroInstituciones = (int)$matches[1];
+        }
+        $numeroInstituciones ++;
+        // Valida las instituciones necesarias
+        for ($i = 1; $i <= $numeroInstituciones; $i++) {
+            if (empty($instituciones[$i-1]['id_Institucion'] ?? '')) {
+                $errores["insti$i"] = "Debe completar la institución $i.";
+            }
+        }
+
+        return $errores;
+    }
+
+    public static function validarEnteroPositivo($value) {
+        // Verifica si el valor es un número entero positivo
+        $value == '' ?? $value=0;
+        if (filter_var($value, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]) === false) {
+            return "El valor debe ser un número entero positivo.";
+        }
+        return null; // Devuelve null si es válido
+    }
+
+    public static function validarHastaSeisDigitos($valor) {
+        // Verifica si es numérico y tiene hasta 6 dígitos
+        if (!preg_match('/^\d{1,6}$/', $valor)) {
+            return "El valor debe ser un número con hasta 6 dígitos.";
+        }
+        return null; // Devuelve null si es válido
+    }
+    
+    
+    
 
 }

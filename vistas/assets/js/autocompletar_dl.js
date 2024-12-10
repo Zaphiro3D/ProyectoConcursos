@@ -1,30 +1,30 @@
-// ===================================================================
-// Función para seleccionar la mejor coincidencia en los datalist
-// ===================================================================
 function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
     const input = document.getElementById(inputId);
     const datalist = document.getElementById(datalistId);
     const hiddenInput = document.getElementById(hiddenInputId);
 
-    // Actualizar el ID al escribir en el campo (si hay coincidencia exacta)
-    input.addEventListener("input", function() {
-        const inputValue = this.value;
+    // Actualizar el ID al escribir en el campo
+    input.addEventListener("input", function () {
+        const inputValue = this.value.trim();
         hiddenInput.value = ""; // Limpia el valor por defecto
 
+        // Buscar coincidencia exacta
         for (const option of datalist.options) {
-            if (option.value === inputValue) {
+            if (option.value.trim().toLowerCase() === inputValue.toLowerCase()) {
                 hiddenInput.value = option.getAttribute("data-id");
                 break;
             }
         }
+
+        console.log(`Input: ${inputValue}, Hidden: ${hiddenInput.value}`);
     });
 
     // Seleccionar la mejor coincidencia al salir del campo
-    input.addEventListener("blur", function() {
-        const inputValue = this.value.toLowerCase();
+    input.addEventListener("blur", function () {
+        const inputValue = this.value.trim().toLowerCase();
 
         // Si el campo está vacío, no realizar ninguna acción
-        if (!inputValue.trim()) {
+        if (!inputValue) {
             hiddenInput.value = "";
             return;
         }
@@ -34,7 +34,7 @@ function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
         let highestScore = 0;
 
         for (const option of datalist.options) {
-            const optionValue = option.value.toLowerCase();
+            const optionValue = option.value.trim().toLowerCase();
 
             // Calcula el puntaje de coincidencia
             let score = 0;
@@ -62,5 +62,7 @@ function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
             // Limpia si no hay coincidencia
             hiddenInput.value = "";
         }
+
+        console.log(`Blur Input: ${inputValue}, Best Match: ${bestMatch}, Hidden: ${hiddenInput.value}`);
     });
 }

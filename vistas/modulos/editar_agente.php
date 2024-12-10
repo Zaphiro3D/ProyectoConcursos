@@ -38,7 +38,7 @@ if ($agente_selec) {
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?php echo $agente_selec["dni"]; ?>" required>
+                                        <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?php echo $_POST['dni'] ?? $agente_selec['dni']; ?>" required>
                                         <label for="dni">Número de DNI sin puntos</label>
                                         <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
@@ -46,7 +46,7 @@ if ($agente_selec) {
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control <?php echo isset($errores['apellido']) ? 'is-invalid' : ''; ?>" id="apellido" name="apellido" placeholder="Apellido" value="<?php echo  $agente_selec["apellido"]; ?>" required>
+                                        <input type="text" class="form-control <?php echo isset($errores['apellido']) ? 'is-invalid' : ''; ?>" id="apellido" name="apellido" placeholder="Apellido" value="<?php echo $_POST['apellido'] ?? $agente_selec['apellido']; ?>" required>
                                         <label for="apellido">Apellido completo</label>
                                         <div class="invalid-feedback"><?php echo $errores['apellido'] ?? 'Por favor, complete este campo.'; ?></div>    
                                     </div>
@@ -54,7 +54,7 @@ if ($agente_selec) {
 
                                 <div class="col-lg-5">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?php echo $agente_selec["nombre"]; ?>" required>
+                                        <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?php echo $_POST['nombre'] ?? $agente_selec['nombre']; ?>" required>
                                         <label for="nombre">Nombre completo</label>
                                         <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
@@ -64,7 +64,7 @@ if ($agente_selec) {
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo $agente_selec["email"]; ?>" required>
+                                        <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo $_POST['email'] ?? $agente_selec['email']; ?>" required>
                                         <label for="email">Email</label>
                                         <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
@@ -72,14 +72,14 @@ if ($agente_selec) {
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control <?php echo isset($errores['direccion']) ? 'is-invalid' : ''; ?>" id="direccion" name="direccion" placeholder="Direccion" value="<?php echo $agente_selec["direccion"]; ?>">
+                                        <input type="text" class="form-control <?php echo isset($errores['direccion']) ? 'is-invalid' : ''; ?>" id="direccion" name="direccion" placeholder="Direccion" value="<?php echo $_POST['direccion'] ?? $agente_selec['direccion']; ?>">
                                         <label for="direccion">Dirección</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $agente_selec["telefono"]; ?>">
+                                        <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $_POST['telefono'] ?? $agente_selec['telefono']; ?>">
                                         <label for="telefono">Teléfono sin 0 ni 15</label>
                                         <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
                                     </div>
@@ -143,13 +143,13 @@ if ($agente_selec) {
                                     <div class="row g-2">
                                         <div class="col-md">
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" id="usuario" name="usuario" disabled="" placeholder="usuario" value="<?php echo $agente_selec["usuario"]; ?>" required>
+                                                <input type="text" class="form-control" id="usuario" name="usuario" disabled="" placeholder="usuario" value="<?php echo $_POST['usuario'] ?? $agente_selec['usuario']; ?>" required>
                                                 <label for="usuario">Usuario: correo electrónico</label>
                                             </div>
                                         </div>
                                         <div class="col-md">
                                             <div class="form-floating mb-3">
-                                                <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="Sin cambios" required>
+                                                <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?php echo $_POST['contrasena'] ?? $agente_selec['contrasena'] ?? 'Sin cambios'; ?>" required>
                                                 <label for="contrasena">Contraseña</label>
                                                 <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div> 
 

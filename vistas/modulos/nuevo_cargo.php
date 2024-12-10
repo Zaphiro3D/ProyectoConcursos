@@ -17,6 +17,7 @@ $resultado = $controlador->ctrAgregarCargo();
 
 $errores = $resultado['errores'] ?? [];
 $validado = $resultado['validado'] ?? '';
+
 ?>
 
 <div class="container-xxl">
@@ -206,8 +207,11 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
+                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
                                             <label for="hsCatedra">Hs. Cát.</label>
+                                            <div class="invalid-feedback">
+                                                <?php echo $errores['hsCatedra'] ?? ''; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

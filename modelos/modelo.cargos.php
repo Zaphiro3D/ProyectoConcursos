@@ -10,13 +10,17 @@ class ModeloCargos{
         if ($id_cargo != null) {
             try {
                 $stmt = Conexion::conectar()->prepare("SELECT 
-                c.id_Cargo, 
+                c.id_Cargo,
+                nc.id_NombreCargo, 
                 nc.nombreCargo, 
                 p.numeroPlaza,
                 c.hsCatedra,
+                c.id_Grado,
+                c.id_Turno,
+                c.id_Division,
                 g.grado, 
                 d.division, 
-                t.turno,
+                t.turno,                
                 c.nombreDocente,
                 c.apellidoDocente,
                 c.dniDocente,
@@ -151,6 +155,107 @@ class ModeloCargos{
             $conexion = null;
         }
     }
+
+    public static function mdlEditarCargo($datos)
+{
+    $conexion = Conexion::conectar();
+    try {
+        $conexion->beginTransaction();
+
+        // Actualizar en la tabla cargos
+        $sqlCargos = "UPDATE cargos SET 
+            id_NombreCargo = :id_NombreCargo,
+            id_Grado = :id_Grado,
+            id_Division = :id_Division,
+            id_Turno = :id_Turno,
+            hsCatedra = :hsCatedra,
+            apellidoDocente = :apellidoDocente,
+            nombreDocente = :nombreDocente,
+            dniDocente = :dniDocente
+        WHERE id_Cargo = :id_Cargo";
+
+        $stmtCargos = $conexion->prepare($sqlCargos);
+        $stmtCargos->bindParam(":id_NombreCargo", $datos["id_NombreCargo"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":id_Grado", $datos["id_Grado"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":id_Division", $datos["id_Division"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":id_Turno", $datos["id_Turno"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":hsCatedra", $datos["hsCatedra"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
+        $stmtCargos->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
+        $stmtCargos->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
+        $stmtCargos->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+
+        if (!$stmtCargos->execute()) {
+            throw new Exception("Error al actualizar la tabla cargos.");
+        }
+
+        // Ahora insertamos las nuevas plazas
+        $sqlPlazas = "INSERT INTO plazas (numeroPlaza, id_Cargo, id_Institucion, sede) VALUES (:numeroPlaza, :id_Cargo, :id_Institucion, :sede)";
+        $stmtPlazas = $conexion->prepare($sqlPlazas);
+        $plazasInsertadas = 0;
+
+        // Comprobamos si el numeroPlaza ya existe y no insertamos duplicados
+        foreach ($datos["instituciones"] as $index => $institucion) {
+            $numeroPlaza = $datos["numeroPlaza"] + $index; // Asignamos un número de plaza único
+            
+            // Verificamos si el numeroPlaza ya existe para el id_Cargo
+            $sqlVerificarPlaza = "SELECT COUNT(*) FROM plazas WHERE numeroPlaza = :numeroPlaza AND id_Cargo = :id_Cargo";
+            $stmtVerificarPlaza = $conexion->prepare($sqlVerificarPlaza);
+            $stmtVerificarPlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+            $stmtVerificarPlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+            $stmtVerificarPlaza->execute();
+            $existePlaza = $stmtVerificarPlaza->fetchColumn();
+
+            if ($existePlaza == 0) {
+                // Imprimir para depuración
+                echo "Insertando plaza: numeroPlaza = $numeroPlaza, id_Cargo = {$datos['id_Cargo']}, id_Institucion = {$institucion['id_Institucion']}, sede = {$institucion['sede']}<br>";
+
+                // Insertamos la nueva plaza si no existe
+                $stmtPlazas->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+                $stmtPlazas->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+                $stmtPlazas->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
+                $stmtPlazas->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
+
+                if ($stmtPlazas->execute()) {
+                    $plazasInsertadas++;
+                } else {
+                    $errorInfo = $stmtPlazas->errorInfo();
+                    throw new Exception("Error al insertar la plaza: " . implode(", ", $errorInfo));
+                }
+            } else {
+                // Si ya existe, no insertamos la plaza duplicada
+                continue;
+            }
+        }
+
+        // Si no se insertaron plazas, lanzar un error
+        if ($plazasInsertadas === 0) {
+            throw new Exception("No se pudieron insertar nuevas plazas.");
+        }
+
+        // Eliminar las plazas anteriores solo después de haber insertado las nuevas
+        $sqlDeletePlazas = "DELETE FROM plazas WHERE id_Cargo = :id_Cargo";
+        $stmtDeletePlazas = $conexion->prepare($sqlDeletePlazas);
+        $stmtDeletePlazas->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+        $stmtDeletePlazas->execute();
+
+        // Ahora confirmamos las inserciones
+        $conexion->commit();
+        return ["status" => "ok"];
+    } catch (Exception $e) {
+        $conexion->rollBack();
+        echo "Error: " . $e->getMessage();
+        return ["status" => "error", "message" => $e->getMessage()];
+    } finally {
+        $stmtCargos = null;
+        $stmtDeletePlazas = null;
+        $stmtPlazas = null;
+        $conexion = null;
+    }
+}
+
+
+
 
 }
 

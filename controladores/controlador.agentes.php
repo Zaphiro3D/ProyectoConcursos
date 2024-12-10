@@ -39,6 +39,13 @@ class ControladorAgentes{
                 }
             }
 
+            // Validar DNI
+            if ($_POST['dni'] != ""){
+                if (!$validador->dni($_POST['dni'] ?? '')) {
+                    $errores['dni'] = "El número de dni ingresado no es válido.";
+                }
+            }
+
             // Validar Rol
             if (empty($_POST['rol']) || $_POST['rol'] == "") {
                 $errores['rol'] = "Por favor, seleccione un rol válido.";

@@ -45,7 +45,37 @@ class ControladorCargos{
             $erroresInstituciones = $validador->instituciones($inst, ModeloInstituciones::class);
             // Merge de errores de instituciones con el resto de los errores
             $errores = array_merge($errores, $erroresInstituciones);
+
+            // Obtener el valor de "Comparte con"
+            $comparte = $_POST['gridRadiosComparte'] ?? 'noComparte';
+            $instituciones = $_POST['instituciones'] ?? [];
+
+            // Validar las instituciones según el número que comparte
+            $erroresInstituciones = $validador->validarInstitucionesPorComparte($comparte, $instituciones);
             
+            // var_dump($erroresInstituciones);
+            // die();
+
+            $errores = array_merge($errores, $erroresInstituciones);
+            
+            // Valida las plazas (deben ser hasta 6 dígitos)
+            $errorPlaza = Validador::validarHastaSeisDigitos(intval($_POST["numeroPlaza"]));
+            if ($errorPlaza) {
+                $errores['numeroPlaza'] = $errorPlaza;
+            }
+
+            // Valida las horas cátedra (deben ser enteros positivos)
+            $errorHorasCatedra = Validador::validarEnteroPositivo($_POST["hsCatedra"]);
+            if ($errorHorasCatedra) {
+                $errores['hsCatedra'] = $errorHorasCatedra;
+            }
+
+            // Validar DNI
+            if ($_POST['dniDocente'] != ""){
+                if (!$validador->dni($_POST['dniDocente'] ?? '')) {
+                    $errores['dniDocente'] = "El número de dni ingresado no es válido.";
+                }
+            }
 
             if (empty($errores)) {
                 // Obtener datos del formulario
@@ -127,6 +157,129 @@ class ControladorCargos{
             'validado' => $validado
         ];
     }
+
+    public function ctrEditarCargo()
+    {
+        $errores = []; // Inicializar arreglo de errores
+        $validado = ""; // Inicializar clase de validación
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $validador = new Validador();
+
+            // print_r($_POST);
+            // die();
+
+            // Validar el ID del cargo
+            $id_Cargo = intval($_POST['id_Cargo'] ?? 0);
+            if ($id_Cargo <= 0) {
+                $errores['id_Cargo'] = "El ID del cargo no es válido.";
+            }
+
+            // Obtener el cargo seleccionado
+            $cargo = $_POST['id_NombreCargo'] ?? '';
+
+            // Decidir qué campos validar según el cargo
+            $campos = ['id_Turno', 'id_NombreCargo'];
+            if ($validador->requiereGradoDivision($cargo)) {
+                $campos = array_merge($campos, ['id_Grado', 'id_Division']);
+            }
+
+            // Validar los selects necesarios en el formulario
+            foreach ($campos as $campo) {
+                if ($validador->validarSelect($_POST[$campo] ?? '')) {
+                    $errores[$campo] = "Por favor, seleccione una opción válida.";
+                }
+            }
+
+            // Validar plazas
+            $errorPlaza = Validador::validarHastaSeisDigitos(intval($_POST["numeroPlaza"]));
+            if ($errorPlaza) {
+                $errores['numeroPlaza'] = $errorPlaza;
+            }
+
+            // Validar horas cátedra
+            $errorHorasCatedra = Validador::validarEnteroPositivo($_POST["hsCatedra"]);
+            if ($errorHorasCatedra) {
+                $errores['hsCatedra'] = $errorHorasCatedra;
+            }
+
+            // Validar DNI
+            if ($_POST['dniDocente'] != "") {
+                if (!$validador->dni($_POST['dniDocente'] ?? '')) {
+                    $errores['dniDocente'] = "El número de DNI ingresado no es válido.";
+                }
+            }
+
+            // Procesar instituciones
+            $instituciones = [];
+            foreach ($_POST["instituciones"] as $key => $institucion) {
+                $idInstitucion = intval($institucion["id_Institucion"]);
+                if ($idInstitucion > 0) {
+                    $instituciones[] = [
+                        "id_Institucion" => $idInstitucion,
+                        "sede" => $key === 0 ? 1 : 0, // La primera institución es la sede
+                    ];
+                }
+            }
+
+            if (empty($errores)) {
+                // Obtener datos del formulario
+                $numeroPlaza = intval($_POST["numeroPlaza"]);
+                $id_NombreCargo = intval($_POST["id_NombreCargo"]);
+                $id_Turno = intval($_POST["id_Turno"]);
+                $id_Grado = intval($_POST["id_Grado"]) ?: NULL;
+                $id_Division = intval($_POST["id_Division"]) ?: NULL;
+                $hsCatedra = intval($_POST["hsCatedra"]);
+                $nombreDocente = htmlspecialchars($_POST["nombreDocente"]);
+                $apellidoDocente = htmlspecialchars($_POST["apellidoDocente"]);
+                $dniDocente = intval($_POST["dniDocente"]) ?: NULL;
+
+                // Enviar datos al modelo
+                $respuesta = ModeloCargos::mdlEditarCargo([
+                    "id_Cargo" => $id_Cargo,
+                    "numeroPlaza" => $numeroPlaza,
+                    "id_NombreCargo" => $id_NombreCargo,
+                    "id_Turno" => $id_Turno,
+                    "id_Grado" => $id_Grado,
+                    "id_Division" => $id_Division,
+                    "hsCatedra" => $hsCatedra,
+                    "nombreDocente" => $nombreDocente,
+                    "apellidoDocente" => $apellidoDocente,
+                    "dniDocente" => $dniDocente,
+                    "instituciones" => $instituciones,
+                ]);
+
+                // Responder según resultado
+                $url = ControladorPlantilla::url() . "cargos";
+                if ($respuesta["status"] === "ok") {
+                    echo '<script>
+                        fncSweetAlert(
+                            "success",
+                            "El cargo fue actualizado correctamente",
+                            "' . $url . '"
+                        );
+                        </script>';
+                } else {
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo actualizar el cargo. " . $respuesta["message"] . "',
+                        icon: 'error'
+                    });
+                    </script>";
+                }
+            } else {
+                $validado = "was-validated";
+            }
+        }
+
+        // Retornar los resultados para usarlos en el formulario HTML
+        return [
+            'errores' => $errores,
+            'validado' => $validado
+        ];
+    }
+
     
 
     
