@@ -1,3 +1,10 @@
+<?php
+    $cargos = ControladorCargos::ctrMostrarCargos(null, null);
+                            
+    $eliminar = new ControladorCargos();
+    $eliminar -> ctrEliminarCargo();
+?>
+
 <div class="container-xxl">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
@@ -33,7 +40,6 @@
                         </thead>
                         <tbody>
                             <?php
-                            $cargos = ControladorCargos::ctrMostrarCargos(null, null);
                             foreach ($cargos as $key => $value) 
                             {
                                 $instituciones = explode(',', $value['instituciones']);
@@ -52,7 +58,14 @@
                                     <td><?php echo $instituciones[3] ?? '' ?></td>
 
                                     <td><a href="editar_cargo/<?php echo $value["id_Cargo"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                        <a href="eliminar_cargo" class="btn btn-danger btn-sm btnEliminar" id_eliminar="<?php echo $value["id_Cargo"]; ?>" pag="cargos" categoria="Cargo - Plaza N°" valorElim="<?php echo $value["numeroPlaza"]; ?>"><i class="fas fa-trash"></i></a>
+                                        <button 
+                                            class="btn btn-danger btn-sm btnEliminar" 
+                                            id_eliminar="<?php echo $value["id_Cargo"]; ?>" 
+                                            pag="cargos" 
+                                            categoria="Cargo - Plaza N°" 
+                                            valorElim="<?php echo $value["numeroPlaza"]; ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
 
                                 </tr>
@@ -61,7 +74,8 @@
 
                         </tbody>
                     </table>
-
+                    <!-- Campo escondido que guarda el url -->
+                    <input type="hidden" id="url" value="<?php echo $url; ?>">
                 </div>
 
             </div>

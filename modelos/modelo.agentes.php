@@ -130,7 +130,7 @@ class ModeloAgentes{
     }
     
     // ==============================================================
-    // Eliminar Agentes
+    // Eliminar Agente
     // ==============================================================
     static public function mdlEliminarAgente($datos)
     {

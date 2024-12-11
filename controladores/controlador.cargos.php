@@ -294,7 +294,38 @@ class ControladorCargos{
         ];
     }
 
-    
+    // ==============================================================
+    // Eliminar Agente
+    // ==============================================================
+    static public function ctrEliminarCargo()
+    {
+     
+        if (isset($_GET["id_eliminar"])) {
+
+            $url = ControladorPlantilla::url() . "cargos";
+            $dato = $_GET["id_eliminar"];
+
+            $respuesta = ModeloCargos::mdlEliminarCargo($dato);
+
+            if ($respuesta == "ok") {
+                echo '<script>
+                fncSweetAlert(
+                "success", 
+                "El cargo se eliminó correctamente",
+                "' . $url . '");
+                </script>';
+            }
+            else{
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar el cargo.',
+                    icon: 'error'
+                });
+                </script>";
+            }
+        }
+    }
 
     
 }

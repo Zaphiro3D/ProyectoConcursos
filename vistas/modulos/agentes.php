@@ -1,5 +1,8 @@
 <?php
     $agentes = ControladorAgentes::ctrMostrarAgentes(null, null);
+
+    $eliminar = new ControladorAgentes();
+    $eliminar -> ctrEliminarAgente();
 ?>
 
 <div class="container-xxl">
@@ -44,7 +47,15 @@
                                 <td> <?php echo $value["telefono"] ?></td>
                                 <td> <?php echo $value["email"] ?></td>
                                 <td><a href="editar_agente/<?php echo $value["id_Agente"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> 
-                                <button class="btn btn-danger btn-sm btnEliminar" id_eliminar  = <?php echo $value["id_Agente"] ?> pag= "agentes" categoria = "Agente" valorElim = "<?php echo $value['apellido'] . ', ' . $value['nombre']; ?>" ><i class="fas fa-trash"></i></button></td>
+                                    <button 
+                                        class="btn btn-danger btn-sm btnEliminar" 
+                                        id_eliminar  = <?php echo $value["id_Agente"] ?> 
+                                        pag= "agentes" 
+                                        categoria = "Agente" 
+                                        valorElim = "<?php echo $value['apellido'] . ', ' . $value['nombre']; ?>" >
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
                             </tr>
                            
                             <?php } ?>
@@ -61,8 +72,5 @@
     
 </div>
 
-<?php 
-    $eliminar = new ControladorAgentes();
-    $eliminar -> ctrEliminarAgente();
-?>
+
 

@@ -160,123 +160,144 @@ class ModeloCargos{
     }
 
     public static function mdlEditarCargo($datos)
-{
-    $conexion = Conexion::conectar();
-    try {
-        $conexion->beginTransaction();
+    {
+        $conexion = Conexion::conectar();
+        try {
+            $conexion->beginTransaction();
 
-        // Actualizar en la tabla cargos
-        $sqlCargos = "UPDATE cargos SET 
-            id_NombreCargo = :id_NombreCargo,
-            id_Grado = :id_Grado,
-            id_Division = :id_Division,
-            id_Turno = :id_Turno,
-            hsCatedra = :hsCatedra,
-            apellidoDocente = :apellidoDocente,
-            nombreDocente = :nombreDocente,
-            dniDocente = :dniDocente
-        WHERE id_Cargo = :id_Cargo";
+            // Actualizar en la tabla cargos
+            $sqlCargos = "UPDATE cargos SET 
+                id_NombreCargo = :id_NombreCargo,
+                id_Grado = :id_Grado,
+                id_Division = :id_Division,
+                id_Turno = :id_Turno,
+                hsCatedra = :hsCatedra,
+                apellidoDocente = :apellidoDocente,
+                nombreDocente = :nombreDocente,
+                dniDocente = :dniDocente
+            WHERE id_Cargo = :id_Cargo";
 
-        $stmtCargos = $conexion->prepare($sqlCargos);
-        $stmtCargos->bindParam(":id_NombreCargo", $datos["id_NombreCargo"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":id_Grado", $datos["id_Grado"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":id_Division", $datos["id_Division"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":id_Turno", $datos["id_Turno"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":hsCatedra", $datos["hsCatedra"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
-        $stmtCargos->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
-        $stmtCargos->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
-        $stmtCargos->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+            $stmtCargos = $conexion->prepare($sqlCargos);
+            $stmtCargos->bindParam(":id_NombreCargo", $datos["id_NombreCargo"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":id_Grado", $datos["id_Grado"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":id_Division", $datos["id_Division"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":id_Turno", $datos["id_Turno"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":hsCatedra", $datos["hsCatedra"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
+            $stmtCargos->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
+            $stmtCargos->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
+            $stmtCargos->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
 
-        if (!$stmtCargos->execute()) {
-            throw new Exception("Error al actualizar la tabla cargos.");
-        }
-
-        // Obtener plazas existentes en la base de datos
-        $sqlPlazasExistentes = "SELECT numeroPlaza, id_Institucion FROM plazas WHERE id_Cargo = :id_Cargo";
-        $stmtPlazasExistentes = $conexion->prepare($sqlPlazasExistentes);
-        $stmtPlazasExistentes->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
-        $stmtPlazasExistentes->execute();
-        $plazasExistentes = $stmtPlazasExistentes->fetchAll(PDO::FETCH_ASSOC);
-
-        // Convertir las plazas existentes en un formato fácil de comparar
-        $plazasExistentesMap = [];
-        foreach ($plazasExistentes as $plaza) {
-            $plazasExistentesMap[$plaza["numeroPlaza"]] = $plaza["id_Institucion"];
-        }
-
-        // Preparar para insertar nuevas plazas
-        $sqlInsertPlaza = "INSERT INTO plazas (numeroPlaza, id_Cargo, id_Institucion, sede) 
-                           VALUES (:numeroPlaza, :id_Cargo, :id_Institucion, :sede)";
-        $stmtInsertPlaza = $conexion->prepare($sqlInsertPlaza);
-
-        // Preparar para eliminar plazas
-        $sqlDeletePlaza = "DELETE FROM plazas WHERE numeroPlaza = :numeroPlaza AND id_Cargo = :id_Cargo";
-        $stmtDeletePlaza = $conexion->prepare($sqlDeletePlaza);
-
-        // Procesar las plazas nuevas
-        // Procesar plazas nuevas
-foreach ($datos["instituciones"] as $index => $institucion) {
-    $numeroPlaza = $datos["numeroPlaza"] + $index;
-
-    if (isset($plazasExistentesMap[$numeroPlaza])) {
-        if ($plazasExistentesMap[$numeroPlaza] === $institucion["id_Institucion"]) {
-            // No hay cambios, continuamos
-            unset($plazasExistentesMap[$numeroPlaza]);
-            continue;
-        } else {
-            // Actualizar la plaza si solo cambió la institución
-            $sqlUpdatePlaza = "UPDATE plazas SET id_Institucion = :id_Institucion, sede = :sede 
-                               WHERE numeroPlaza = :numeroPlaza AND id_Cargo = :id_Cargo";
-            $stmtUpdatePlaza = $conexion->prepare($sqlUpdatePlaza);
-            $stmtUpdatePlaza->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
-            $stmtUpdatePlaza->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
-            $stmtUpdatePlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
-            $stmtUpdatePlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
-
-            if (!$stmtUpdatePlaza->execute()) {
-                throw new Exception("Error al actualizar la plaza con número $numeroPlaza.");
+            if (!$stmtCargos->execute()) {
+                throw new Exception("Error al actualizar la tabla cargos.");
             }
-            unset($plazasExistentesMap[$numeroPlaza]);
-            continue;
+
+            // Obtener plazas existentes en la base de datos
+            $sqlPlazasExistentes = "SELECT numeroPlaza, id_Institucion FROM plazas WHERE id_Cargo = :id_Cargo";
+            $stmtPlazasExistentes = $conexion->prepare($sqlPlazasExistentes);
+            $stmtPlazasExistentes->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+            $stmtPlazasExistentes->execute();
+            $plazasExistentes = $stmtPlazasExistentes->fetchAll(PDO::FETCH_ASSOC);
+
+            // Convertir las plazas existentes en un formato fácil de comparar
+            $plazasExistentesMap = [];
+            foreach ($plazasExistentes as $plaza) {
+                $plazasExistentesMap[$plaza["numeroPlaza"]] = $plaza["id_Institucion"];
+            }
+
+            // Preparar para insertar nuevas plazas
+            $sqlInsertPlaza = "INSERT INTO plazas (numeroPlaza, id_Cargo, id_Institucion, sede) 
+                            VALUES (:numeroPlaza, :id_Cargo, :id_Institucion, :sede)";
+            $stmtInsertPlaza = $conexion->prepare($sqlInsertPlaza);
+
+            // Preparar para eliminar plazas
+            $sqlDeletePlaza = "DELETE FROM plazas WHERE numeroPlaza = :numeroPlaza AND id_Cargo = :id_Cargo";
+            $stmtDeletePlaza = $conexion->prepare($sqlDeletePlaza);
+
+            // Procesar las plazas nuevas
+            foreach ($datos["instituciones"] as $index => $institucion) {
+                $numeroPlaza = $datos["numeroPlaza"] + $index;
+
+                if (isset($plazasExistentesMap[$numeroPlaza])) {
+                    if ($plazasExistentesMap[$numeroPlaza] === $institucion["id_Institucion"]) {
+                        // No hay cambios, continuamos
+                        unset($plazasExistentesMap[$numeroPlaza]);
+                        continue;
+                    } else {
+                        // Actualizar la plaza si solo cambió la institución
+                        $sqlUpdatePlaza = "UPDATE plazas SET id_Institucion = :id_Institucion, sede = :sede 
+                                        WHERE numeroPlaza = :numeroPlaza AND id_Cargo = :id_Cargo";
+                        $stmtUpdatePlaza = $conexion->prepare($sqlUpdatePlaza);
+                        $stmtUpdatePlaza->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
+                        $stmtUpdatePlaza->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
+                        $stmtUpdatePlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+                        $stmtUpdatePlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+
+                        if (!$stmtUpdatePlaza->execute()) {
+                            throw new Exception("Error al actualizar la plaza con número $numeroPlaza.");
+                        }
+                        unset($plazasExistentesMap[$numeroPlaza]);
+                        continue;
+                    }
+                }
+
+                // Insertar nueva plaza
+                $stmtInsertPlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+                $stmtInsertPlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+                $stmtInsertPlaza->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
+                $stmtInsertPlaza->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
+
+                if (!$stmtInsertPlaza->execute()) {
+                    throw new Exception("Error al insertar la plaza con número $numeroPlaza.");
+                }
+            }
+
+            // Eliminar plazas restantes
+            foreach (array_keys($plazasExistentesMap) as $numeroPlaza) {
+                $stmtDeletePlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+                $stmtDeletePlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
+                $stmtDeletePlaza->execute();
+            }
+
+
+            // Confirmamos los cambios
+            $conexion->commit();
+            return ["status" => "ok"];
+        } catch (Exception $e) {
+            $conexion->rollBack();
+            echo "Error: " . $e->getMessage();
+            return ["status" => "error", "message" => $e->getMessage()];
+        } finally {
+            $stmtCargos = null;
+            $stmtPlazasExistentes = null;
+            $stmtInsertPlaza = null;
+            $stmtDeletePlaza = null;
+            $conexion = null;
         }
     }
 
-    // Insertar nueva plaza
-    $stmtInsertPlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
-    $stmtInsertPlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
-    $stmtInsertPlaza->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
-    $stmtInsertPlaza->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
-
-    if (!$stmtInsertPlaza->execute()) {
-        throw new Exception("Error al insertar la plaza con número $numeroPlaza.");
+    // ==============================================================
+    // Eliminar Cargo
+    // ==============================================================
+    static public function mdlEliminarCargo($datos)
+    {
+        try {
+            $elim = 1;
+            $stmt = Conexion::conectar()->prepare("UPDATE cargos 
+            SET eliminado = :eliminado where id_Cargo = :id_Cargo");
+            
+            $stmt->bindParam(":id_Cargo", $datos, PDO::PARAM_INT);
+            $stmt->bindParam(":eliminado", $elim , PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
     }
-}
-
-// Eliminar plazas restantes
-foreach (array_keys($plazasExistentesMap) as $numeroPlaza) {
-    $stmtDeletePlaza->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
-    $stmtDeletePlaza->bindParam(":id_Cargo", $datos["id_Cargo"], PDO::PARAM_INT);
-    $stmtDeletePlaza->execute();
-}
-
-
-        // Confirmamos los cambios
-        $conexion->commit();
-        return ["status" => "ok"];
-    } catch (Exception $e) {
-        $conexion->rollBack();
-        echo "Error: " . $e->getMessage();
-        return ["status" => "error", "message" => $e->getMessage()];
-    } finally {
-        $stmtCargos = null;
-        $stmtPlazasExistentes = null;
-        $stmtInsertPlaza = null;
-        $stmtDeletePlaza = null;
-        $conexion = null;
-    }
-}
-
 
 
 

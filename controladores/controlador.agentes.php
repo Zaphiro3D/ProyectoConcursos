@@ -206,7 +206,7 @@ class ControladorAgentes{
     }
 
     // ==============================================================
-    // Eliminar Agentes
+    // Eliminar Agente
     // ==============================================================
     static public function ctrEliminarAgente()
     {
