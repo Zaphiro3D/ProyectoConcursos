@@ -347,7 +347,7 @@ $validado = $resultado['validado'] ?? '';
     
                             foreach ($institucion as $key => $value) { ?>
                                 <option 
-                                    value="<?php echo $value["tipo"] . ' N°' . $value["numero"] . ' ' . $value["institucion"] . ' CUE: ' . $value["cue"]; ?>" 
+                                    value="<?php echo $value["institucion"] . ' ' . ' N°' . $value["numero"] . ' (CUE: ' . $value["cue"] . ')'; ?>" 
                                     id="<?php echo $value["id_institucion"]; ?>"
                                     data-id="<?php echo $value["id_institucion"]; ?>"
                                 >

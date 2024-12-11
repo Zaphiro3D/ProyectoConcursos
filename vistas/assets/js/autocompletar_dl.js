@@ -61,8 +61,18 @@ function autoSelectBestMatch(inputId, datalistId, hiddenInputId) {
         } else {
             // Limpia si no hay coincidencia
             hiddenInput.value = "";
-        }
+        }      
 
         console.log(`Blur Input: ${inputValue}, Best Match: ${bestMatch}, Hidden: ${hiddenInput.value}`);
+    });
+    
+    //Agrega validación al evento blur para forzar un valor válido
+    input.addEventListener("blur", function () {
+        const inputValue = this.value.trim().toLowerCase();
+        if (!hiddenInput.value && inputValue) {
+            // Si no hay hiddenInput válido, limpiar el input principal
+            this.value = "";
+            console.error(`No hay coincidencia para: ${inputValue}`);
+        }
     });
 }

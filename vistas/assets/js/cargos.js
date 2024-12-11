@@ -53,4 +53,8 @@ radios.forEach(radio => {
 toggleInstituciones();
 
 autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');
+autoSelectBestMatch('institucion1', 'OpcionesInstitucion', 'idInstitucion1');
+autoSelectBestMatch('institucion2', 'OpcionesInstitucion', 'idInstitucion2');
+autoSelectBestMatch('institucion3', 'OpcionesInstitucion', 'idInstitucion3');
+autoSelectBestMatch('institucion4', 'OpcionesInstitucion', 'idInstitucion4');
 
