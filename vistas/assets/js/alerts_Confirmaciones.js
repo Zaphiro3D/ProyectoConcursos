@@ -32,8 +32,6 @@ $(document).on("click", ".btnGuardar", function (e) {
           //institucionesSeleccionadas.push(data[0]); // El ID está en la primera columna
       });
     
-    
-
       // Agregar los IDs seleccionados al input oculto del formulario
       if ($("#institucionesSeleccionadas").length === 0) {
           // Crear dinámicamente el input oculto si no existe

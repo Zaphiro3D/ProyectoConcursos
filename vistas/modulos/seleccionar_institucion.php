@@ -17,24 +17,24 @@
                         </thead>
                         <tbody>
                             <?php
+                            $institucionesZona = ControladorZonas::ctrObtenerInstitucionZona($rutas[1]);
+                            $institucionesAsignadas = array_column($institucionesZona, "id_Institucion");
                             $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+                            print_r( $institucionesAsignadas);
                             foreach ($institucion as $key => $value) {
                             ?>
-
                                 <tr data-id_institucion="<?php echo $value['id_institucion']; ?>" style="background-color:#000888">
-
                                     <td> <?php echo $value["cue"] ?></td>
                                     <td> <?php echo $value["tipo"] ?></td>
                                     <td> <?php echo $value["numero"] ?></td>
                                     <td> <?php echo $value["institucion"] ?></td>
-
                                 </tr>
+                                
                             <?php } ?>
-
                         </tbody>
+                        
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

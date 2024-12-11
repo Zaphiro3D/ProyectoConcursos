@@ -4,8 +4,7 @@ $zona = "id_ZonaSupervision";
 $valor = $rutas[1];
 $zona_select = ControladorZonas::ctrMostrarZonas($zona, $valor);
 
-if ($zona_select) {
-?>
+if ($zona_select) { ?>
 
     <div class="container-xxl">
 
@@ -40,20 +39,31 @@ if ($zona_select) {
                         </div><!-- end card header -->
 
                         <div class="card-body">
+
+
                             <!-- Opciones Datalist Agentes -->
                             <datalist id="OpcionesSupervisor">
                                 <?php
+                                // Mostrar todas las opciones de agentes disponibles
+
                                 $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
                                 foreach ($agentes as $key => $value) {
                                 ?>
+
                                     <option id="<?php echo $value["id_Agente"] ?>" data-id="<?php echo $value["id_Agente"] ?>"><?php echo $value["apellido"] . ", " . $value["nombre"] . ' - DNI: ' . $value["dni"] ?> </option>
                                 <?php } ?>
                             </datalist>
 
-                            <div class="pb-3"> <!-- Datalist Agentes-->
+                            <div class="pb-3"> <!-- Datalist Agentes  -->
                                 <div class="form-floating mb-1 mt-1">
-                                    <input class="form-control fs-14" list="OpcionesSupervisor" id="datalistSupervisor" placeholder="Escriba para buscar..." data-id=<?php echo $zona_select["id_Agente"] ?> value=<?php echo $zona_select["apellido"] . "," . $zona_select["nombre"] . '-DNI:' . $zona_select["dni"] ?>></input>
-                                    <label for="datalistSupervisor">Escriba para buscar...</label>
+                                    <input class="form-control fs-14"
+                                        list="OpcionesSupervisor"
+                                        id="datalistSupervisor"
+                                        placeholder="Escriba para buscar..."
+                                        data-id=""
+                                        value=""><?php echo "Supervisor Actual ". $zona_select["apellido"] . ", " . $zona_select["nombre"] . ' - DNI: ' . $zona_select["dni"] ?>
+                                    </input>
+                                    <label for=" datalistSupervisor">Escriba para buscar...</label>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +81,7 @@ if ($zona_select) {
                                 <?php include 'seleccionar_institucion.php' ?>
                             </div>
                         </div>
-
+                        <input type="hidden" id="institucionesSeleccionadas" name="institucionesSeleccionadas">
                     </div>
                     <?php
                     //print_r($zona_select["id_ZonaSupervision"]);
@@ -130,4 +140,7 @@ if ($zona_select) {
             }
         }
     });
+
+    // Pasar el array PHP como un objeto JavaScript para que seleccione las especialidades
+    const institucionesSeleccionadas = <?php echo json_encode($institucionesAsignadas); ?>;
 </script>

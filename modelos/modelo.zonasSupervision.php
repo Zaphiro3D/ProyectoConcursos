@@ -68,15 +68,12 @@ class ModeloZonas{
     static public function mdlEditarZonas($datos)
     {
         try {
-            if (empty($datos["id_ZonaSupervision"])) {
-                return "error_Zona_no_Encontrada";
-            }
-
+            
             // Preparar la consulta de actualización
             $conexion = Conexion::conectar();
             $stmtZona = $conexion->prepare(
                 "UPDATE zonas_supervision 
-             SET nombre = :nombre, id_Supervisor = :id_Supervisor 
+             SET nombre = :nombre, id_Supervisor = :id_Supervisor
              WHERE id_ZonaSupervision = :id_ZonaSupervision"
             );
 
@@ -87,8 +84,8 @@ class ModeloZonas{
 
             // Ejecutar la consulta
             if ($stmtZona->execute()) {
-                $filasAfectadas = $stmtZona->rowCount();
-                return ($filasAfectadas > 0) ? "ok" : "no_changes";
+               
+                return  "ok" ;
             } else {
                 return "error";
             }
@@ -161,22 +158,19 @@ class ModeloZonas{
 
                 // Vincular los valores
                 $stmt->bindParam(":id_ZonaSupervision", $idZona, PDO::PARAM_INT);
-                
                 $stmt->bindValue(":id_institucion", $idInsti, PDO::PARAM_INT);
 
                 // Ejecutar la consulta
-                if (!$stmt->execute()){
-                    var_dump($stmt->errorInfo());
+                if ($stmt->execute()) {
+                    return "ok";
+                } else {
                     return "error";
                 }
             }
-
-            return "ok";
-        } catch (Exception $e) {
-            // Registrar el error y retornar mensaje genérico
-            return $e->getMessage();
-            
-        }
+           
+        } catch (PDOException $e) {
+            error_log("Error en mdlActualizarZonas: " . $e->getMessage());
+            return "Error: " . $e->getMessage();}
         /*try {
             $conexion = Conexion::conectar();
             $stmt = Conexion::conectar()->prepare(
@@ -211,5 +205,12 @@ class ModeloZonas{
         } else {
             return "error";
         }
+    }
+
+    static public function mdlObtenerInstitucionZona($idzona) {
+        $stmt= Conexion::conectar()->prepare("SELECT id_Institucion FROM instituciones WHERE id_ZonaSupervision = :id_ZonaSupervision");
+        $stmt->bindParam(":id_ZonaSupervision",$idzona,PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt ->fetchAll();
     }
 }

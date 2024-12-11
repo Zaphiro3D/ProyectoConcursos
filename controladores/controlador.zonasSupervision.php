@@ -46,149 +46,84 @@ class ControladorZonas{
     
     public function ctrEditarZonas()
     { 
-            if (isset($_POST["id_ZonaSupervision"])) {
-                $datos = array(
-                    "nombre" => htmlspecialchars($_POST["nombre"]),
-                    "id_Supervisor" => htmlspecialchars($_POST["id_Supervisor"]),
-                    "id_ZonaSupervision" => htmlspecialchars($_POST["id_ZonaSupervision"]),
-                    "institucionesSeleccionadas" => $_POST["institucionesSeleccionadas"]
-                );
+        if (isset($_POST["id_ZonaSupervision"])) {
+            $datos = array(
+                "nombre" => htmlspecialchars($_POST["nombre"]),
+                "id_Supervisor" => htmlspecialchars($_POST["id_Supervisor"]),
+                "id_ZonaSupervision" => htmlspecialchars($_POST["id_ZonaSupervision"]),
+                "institucionesSeleccionadas" => $_POST["institucionesSeleccionadas"]
+            );
 
-                // Llamar al modelo para actualizar la zona
-                $respuestaEditar = ModeloZonas::mdlEditarZonas($datos);
 
-                // Manejar la respuesta del modelo
-                if ($respuestaEditar === "ok") {
-                    // Eliminar asociaciones antiguas
-                    $respuestaEliminar = ModeloZonas::mdlEliminarZonaSupervision($datos["id_ZonaSupervision"]);
+            
+            $url = ControladorPlantilla::url() . "zonasSupervision";
+            // Llamar al modelo para actualizar la zona
+            $respuestaEditar = ModeloZonas::mdlEditarZonas($datos);
 
-                    if ($respuestaEliminar === "ok") {
-                        $instituciones = explode(",", $_POST["institucionesSeleccionadas"]);
+            // Manejar la respuesta del modelo
+            if ($respuestaEditar == "ok") {
+                
+                $instituciones = explode(",", $_POST["institucionesSeleccionadas"]);
+                // Eliminar asociaciones antiguas
+                
+                $respuestaEliminar = ModeloZonas::mdlEliminarZonaSupervision($datos["id_ZonaSupervision"]);
 
-                        if (!empty($instituciones)) {
-                            // Actualizar nuevas asociaciones
-                            $respuestaActualizar = ModeloZonas::mdlActualizarZonaSupervision(
-                                $datos["id_ZonaSupervision"],
-                                $instituciones,
-                                $datos["nombre"]
-                            );
+                if ($respuestaEliminar == "ok") {
+                    
 
-                            if ($respuestaActualizar === "ok") {
-                                $url = ControladorPlantilla::url() . "zonasSupervision";
-                                echo '<script>
-                            fncSweetAlert(
+                    if (!empty($instituciones)) {
+                        // Actualizar nuevas asociaciones
+                        $respuestaActualizar = ModeloZonas::mdlActualizarZonaSupervision(
+                            $datos["id_ZonaSupervision"],
+                            $instituciones
+                        );
+
+                        if ($respuestaActualizar == "ok") {
+                            
+                            echo '<script>
+                                fncSweetAlert(
                                 "success",
-                                "La Zona ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente.",
+                                "La Zona ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó    correctamente.",
                                 "' . $url . '"
-                            );
-                        </script>';
-                            } else {
-                                echo "<script>
+                                );
+                                </script>';
+                        } else {
+                            echo "<script>
                             Swal.fire({
                                 title: 'Error',
                                 text: 'No se pudieron actualizar las instituciones.',
                                 icon: 'error'
                             });
-                        </script>";
-                            }
+                            </script>";
                         }
-                    } else {
-                        echo "<script>
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudieron eliminar las asociaciones antiguas.',
-                        icon: 'error'
-                    });
-                </script>";
                     }
-                } elseif ($respuestaEditar === "no_changes") {
-                    echo "<script>
-                Swal.fire({
-                    title: 'Atención',
-                    text: 'No se realizaron cambios en la zona.',
-                    icon: 'info'
-                });
-            </script>";
                 } else {
                     echo "<script>
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudo actualizar la zona.',
+                    text: 'No se pudieron eliminar las asociaciones antiguas.',
                     icon: 'error'
                 });
-            </script>";
+                </script>";
                 }
+            
             } else {
                 echo "<script>
             Swal.fire({
                 title: 'Error',
-                text: 'No se encontró la zona especificada.',
+                text: 'No se pudo actualizar la zona.',
                 icon: 'error'
             });
-        </script>";
+                </script>";
             }
-        /*if (isset($_POST["id_ZonaSupervision"])) {
-            
-            
-            
-            $datos = array(
-                "nombre" => htmlspecialchars($_POST["nombre"]),
-                "id_Supervisor" => htmlspecialchars($_POST["id_Supervisor"]),
-                "id_ZonaSupervision"=>htmlspecialchars($_POST["id_ZonaSupervision"]),
-                "institucionesSeleccionadas" => $_POST["institucionesSeleccionadas"]
-            );
-            //print_r($datos);
-
-            //return;
-
-           
-            $idZona = ModeloZonas::mdlEditarZonas($datos);
-            
-            $instituciones = explode(",", $_POST["institucionesSeleccionadas"]);
-            $respuestaEliminar= ModeloZonas::mdlEliminarZonaSupervision($idZona);
         
-            if ($respuestaEliminar == "ok") {
-
-                if(!empty($instituciones)){
-                $respuestaNuevaZonas = ModeloZonas::mdlActualizarZonaSupervision($idZona, $instituciones);
-                    if($respuestaNuevaZonas=="ok"){
-                        $url = ControladorPlantilla::url() . "zonasSupervision";
-                        echo '<script>
-                            fncSweetAlert(
-                            "success",
-                            "La Zona ' . htmlspecialchars($_POST["nombre"]) .' se actualizó correctamente",
-                            "' . $url . '"
-                            );
-                            </script>';
-                    }else {
-                        echo "<script>
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se pudieron actualizar los datos de la institución.',
-                            icon: 'error'
-                        });
-                        </script>";
-                    }
-                }
-            } else {
-                echo "<script>
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se pudieron eliminar las zonas antiguas.',
-                            icon: 'error'
-                        });
-                        </script>";
-            } 
+        }
         
-        } else {
-                echo "<script>
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se encontro la zona.',
-                        icon: 'error'
-                    });
-                    </script>";
-            }
-        */
+    }
+
+    public static function
+    ctrObtenerInstitucionZona($idzona){
+        $respuesta=ModeloZonas::mdlObtenerInstitucionZona($idzona);
+        return $respuesta;
     }
 }
