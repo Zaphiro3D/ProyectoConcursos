@@ -4,6 +4,9 @@ require_once 'conexion.php';
 
 class ModeloCargos{
 
+    // ==============================================================
+    // Mostrar Cargo/s
+    // ==============================================================
     static public function mdlMostrarCargos($id_cargo, $valor)
     {
         //Si se manda un agente por parametro hace la consulta para un solo registro, sino trae todos. 
@@ -92,6 +95,9 @@ class ModeloCargos{
         }
     }
 
+    // ==============================================================
+    // Agregar Cargo
+    // ==============================================================
     public static function mdlAgregarCargo($datos)
     {
         $conexion = Conexion::conectar();
@@ -158,6 +164,10 @@ class ModeloCargos{
             $conexion = null;
         }
     }
+
+    // ==============================================================
+    // Editar Cargo
+    // ==============================================================
 
     public static function mdlEditarCargo($datos)
     {
@@ -299,7 +309,22 @@ class ModeloCargos{
         }
     }
 
+    // ==============================================================
+    // Para control de plaza única
+    // ==============================================================
+    public function mdlPlazaUnica($plaza, $condicConsulta)
+    {
+        try{
+            $stmt= Conexion::conectar()->prepare("SELECT COUNT(*) as total FROM plazas WHERE numeroPlaza = :numeroPlaza ". $condicConsulta);
+            $stmt->bindParam(':numeroPlaza', $plaza, PDO::PARAM_STR);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            return $resultado['total'] == 0;
+        }catch(Exception $e){
+            return "Error:" . $e ->getMessage();
+        }
+    }
 
 
 

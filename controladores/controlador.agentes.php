@@ -45,6 +45,9 @@ class ControladorAgentes{
                     $errores['dni'] = "El número de dni ingresado no es válido.";
                 }
             }
+            if (!$validador->esUnico(new ModeloAgentes, 'mdlDniUnico', $_POST['dni'])) {
+                $errores['dni'] = "El DNI ya está registrado.";
+            }
 
             // Validar Rol
             if (empty($_POST['rol']) || $_POST['rol'] == "") {
@@ -150,6 +153,9 @@ class ControladorAgentes{
             if (!$validador->dni($_POST['dni'] ?? '')) {
                 $errores['dni'] = "El DNI ingresado no es válido. Debe contener 7 u 8 dígitos.";
             }
+            if (!$validador->esUnico(new ModeloAgentes, 'mdlDniUnico', intval($_POST['dni']), ' and id_Agente <> '. intval($_POST['id_Agente']))) {
+                $errores['dni'] = "El DNI ya está registrado.";
+            }
 
             // Validar Rol
             if (empty($_POST['rol']) || $_POST['rol'] == "") {
@@ -168,7 +174,6 @@ class ControladorAgentes{
                     "password" => htmlspecialchars($_POST["contrasena"]),
                     "id_Rol" => htmlspecialchars($_POST["rol"]),
                     "id_Agente" => htmlspecialchars($_POST["id_Agente"])
-                    
                 );
 
                 $url = ControladorPlantilla::url() . "agentes";

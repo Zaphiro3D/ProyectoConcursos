@@ -1,11 +1,17 @@
 <?php
 
 class ControladorCargos{
+    // ==============================================================
+    // Mostrar Cargos
+    // ==============================================================
     static public function ctrMostrarCargos($id_cargo, $valor){
         $respuesta = ModeloCargos::mdlMostrarCargos($id_cargo,$valor);
         return $respuesta;
     }
 
+    // ==============================================================
+    // Agregar Cargo
+    // ==============================================================
     public function ctrAgregarCargo()
     {   
         $errores = []; // Inicializar arreglo de errores
@@ -53,16 +59,17 @@ class ControladorCargos{
             // Validar las instituciones según el número que comparte
             $erroresInstituciones = $validador->validarInstitucionesPorComparte($comparte, $instituciones);
             
-            // var_dump($erroresInstituciones);
-            // die();
-
             $errores = array_merge($errores, $erroresInstituciones);
             
-            // Valida las plazas (deben ser hasta 6 dígitos)
+            // Valida las plazas
             $errorPlaza = Validador::validarHastaSeisDigitos(intval($_POST["numeroPlaza"]));
             if ($errorPlaza) {
                 $errores['numeroPlaza'] = $errorPlaza;
             }
+            if (!$validador->esUnico(new ModeloCargos, 'mdlPlazaUnica', intval($_POST['numeroPlaza']))) {
+                $errores['numeroPlaza'] = "La plaza ya existe.";
+            }
+
 
             // Valida las horas cátedra (deben ser enteros positivos)
             $errorHorasCatedra = Validador::validarEnteroPositivo($_POST["hsCatedra"]);
@@ -157,6 +164,9 @@ class ControladorCargos{
         ];
     }
 
+    // ==============================================================
+    // Editar Cargo
+    // ==============================================================
     public function ctrEditarCargo()
     {
         
@@ -165,9 +175,6 @@ class ControladorCargos{
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validador = new Validador();
-
-            // print_r($_POST);
-            // die();
 
             // Validar el ID del cargo
             $id_Cargo = intval($_POST['id_Cargo'] ?? 0);
@@ -195,6 +202,9 @@ class ControladorCargos{
             $errorPlaza = Validador::validarHastaSeisDigitos(intval($_POST["numeroPlaza"]));
             if ($errorPlaza) {
                 $errores['numeroPlaza'] = $errorPlaza;
+            }
+            if (!$validador->esUnico(new ModeloCargos, 'mdlPlazaUnica', intval($_POST['numeroPlaza']), ' and id_Cargo <> '. intval($_POST['id_Cargo']))) {
+                $errores['numeroPlaza'] = "La plaza ya existe.";
             }
 
             // Validar horas cátedra
@@ -295,7 +305,7 @@ class ControladorCargos{
     }
 
     // ==============================================================
-    // Eliminar Agente
+    // Eliminar Cargo
     // ==============================================================
     static public function ctrEliminarCargo()
     {

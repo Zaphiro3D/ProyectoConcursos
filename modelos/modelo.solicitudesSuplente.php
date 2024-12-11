@@ -4,6 +4,9 @@ require_once 'conexion.php';
 
 class ModeloSolSuplente{
 
+    // ==============================================================
+    // Mostrar Solicitudes
+    // ==============================================================
     static public function mdlMostrarSolSuplente()
     {
         try {
@@ -69,6 +72,9 @@ class ModeloSolSuplente{
 
     }
 
+    // ==================================================================
+    // Mostrar datos necesarios para los select de solicitud de suplente
+    // ==================================================================
     static public function mdlMostrarDatosSol($tabla, $columnas = "*", $condicion = "")
     {
         try {
@@ -80,8 +86,11 @@ class ModeloSolSuplente{
         } catch (Exception $e) {
             return "Error: " . $e->getMessage();
         }
-}
+    }
 
+    // ==============================================================
+    // Agregar Solicitud
+    // ==============================================================
     static public function mdlAgregarSolSuplente($datos) {
         
         try {

@@ -144,7 +144,11 @@ class validador
         return null; // Devuelve null si es válido
     }
     
-    
+    public function esUnico($modelo, $metodo, $valor, $condicConsulta = '')
+    {
+        // Llama al modelo y método específico
+        return $modelo->$metodo($valor, $condicConsulta);
+    }
     
 
 }

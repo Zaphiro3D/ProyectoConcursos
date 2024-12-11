@@ -102,23 +102,6 @@ class ModeloAgentes{
                 $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
             }
 
-            $stmt = Conexion::conectar()->prepare("UPDATE agentes SET 
-            apellido = :apellido, nombre = :nombre, dni = :dni, telefono = :telefono, 
-            direccion = :direccion, email = :email, usuario = :usuario, 
-            password = :password, id_Rol = :id_Rol
-            WHERE id_Agente = :id_Agente");
-
-            $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
-            $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-            $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
-            $stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
-            $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
-            $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
-            $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-            $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
-            $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
-            $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
-
             if ($stmt->execute()) {
                 return "ok";
             } else {
@@ -152,7 +135,9 @@ class ModeloAgentes{
         }
     }
 
-
+    // ==============================================================
+    // Buscar Agente
+    // ==============================================================
     static public function mdlBuscarAgentes($agente, $valor){
         try {
             $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
@@ -164,11 +149,31 @@ class ModeloAgentes{
         }
     }
 
+    // ==============================================================
+    // Mostrar Rol Agente
+    // ==============================================================
     static public function mdlMostrarRolAgentes(){
         try{
-        $stmt= Conexion::conectar()->prepare("SELECT r.id_Rol as idrol,r.rol FROM roles AS r");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt= Conexion::conectar()->prepare("SELECT r.id_Rol as idrol,r.rol FROM roles AS r");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            return "Error:" . $e ->getMessage();
+        }
+    }
+
+    // ==============================================================
+    // Para control de DNI único
+    // ==============================================================
+    public function mdlDniUnico($dni, $condicConsulta)
+    {
+        try{
+            $stmt= Conexion::conectar()->prepare("SELECT COUNT(*) as total FROM agentes WHERE dni = :dni and eliminado = 0 ". $condicConsulta);
+            $stmt->bindParam(':dni', $dni, PDO::PARAM_STR);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $resultado['total'] == 0;
         }catch(Exception $e){
             return "Error:" . $e ->getMessage();
         }

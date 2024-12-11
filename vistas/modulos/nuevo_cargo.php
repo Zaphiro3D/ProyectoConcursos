@@ -340,7 +340,7 @@ $validado = $resultado['validado'] ?? '';
                         </div><!-- end card header -->
 
 
-                        <!-- Opciones Datalist Instituciones        -->
+                        <!-- Opciones Datalist Instituciones   -->
                         <datalist id="OpcionesInstitucion">
                             <?php 
                             $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
@@ -354,8 +354,6 @@ $validado = $resultado['validado'] ?? '';
                                 </option>
                             <?php } ?>
                         </datalist>
-
-
 
                         <div class="card-body">
 
