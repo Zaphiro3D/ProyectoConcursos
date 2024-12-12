@@ -1,21 +1,35 @@
 <?php
-    // Función para opciones de select días
-    function generarOpcionesDias() {
-        $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "nombre");
-        $opciones = '<option>...</option>';
-        foreach ($dias as $value) { 
-            $opciones .= "<option>{$value['nombre']}</option>";
-        }
-        return $opciones;
+// Función para opciones de select días
+function generarOpcionesDias()
+{
+    $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
+    $opciones = '<option value="">...</option>';
+    foreach ($dias as $value) {
+        $opciones .= "<option>{$value['nombre']}</option>";
     }
+    return $opciones;
+}
 
-    $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados"); // Obtiene todas las columnas de la tabla "grados"
-    $turno = ControladorSolSuplente::ctrMostrarDatosSol("Turnos"); // Obtiene todas las columnas de la tabla "Turnos"
-    $division = ControladorSolSuplente::ctrMostrarDatosSol("Divisiones"); // Obtiene todas las columnas de la tabla "Divisiones"
+// Para opciones de selects
+$institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+$cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
+$turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
+$grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
+$division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+
+$validador = new validador();
+
+$controlador = new ControladorCargos();
+$resultado = $controlador->ctrAgregarCargo();
+
+
+$errores = $resultado['errores'] ?? [];
+$validado = $resultado['validado'] ?? '';
+
 ?>
 
 <div class="container-xxl">
-    <form method="POST">
+    <form method="POST" novalidate>
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
                 <h4 class="fs-22 fw-bold m-0">Nueva Solicitud de Suplente</h4>
@@ -32,12 +46,24 @@
                             </div><!-- end card header -->
                             
                             <div class="card-body">
-                                <fieldset class="row mb-2 mt-1"> 
+                                <fieldset class="row mb-2 mt-1">
                                     <!-- Escuela Sede -->
                                     <!-- Debe completarse automaticamente dependiendo desde que institucion ingresa al sistema -->
                                     <div>
-                                        <label for="institucionSede"  id="lblinstitucion1" class="form-label">Institución Sede</label>
-                                        <input class="form-control" list="OpcionesInstitucion" id="institucionSede" name="institucionSede" placeholder="Escriba para buscar...">
+
+                                        <label for="institucionSede" id="lblinstitucionsede" class="form-label">Institución Sede</label>
+                                        <input 
+                                            class="form-control <?php echo isset($errores['insti1']) ? 'is-invalid' : ''; ?>" 
+                                            list="OpcionesInstitucion" 
+                                            id="institucionSede" 
+                                            
+                                            name="institucionSede" 
+                                            placeholder="Escriba para buscar..."
+                                            oninput="autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');"
+                                            value="<?php echo htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? ''); ?>"
+                                            required
+                                        >
+                                        <div class="invalid-feedback"><?php echo $errores['insti1'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
                                 </fieldset>
                             </div>
@@ -54,70 +80,149 @@
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="plaza" name="plaza" placeholder="N° Plaza">
-                                        <label for="plaza">N° Plaza</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-9">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cargo" name="cargo" placeholder="Cargo">
-                                        <label for="cargo">Cargo</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5">
-                                    <div class="form-floating mb-3">
-                                        <datalist id="opcionesturno">
-                                            <?php 
-                                                
-                                                foreach($turno as $key => $value){
-                                            ?>
-                                            <option><?php echo $value["turno"]  ?></option>
-                                            <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opcionesturno" id="turno" name="turno" placeholder="Escriba para buscar..." ></input>
-                                        <label for="turno">Turno</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <datalist id="opcionesAnio">
-                                            <?php 
-                                                
-                                                foreach($grado as $key => $value){
-                                            ?>
-                                            <option><?php echo $value["grado"]  ?></option>
-                                            <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opcionesAnio" id="anio" name="anio" placeholder="Escriba para buscar..." ></input>
-                                        <label for="anio">Año</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-floating mb-3">
-                                    <datalist id="opocionesDivision">
-                                            <?php 
-                                                
-                                                foreach($division as $key => $value){
-                                            ?>
-                                            <option><?php echo $value["division"]  ?></option>
-                                            <?php } ?>
-                                        </datalist>
-                                        <input class="form-control fs-14" list="opocionesDivision" id="division" name="division" placeholder="Escriba para buscar..." ></input>
-                                        <label for="division">División</label>
+                                        <input type="number" class="form-control <?php echo isset($errores['numeroPlaza']) ? 'is-invalid' : ''; ?>" list="numeroPlaza" name="numeroPlaza"  value= "<?php echo $_POST['numeroPlaza'] ?? ''; ?>" placeholder="N° Plaza" required>
+                                        <label for="numeroPlaza">N° Plaza</label>
+                                        <div class="invalid-feedback"><?php echo $errores['numeroPlaza'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
                                 </div>
 
+                                <!-- Nombres de Cargos -->
+                                <div class="col-lg-9">
+                                    <div class="form-floating mb-3"> 
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_NombreCargo']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_NombreCargo" 
+                                            name="id_NombreCargo" 
+                                            aria-label="id_NombreCargo" 
+                                            required>
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_NombreCargo']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            
+                                            foreach ($cargos as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_NombreCargo"]; ?>" 
+                                                    <?php echo (isset($_POST['id_NombreCargo']) && intval($_POST['id_NombreCargo']) == $value["id_NombreCargo"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["nombreCargo"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_NombreCargo">Cargo</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_NombreCargo'] ?? 'Por favor, seleccione un cargo válido.'; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Turnos -->
+                                <div class="col-lg-5">
+                                    <div class="form-floating mb-3">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Turno']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Turno" 
+                                            name="id_Turno" 
+                                            aria-label="id_Turno" 
+                                            required>
+                                            
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Turno']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            
+                                            foreach ($turno as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Turno"]; ?>" 
+                                                    <?php echo (isset($_POST['id_Turno']) && intval($_POST['id_Turno']) == $value["id_Turno"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["turno"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_Turno">Turno</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Turno'] ?? ''; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Grados -->
+                                <div class="col-lg-3">
+                                    <div class="form-floating mb-3">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Grado']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Grado" 
+                                            name="id_Grado" 
+                                            aria-label="id_Grado" 
+                                            required>
+
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Grado']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            
+                                            foreach ($grado as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Grado"]; ?>" 
+                                                    <?php echo (isset($_POST['id_Grado']) && intval($_POST['id_Grado']) == $value["id_Grado"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["grado"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_Grado">Grado</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Grado'] ?? ''; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Divisiones -->
+                                <div class="col-lg-3">
+                                    <div class="form-floating mb-3">
+                                        <select 
+                                            class="form-select <?php echo isset($errores['id_Division']) ? 'is-invalid' : ''; ?>" 
+                                            id="id_Division" 
+                                            name="id_Division" 
+                                            aria-label="id_Division" 
+                                            required>
+
+                                            <!-- Opción predeterminada -->
+                                            <option value="" <?php echo empty($_POST['id_Division']) ? 'selected' : ''; ?>> </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            
+                                            foreach ($division as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Division"]; ?>" 
+                                                    <?php echo (isset($_POST['id_Division']) && intval($_POST['id_Division']) == $value["id_Division"]) ? 'selected' : ''; ?>>
+                                                    <?php echo ($value["division"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="id_Division">División</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['id_Division'] ?? ''; ?>
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" id="hsCat" name="hsCat" placeholder="hsCat">
-                                            <label for="hsCat">Hs. Cát.</label>
+                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
+                                            <label for="hsCatedra">Hs. Cát.</label>
+                                            <div class="invalid-feedback">
+                                                <?php echo $errores['hsCatedra'] ?? ''; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>  <!-- col -->
@@ -135,25 +240,25 @@
                                 <div class="col-lg-12">
                                     <div class="col-lg-12">
                                         <div class="form-floating my-3">
-                                            <input type="text" class="form-control" id="nombreAgente" name="nombreAgente" placeholder="Nombre">
-                                            <label for="nombreAgente">Nombre</label>
+                                            <input type="text" class="form-control" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($_POST['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
+                                            <label for="nombreDocente">Nombre</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="apellidoAgente" name="apellidoAgente" placeholder="Apellido">
-                                            <label for="apellidoAgente">Apellido</label>
+                                            <input type="text" class="form-control" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($_POST['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
+                                            <label for="apellidoDocente">Apellido</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="dniAgente" name="dniAgente" placeholder="DNI">
-                                            <label for="dniAgente">Número de DNI sin puntos</label>
+                                            <input type="number" class="form-control <?php echo isset($errores['dniDocente']) ? 'is-invalid' : ''; ?>" id="dniDocente" name="dniDocente" value= "<?php echo htmlspecialchars($_POST['dniDocente'] ?? ''); ?>" placeholder="DNI">
+                                            <label for="dniDocente">Número de DNI sin puntos</label>
+                                            <div class="invalid-feedback"><?php echo $errores['dniDocente'] ?? ''; ?></div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>  <!-- row -->
@@ -174,23 +279,39 @@
                             <div class="card-body">
                                 
                                 <div class="row">
-                                    <!-- Opciones Datalist Motivo -->       
+                                    <!-- Opciones Datalist Motivo -->
                                     <datalist id="opcionesMotivo">
                                         <?php
-                                            $motivoSol = ControladorSolSuplente::ctrMostrarDatosSol("motivos_suplencia");
-                                            foreach ($motivoSol as $key => $value) {   
+                                        $motivoSol = ControladorSolSuplente::ctrMostrarDatosSol("motivos_suplencia");
+                                        foreach ($motivoSol as $key => $value) {
+                                            $articulo = ($value["articulo"] !== '' && $value["articulo"] !== 0) ? $value["articulo"] . " ": '';
+                                            $inciso = ($value["inciso"] !== '' && $value["inciso"] !== '0') ? ' "' . $value["inciso"] . '" - ' : '';
+                                            $resolucion = ($value["resolucion"] !== '' && $value["resolucion"] !== 0) ? $value["resolucion"] . " - " : '';
+                                            $motivo = $value["motivo"];
                                         ?>
-                                        <option ><?php echo $value["articulo"] . ' "' . $value["inciso"] . '" - ' . $value["resolucion"] . " - ". $value["motivo"] ?> </option>
+                                            <option><?php echo $articulo . $inciso . $resolucion . $motivo; ?></option>
                                         <?php } ?>
-                                    </datalist>    
-                                
-                                    <div class="pb-1">   <!-- Datalist Motivo-->
-                                        <!-- <label for="datalistSupervisor" class="form-label">Segunda Institución</label> -->
+                                    </datalist>
+
+                                    <div class="pb-1"> <!-- Datalist Motivo -->
                                         <div class="form-floating">
-                                            <input class="form-control fs-14" list="opcionesMotivo" id="opcionesMotivo" name="opcionesMotivo" placeholder="Escriba para buscar..." ></input>
-                                            <label for="opcionesMotivo">Escriba para buscar...</label>
-                                        </div>   
-                                    </div>     
+                                            <input 
+                                                class="form-control fs-14" 
+                                                list="opcionesMotivo" 
+                                                id="id_Motivo" 
+                                                name="id_Motivo" 
+                                                placeholder="Escriba para buscar...">
+                                            </input>
+                                            <label for="id_Motivo">Escriba para buscar...</label>
+                                            <input 
+                                                type="hidden" 
+                                                id="idInstitucion<?= $i + 1 ?>" 
+                                                name="instituciones[<?= $i ?>][id_Institucion]" 
+                                                value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                            >
+                                        </div>
+                                    </div>
+    
                                 </div>
                             </div>
                         </div>
@@ -266,35 +387,62 @@
                             <fieldset class="row ">
                                 <!-- <legend class="col-form-label pt-0 fs-14">¿Comparte con otra institución?</legend> -->
                                 <div class="row row-cols-lg-auto g-2 align-items-center">
+                                    <?php
+                                    // Obtener el valor enviado por el usuario, si existe
+                                    $checkSeleccionado = $_POST['gridRadiosComparte'] ?? 'noComparte';
+                                    ?>
+
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="noComparte" value="option1" checked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="noComparte" 
+                                            value="noComparte" 
+                                            <?= $checkSeleccionado === 'noComparte' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte1" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte1" 
+                                            value="comparte1" 
+                                            <?= $checkSeleccionado === 'comparte1' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
                                         </label>
                                     </div>
+
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte2" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte2" 
+                                            value="comparte2" 
+                                            <?= $checkSeleccionado === 'comparte2' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2 mx-2">
-                                        <input class="form-check-input" type="radio" name="gridRadiosComparte" id="comparte3" value="option1" unchecked>
+                                        <input class="form-check-input" 
+                                            type="radio" 
+                                            name="gridRadiosComparte" 
+                                            id="comparte3" 
+                                            value="comparte3" 
+                                            <?= $checkSeleccionado === 'comparte3' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
                                         </label>
                                     </div>
-                                
-                                </div>     
-                            </fieldset> 
+
+
+                                </div>
+                            </fieldset>
                         </div>
                     </div>  <!-- card comparte -->      
                 </div>  <!-- col -->
@@ -305,89 +453,115 @@
                             <h5 class="card-title mb-0">Horarios</h5>
                         </div><!-- end card header -->
 
-                        
-                        <!-- Opciones Datalist Instituciones        -->
+
+                        <!-- Opciones Datalist Instituciones   -->
                         <datalist id="OpcionesInstitucion">
-                            <?php
-                                $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-                                foreach ($institucion as $key => $value) {                    
-                            ?>
-                            <option ><?php echo $value["tipo"] . " N°" . $value["numero"]. '" ' . $value["institucion"] .'" '."CUE: {$value["cue"]}"?> </option>
+                            <?php 
+    
+                            foreach ($institucion as $key => $value) { ?>
+                                <option 
+                                    value="<?php echo $value["institucion"] . ' ' . ' N°' . $value["numero"] . ' (CUE: ' . $value["cue"] . ')'; ?>" 
+                                    id="<?php echo $value["id_institucion"]; ?>"
+                                    data-id="<?php echo $value["id_institucion"]; ?>"
+                                >
+                                </option>
                             <?php } ?>
-                        </datalist>    
+                        </datalist>
 
                         <div class="card-body">
-                            <?php
-                            // Función para generar el bloque de horarios de institución
-                            function generarBloqueInstitucion($numeroInstitucion) {
-                                ob_start(); // Iniciar el almacenamiento en búfer
-                            ?>
-                                <!-- Card Hs Est <?php echo $numeroInstitucion; ?> -->
-                                <div class="card-body" id="hsEst<?php echo $numeroInstitucion; ?>">
-                                    <div class="row">
-                                        
-                                        <!-- Datalist Instituciones <?php echo $numeroInstitucion; ?> -->
-                                        <div class="col-12 pb-2">   
-                                            <label for="institucion<?php echo $numeroInstitucion; ?>" id="lblinstitucion<?php echo $numeroInstitucion; ?>"  class="form-label">Institución <?php echo $numeroInstitucion; ?></label>
-                                            <input class="form-control" list="OpcionesInstitucion" id="institucion<?php echo $numeroInstitucion; ?>" name="institucion<?php echo $numeroInstitucion; ?>" placeholder="Escriba para buscar...">
-                                        </div>
 
-                                        <!-- Encabezados para pantallas grandes -->
-                                        <div class="col-12 d-none d-md-flex">
-                                            <div class="col-5"><h6>Día</h6></div>
-                                            <div class="col-3"><h6>Hora Inicio</h6></div>
-                                            <div class="col-3"><h6>Hora Fin</h6></div>
-                                            <div class="col-1"><h6>Borrar</h6></div>
-                                        </div>
+                        <?php
+                        // Array con las etiquetas para cada institución
+                        $labels = [
+                            'Institución Sede',
+                            'Segunda Institución',
+                            'Tercera Institución',
+                            'Cuarta Institución'
+                        ];
 
-                                        <!-- Estructura por día -->
-                                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <div class="row align-items-center mb-2">
-                                            <!-- Días -->
-                                            <div class="col-12 col-md-5">
-                                                <h6 class="d-md-none">Día <?php echo $i; ?></h6>
-                                                <select class="form-select" id="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>" name="dia<?php echo $i; ?>Est<?php echo $numeroInstitucion; ?>">
-                                                    <?php echo generarOpcionesDias(); ?>
-                                                </select>
-                                            </div>
-
-                                            <!-- Hora Inicio -->
-                                            <div class="col-12 col-md-3">
-                                                <h6 class="d-md-none">Hora Inicio</h6>
-                                                <input id="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" name="horaIni<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            </div>
-
-                                            <!-- Hora Fin -->
-                                            <div class="col-12 col-md-3">
-                                                <h6 class="d-md-none">Hora Fin</h6>
-                                                <input id="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" name="horaFin<?php echo $i; ?>E<?php echo $numeroInstitucion; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
-                                            </div>
-
-                                            <!-- Botón Borrar Horario -->
-                                            <div class="col-12 col-md-1 text-md-center">
-                                                <button type="button" class="btn btn-outline-primary w-100 mt-md-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día <?php echo $i; ?>" onclick="borrarHorario(<?php echo $i; ?>,<?php echo $numeroInstitucion; ?>)">
-                                                    <i class="fa-solid fa-eraser"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <?php endfor; ?>
-                                    </div> <!-- Fin Hs Establecimiento <?php echo $numeroInstitucion; ?> -->
-                                </div> <!-- Card Hs Est <?php echo $numeroInstitucion; ?> -->
-                                <?php if($numeroInstitucion != 4)  {  ?>
-                                    <hr id= 'divhsEst<?php echo $numeroInstitucion +1; ?>'></hr>
-                                <?php }  ?>
-
-                            <?php
-                                return ob_get_clean(); // Retornar el contenido almacenado
+                        for ($i = 0; $i < count($labels); $i++): 
+                            // Obtener el valor previamente enviado si existe
+                            if($i == 0){
+                                $valorInstitucion = htmlspecialchars($_POST['institucion1'] ?? $_POST['institucionSede'] ?? '');
+                            }else{
+                                // $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
+                                $valorInstitucion = ControladorInstituciones::ctrObtenerNombreInstitucion($_POST['instituciones'][$i]['id_Institucion'] ?? '');
                             }
+                        ?>
+                            <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
+                                <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
+                                    <label for="institucion<?= $i + 1 ?>" id="lblinstitucion<?= $i + 1 ?>" class="form-label"><?= $labels[$i] ?></label>
+                                    <input 
+                                        class="form-control <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
+                                        list="OpcionesInstitucion" 
+                                        id="institucion<?= $i + 1 ?>" 
+                                        name="instituciones[<?= $i ?>][id_Institucion]" 
+                                        placeholder="Escriba para buscar..."
+                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        oninput="autoSelectBestMatch('institucion<?= $i + 1 ?>', 'OpcionesInstitucion', 'idInstitucion<?= $i + 1 ?>');"
+                                    >
+                                    <div class="invalid-feedback">
+                                        <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
+                                    </div>
+                                    <input 
+                                        type="hidden" 
+                                        id="idInstitucion<?= $i + 1 ?>" 
+                                        name="instituciones[<?= $i ?>][id_Institucion]" 
+                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                    >
+                                    
+                                </div>
 
-                            // Generar bloques de instituciones
-                            for ($j = 1; $j <= 4; $j++) {
-                                echo generarBloqueInstitucion($j);
-                            }
-                            ?>                        
+                                <!-- Encabezados para pantallas grandes -->
+                                <div class="col-12 d-none d-md-flex">
+                                    <div class="col-5"><h6>Día</h6></div>
+                                    <div class="col-3"><h6>Hora Inicio</h6></div>
+                                    <div class="col-3"><h6>Hora Fin</h6></div>
+                                    <div class="col-1"><h6>Borrar</h6></div>
+                                </div>
+
+                                <!-- Estructura por día -->
+                                <?php for ($numDia = 1; $numDia <= 5; $numDia++): ?>
+                                <div class="row align-items-center mb-2">
+                                    <!-- Días -->
+                                    <div class="col-12 col-md-5">
+                                        <h6 class="d-md-none">Día <?php echo $numDia; ?></h6>
+                                        <select class="form-select" id="dia<?php echo $numDia; ?>Est<?php echo $i; ?>" name="dia<?php echo $numDia; ?>Est<?php echo $i; ?>">
+                                            <?php echo generarOpcionesDias(); ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Hora Inicio -->
+                                    <div class="col-12 col-md-3">
+                                        <h6 class="d-md-none">Hora Inicio</h6>
+                                        <input id="horaIni<?php echo $numDia; ?>E<?php echo $i; ?>" name="horaIni<?php echo $numDia; ?>E<?php echo $i; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                    </div>
+
+                                    <!-- Hora Fin -->
+                                    <div class="col-12 col-md-3">
+                                        <h6 class="d-md-none">Hora Fin</h6>
+                                        <input id="horaFin<?php echo $numDia; ?>E<?php echo $i; ?>" name="horaFin<?php echo $numDia; ?>E<?php echo $i; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                    </div>
+
+                                    <!-- Botón Borrar Horario -->
+                                    <div class="col-12 col-md-1 text-md-center">
+                                        <button type="button" class="btn btn-outline-primary w-100 mt-md-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día <?php echo $numDia; ?>" onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)">
+                                            <i class="fa-solid fa-eraser"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php endfor; ?>
+                                
+                            </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
+                            <?php if($i != 3)  {  ?>
+                                <hr id= 'divhsEst<?php echo $i +1; ?>'></hr>
+                            <?php }  ?>
+                        <?php endfor; ?>
+                        
+
                         </div>
                     </div>
+
                 </div>  <!-- col -->
             </div>
 

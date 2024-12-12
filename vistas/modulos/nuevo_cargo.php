@@ -10,10 +10,18 @@ function generarOpcionesDias()
     return $opciones;
 }
 
+// Para opciones de selects
+$institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+$cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
+$turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
+$grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
+$division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+
 $validador = new validador();
 
 $controlador = new ControladorCargos();
 $resultado = $controlador->ctrAgregarCargo();
+
 
 $errores = $resultado['errores'] ?? [];
 $validado = $resultado['validado'] ?? '';
@@ -95,7 +103,7 @@ $validado = $resultado['validado'] ?? '';
 
                                             <!-- Opciones dinámicas -->
                                             <?php 
-                                            $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
+                                            
                                             foreach ($cargos as $key => $value): ?>
                                                 <option 
                                                     value="<?php echo $value["id_NombreCargo"]; ?>" 
@@ -126,7 +134,7 @@ $validado = $resultado['validado'] ?? '';
 
                                             <!-- Opciones dinámicas -->
                                             <?php 
-                                            $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
+                                            
                                             foreach ($turno as $key => $value): ?>
                                                 <option 
                                                     value="<?php echo $value["id_Turno"]; ?>" 
@@ -157,7 +165,7 @@ $validado = $resultado['validado'] ?? '';
 
                                             <!-- Opciones dinámicas -->
                                             <?php 
-                                            $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
+                                            
                                             foreach ($grado as $key => $value): ?>
                                                 <option 
                                                     value="<?php echo $value["id_Grado"]; ?>" 
@@ -188,7 +196,7 @@ $validado = $resultado['validado'] ?? '';
 
                                             <!-- Opciones dinámicas -->
                                             <?php 
-                                            $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+                                            
                                             foreach ($division as $key => $value): ?>
                                                 <option 
                                                     value="<?php echo $value["id_Division"]; ?>" 
@@ -343,7 +351,7 @@ $validado = $resultado['validado'] ?? '';
                         <!-- Opciones Datalist Instituciones   -->
                         <datalist id="OpcionesInstitucion">
                             <?php 
-                            $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+                            
     
                             foreach ($institucion as $key => $value) { ?>
                                 <option 

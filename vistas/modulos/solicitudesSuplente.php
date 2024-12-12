@@ -66,9 +66,9 @@
                                 <td><?php echo $value["fechaFin"] ?></td>
                                 <td><?php echo $value["motivo"] ?></td>
                                 <td><?php echo $value["docente"] ?></td>
-                                <td><?php echo $instituciones[1] ?></td>
-                                <td><?php echo $instituciones[2] ?></td>
-                                <td><?php echo $instituciones[3] ?></td>
+                                <td><?php echo $instituciones[1] ?? ''  ?></td>
+                                <td><?php echo $instituciones[2] ?? ''  ?></td>
+                                <td><?php echo $instituciones[3] ?? ''  ?></td>
                                 <td><?php echo $horario ?></td>
                                 <td><?php echo $value["observaciones"] ?></td>
                                 <!-- Col Estado -->
@@ -154,7 +154,7 @@
                                     }?>
                                 </td>
                                 <!-- Fin columna estado -->
-                                <td><a href="editar_solsuplente" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
+                                <td><a href="editar_solsuplente/<?php echo $value["id_SolSuplente"] ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
                                     </a> <button href="eliminar_solsuplente" class="btn btn-danger btn-sm btnEliminar" id_eliminar=<?php echo $value["id_SolSuplente"]; ?> pag= "solicitudesSuplente" categoria = "Solicitud de Suplente" valorElim = "<?php echo $value["id_SolSuplente"]; ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
                                     &nbsp;|&nbsp; 
                                     <button href="aprobar_solic" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Aprobar"><i class="fas fa-circle-check"></i>
@@ -166,6 +166,9 @@
 
                         </tbody>
                     </table>
+                    <!-- Campo escondido que guarda el url -->
+                    <input type="hidden" id="url" value="<?php echo $url; ?>">
+
                 </div>
 
             </div>

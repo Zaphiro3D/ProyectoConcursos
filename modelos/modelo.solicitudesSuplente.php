@@ -59,7 +59,7 @@ class ModeloSolSuplente{
             LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
             LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
             LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
-            WHERE c.eliminado = 0 
+            WHERE c.eliminado = 0 and ss.id_EstadoSol <> 8
             GROUP BY c.id_Cargo;
             ");
             
