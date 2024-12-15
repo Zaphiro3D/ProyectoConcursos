@@ -16,6 +16,56 @@ class ControladorZonas{
                 "id_Supervisor" => htmlspecialchars($_POST["id_Supervisor"]),
                 "institucionesSeleccionadas" => $_POST["institucionesSeleccionadas"]
             );
+            
+            print_r($_POST["institucionesSeleccionadas"]);
+            
+
+            if (empty(trim($_POST["nombre"]))) {
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El nombre de la zona de supervisión no puede estar vacío.',
+                    icon: 'error'
+                });
+            </script>";
+                return;
+            }
+
+            $idSupervisor = htmlspecialchars($_POST["id_Supervisor"]);
+            $agentes= ModeloAgentes::mdlMostrarAgentes(null,null);
+            $supervisorValido = false;
+
+            foreach ($agentes as $agente) {
+                if ($agente['id_Agente'] == $idSupervisor) {
+                    $supervisorValido = true;
+                    break;
+                }
+            }
+
+            if (!$supervisorValido) {
+                echo "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'La Zona debe tener un Supervisor a cargo.',
+                            icon: 'error'
+                        });
+                    </script>";
+                return;
+            }
+             
+            if(empty($_POST["institucionesSeleccionadas"])){
+                
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'La zona debe tener instituciones seleccionadas.',
+                    icon: 'error'
+                });
+            </script>";
+                return;
+            }
+
+           
             $idZona= ModeloZonas::mdlAgregarZonas($datos);
 
             $instituciones = explode(",", $_POST["institucionesSeleccionadas"]);
