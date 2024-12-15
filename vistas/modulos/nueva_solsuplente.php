@@ -19,8 +19,8 @@ $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
 
 $validador = new validador();
 
-$controlador = new ControladorCargos();
-$resultado = $controlador->ctrAgregarCargo();
+$controlador = new ControladorSolSuplente();
+$resultado = $controlador->ctrAgregarSolicitud();
 
 
 $errores = $resultado['errores'] ?? [];
@@ -80,7 +80,7 @@ $validado = $resultado['validado'] ?? '';
                             <div class="row mt-1">
                                 <div class="col-lg-3">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control <?php echo isset($errores['numeroPlaza']) ? 'is-invalid' : ''; ?>" list="numeroPlaza" name="numeroPlaza"  value= "<?php echo $_POST['numeroPlaza'] ?? ''; ?>" placeholder="N° Plaza" required>
+                                        <input type="number" class="form-control border-primary border-3 <?php echo isset($errores['numeroPlaza']) ? 'is-invalid' : ''; ?>" list="numeroPlaza" name="numeroPlaza" id="numeroPlaza" value= "<?php echo $_POST['numeroPlaza'] ?? ''; ?>" placeholder="N° Plaza" required>
                                         <label for="numeroPlaza">N° Plaza</label>
                                         <div class="invalid-feedback"><?php echo $errores['numeroPlaza'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
@@ -240,15 +240,17 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="col-lg-12">
                                     <div class="col-lg-12">
                                         <div class="form-floating my-3">
-                                            <input type="text" class="form-control" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($_POST['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
+                                            <input type="text" class="form-control <?php echo isset($errores['nombreDocente']) ? 'is-invalid' : ''; ?>" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($_POST['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
                                             <label for="nombreDocente">Nombre</label>
+                                            <div class="invalid-feedback"><?php echo $errores['nombreDocente'] ?? ''; ?></div>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($_POST['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
+                                            <input type="text" class="form-control <?php echo isset($errores['apellidoDocente']) ? 'is-invalid' : ''; ?>" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($_POST['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
                                             <label for="apellidoDocente">Apellido</label>
+                                            <div class="invalid-feedback"><?php echo $errores['apellidoDocente'] ?? ''; ?></div>
                                         </div>
                                     </div>
 
@@ -266,8 +268,6 @@ $validado = $resultado['validado'] ?? '';
                         </div>  <!-- card body -->
                     </div>  <!-- card -->
                 </div>  <!-- col -->
-
-
 
                 <div class="col-lg-6">
                     <div class="col-lg-12">
@@ -289,27 +289,33 @@ $validado = $resultado['validado'] ?? '';
                                             $resolucion = ($value["resolucion"] !== '' && $value["resolucion"] !== 0) ? $value["resolucion"] . " - " : '';
                                             $motivo = $value["motivo"];
                                         ?>
-                                            <option><?php echo $articulo . $inciso . $resolucion . $motivo; ?></option>
+                                            <option data-id="<?php echo $value["id_MotivoSuplencia"]; ?>"><?php echo $articulo . $inciso . $resolucion . $motivo; ?></option>
                                         <?php } ?>
                                     </datalist>
 
                                     <div class="pb-1"> <!-- Datalist Motivo -->
-                                        <div class="form-floating">
+                                        <!-- <div class="form-floating"> -->
+                                            <label for="motivo" id="lblIdMotivo" class="form-label">Motivo</label>
                                             <input 
-                                                class="form-control fs-14" 
+                                                class="form-control fs-14 <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
                                                 list="opcionesMotivo" 
-                                                id="id_Motivo" 
-                                                name="id_Motivo" 
-                                                placeholder="Escriba para buscar...">
-                                            </input>
-                                            <label for="id_Motivo">Escriba para buscar...</label>
-                                            <input 
-                                                type="hidden" 
-                                                id="idInstitucion<?= $i + 1 ?>" 
-                                                name="instituciones[<?= $i ?>][id_Institucion]" 
-                                                value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                                id="motivo" 
+                                                name="motivo" 
+                                                placeholder="Escriba para buscar..."
+                                                value="<?php echo htmlspecialchars($_POST['motivo'] ?? ''); ?>"
+                                                oninput="autoSelectBestMatch('motivo', 'opcionesMotivo', 'idMotivo')"
                                             >
+                                        <!-- </div> -->
+                                        <div class="invalid-feedback">
+                                            <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
                                         </div>
+                                        <input 
+                                            type="hidden" 
+                                            id="idMotivo" 
+                                            name="idMotivo" 
+                                            value="<?= $valorInstitucion = htmlspecialchars($_POST['idMotivo'] ?? ''); ?>"
+                                        >
+
                                     </div>
     
                                 </div>
@@ -328,7 +334,8 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="row ">
                                     <div class="col-lg-6 mb-1">
                                         <label class="form-label">Fecha Inicio</label>
-                                        <input type="text" class="form-control AR-datepicker" id="fechaInicio" name="fechaInicio" placeholder="Fecha Inicio">
+                                        <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaInicio']) ? 'is-invalid' : ''; ?>" id="fechaInicio" name="fechaInicio" value= "<?php echo htmlspecialchars($_POST['fechaInicio'] ?? ''); ?>" placeholder="Fecha Inicio">
+                                        <div class="invalid-feedback"><?php echo $errores['fechaInicio'] ?? 'Debe completar este campo'; ?></div>
                                     </div>         
                                     
                                     <div class="col-lg-6 mb-1">
@@ -338,14 +345,15 @@ $validado = $resultado['validado'] ?? '';
 
                                             <!-- Checkbox de ¿Abierto? -->
                                             <div class="form-check d-flex align-items-center">
-                                                <input type="checkbox" class="form-check-input" id="checkAbierto" name="checkAbierto" style="margin-right: 5px;">
+                                                <input type="checkbox" class="form-check-input " id="checkAbierto" name="checkAbierto" style="margin-right: 5px;" <?= $_POST['checkAbierto'] ?? ''; ?> >
                                                 <label class="form-check-label" for="checkAbierto">¿Fin Abierto?</label>
                                             </div>
                                         </div>
                                         
                                         <!-- Campo de entrada para la fecha -->
                                         <div class="mt-2">
-                                            <input type="text" class="form-control AR-datepicker" id="fechaFin" name="fechaFin" placeholder="Fecha Fin">
+                                            <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaFin']) ? 'is-invalid' : ''; ?>" id="fechaFin" name="fechaFin" value= "<?php echo htmlspecialchars($_POST['fechaFin'] ?? ''); ?>" placeholder="Fecha Fin">
+                                            <div class="invalid-feedback"><?php echo $errores['fechaFin'] ?? 'Debe completar este campo'; ?></div>
                                         </div> 
                                     </div>
 
@@ -367,8 +375,9 @@ $validado = $resultado['validado'] ?? '';
                         <div class="card-body">
                             <div class="col-lg-12">
                                 <div class="form-floating my-3">
-                                    <input type="text" class="form-control" id="observaciones" name="observaciones" placeholder="observaciones">
+                                    <input type="text" class="form-control <?php echo isset($errores['observaciones']) ? 'is-invalid' : ''; ?>" id="observaciones" name="observaciones" value= "<?php echo htmlspecialchars($_POST['observaciones'] ?? ''); ?>" placeholder="observaciones">
                                     <label for="observaciones">Observaciones</label>
+                                    <div class="invalid-feedback"><?php echo $errores['observaciones'] ?? ''; ?></div>
                                 </div>
                             </div>
                                 
@@ -509,7 +518,6 @@ $validado = $resultado['validado'] ?? '';
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
                                         value="<?= htmlspecialchars($valorInstitucion); ?>"
                                     >
-                                    
                                 </div>
 
                                 <!-- Encabezados para pantallas grandes -->
@@ -526,7 +534,11 @@ $validado = $resultado['validado'] ?? '';
                                     <!-- Días -->
                                     <div class="col-12 col-md-5">
                                         <h6 class="d-md-none">Día <?php echo $numDia; ?></h6>
-                                        <select class="form-select" id="dia<?php echo $numDia; ?>Est<?php echo $i; ?>" name="dia<?php echo $numDia; ?>Est<?php echo $i; ?>">
+                                        <select 
+                                            class="form-select" 
+                                            id="dia<?php echo $numDia; ?>Est<?php echo $i+1; ?>" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][dia]"
+                                        >
                                             <?php echo generarOpcionesDias(); ?>
                                         </select>
                                     </div>
@@ -534,25 +546,44 @@ $validado = $resultado['validado'] ?? '';
                                     <!-- Hora Inicio -->
                                     <div class="col-12 col-md-3">
                                         <h6 class="d-md-none">Hora Inicio</h6>
-                                        <input id="horaIni<?php echo $numDia; ?>E<?php echo $i; ?>" name="horaIni<?php echo $numDia; ?>E<?php echo $i; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        <input 
+                                            id="horaIni<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaInicio]" 
+                                            type="text" 
+                                            class="form-control 24hours-timepicker" 
+                                            placeholder="..."
+                                        >
                                     </div>
 
                                     <!-- Hora Fin -->
                                     <div class="col-12 col-md-3">
                                         <h6 class="d-md-none">Hora Fin</h6>
-                                        <input id="horaFin<?php echo $numDia; ?>E<?php echo $i; ?>" name="horaFin<?php echo $numDia; ?>E<?php echo $i; ?>" type="text" class="form-control 24hours-timepicker" placeholder="...">
+                                        <input 
+                                            id="horaFin<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaFin]" 
+                                            type="text" 
+                                            class="form-control 24hours-timepicker" 
+                                            placeholder="..."
+                                        >
                                     </div>
 
                                     <!-- Botón Borrar Horario -->
                                     <div class="col-12 col-md-1 text-md-center">
-                                        <button type="button" class="btn btn-outline-primary w-100 mt-md-0 mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Borrar Horarios Día <?php echo $numDia; ?>" onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)">
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-outline-primary w-100 mt-md-0 mt-2" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="bottom" 
+                                            data-bs-title="Borrar Horarios Día <?php echo $numDia; ?>" 
+                                            onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)"
+                                        >
                                             <i class="fa-solid fa-eraser"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <?php endfor; ?>
-                                
                             </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
+
                             <?php if($i != 3)  {  ?>
                                 <hr id= 'divhsEst<?php echo $i +1; ?>'></hr>
                             <?php }  ?>
@@ -570,7 +601,7 @@ $validado = $resultado['validado'] ?? '';
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                            <button type="button" class="btn btn-outline-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
+                            <button type="submit" class="btn btn-outline-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
                             <button type="button" class="btn btn-primary btnEliminar"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                         </div>
                     </div>
@@ -582,3 +613,4 @@ $validado = $resultado['validado'] ?? '';
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>
+

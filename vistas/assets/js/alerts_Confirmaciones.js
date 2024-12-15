@@ -4,20 +4,6 @@
 $(document).on("click", ".btnGuardar", function (e) {
   e.preventDefault(); // Previene el envío automático del formulario
 
-  
-  // Verificar si gridRadiosComparte existe
-  if ($('[name="gridRadiosComparte"]').length > 0) {
-    const radios = $('[name="gridRadiosComparte"]');
-    if (radios.is(':checked')) {
-        // Implementa tu lógica específica si el radio button está presente y seleccionado
-        console.log("gridRadiosComparte existe y está seleccionado.");
-    } else {
-        console.log("gridRadiosComparte existe, pero no se seleccionó ningún valor.");
-    }
-  } else {
-    console.log("gridRadiosComparte no existe en este formulario.");
-  }
-
   // Inicializar arreglo para IDs de instituciones seleccionadas
   let institucionesSeleccionadas = [];
 

@@ -89,37 +89,187 @@ class ModeloSolSuplente{
     }
 
     // ==============================================================
-    // Agregar Solicitud
+    // Agregar Solicitud de Suplente
     // ==============================================================
-    static public function mdlAgregarSolSuplente($datos) {
-        
-        try {
-            $conexion = Conexion::conectar();
-            $stmt = $conexion->prepare("INSERT INTO solicitudes_suplente 
-                (id_Cargo, id_EstadoSol, numeroTramite, fechaInicio, fechaFin, observaciones, id_MotivoSuplencia) 
-                VALUES 
-                (:id_Cargo, :id_EstadoSol, :numeroTramite, :fechaInicio, :fechaFin, :observaciones, :id_MotivoSuplencia)");
-            
-            // Asignación de parámetros
-            $stmt->bindParam(":id_Cargo", $datos['id_Cargo'], PDO::PARAM_INT);
-            $stmt->bindParam(":id_EstadoSol", $datos['id_EstadoSol'], PDO::PARAM_INT);
-            $stmt->bindParam(":numeroTramite", $datos['numeroTramite'], PDO::PARAM_STR);
-            $stmt->bindParam(":fechaInicio", $datos['fechaInicio'], PDO::PARAM_STR);
-            $stmt->bindParam(":fechaFin", $datos['fechaFin'], PDO::PARAM_STR);
-            $stmt->bindParam(":observaciones", $datos['observaciones'], PDO::PARAM_STR);
-            $stmt->bindParam(":id_MotivoSuplencia", $datos['id_MotivoSuplencia'], PDO::PARAM_INT);
+    public static function mdlAgregarSolicitud($datos)
+    {
+        // var_dump($datos); die();
 
-            if ($stmt->execute()) {
-                return "ok";
+        $conexion = Conexion::conectar();
+        try {
+            
+            $conexion->beginTransaction();
+
+            // 1. Verificar si el id_Cargo existe en la tabla plazas
+            $sqlCheckCargo = "SELECT id_Cargo FROM plazas WHERE numeroPlaza = :numeroPlaza";
+            $stmtCheckCargo = $conexion->prepare($sqlCheckCargo);
+            $stmtCheckCargo->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
+            $stmtCheckCargo->execute();
+
+            if ($stmtCheckCargo->rowCount() > 0) {
+                $resultado = $stmtCheckCargo->fetchAll(PDO::FETCH_ASSOC);
+                // Si existe, actualizar el registro en la tabla cargos
+                $id_Cargo = $resultado[0]["id_Cargo"];
+                // var_dump($id_Cargo); die();
+
+                $sqlUpdateCargo = "UPDATE cargos SET 
+                    nombreDocente = :nombreDocente, 
+                    apellidoDocente = :apellidoDocente, 
+                    dniDocente = :dniDocente 
+                WHERE id_Cargo = :id_Cargo";
+
+                $stmtUpdateCargo = $conexion->prepare($sqlUpdateCargo);
+                $stmtUpdateCargo->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
+                $stmtUpdateCargo->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
+                $stmtUpdateCargo->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
+                $stmtUpdateCargo->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+
+                if (!$stmtUpdateCargo->execute()) {
+                    throw new Exception("Error al actualizar el cargo existente.");
+                }
             } else {
-                return "error";
+                // Si no existe, insertar en la tabla cargos
+                $sqlInsertCargo = "INSERT INTO cargos (
+                    id_NombreCargo, id_Grado, id_Division, id_Turno, hsCatedra, 
+                    apellidoDocente, nombreDocente, dniDocente, eliminado
+                ) VALUES (
+                    :id_NombreCargo, :id_Grado, :id_Division, :id_Turno, :hsCatedra, 
+                    :apellidoDocente, :nombreDocente, :dniDocente, 0
+                )";
+
+                $stmtInsertCargo = $conexion->prepare($sqlInsertCargo);
+                $stmtInsertCargo->bindParam(":id_NombreCargo", $datos["id_NombreCargo"], PDO::PARAM_INT);
+                $stmtInsertCargo->bindParam(":id_Grado", $datos["id_Grado"], PDO::PARAM_INT);
+                $stmtInsertCargo->bindParam(":id_Division", $datos["id_Division"], PDO::PARAM_INT);
+                $stmtInsertCargo->bindParam(":id_Turno", $datos["id_Turno"], PDO::PARAM_INT);
+                $stmtInsertCargo->bindParam(":hsCatedra", $datos["hsCatedra"], PDO::PARAM_INT);
+                $stmtInsertCargo->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
+                $stmtInsertCargo->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
+                $stmtInsertCargo->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
+
+                if (!$stmtInsertCargo->execute()) {
+                    throw new Exception("Error al insertar el nuevo cargo.");
+                }
+                // Obtener el ID del cargo recién insertado
+                $id_Cargo = $conexion->lastInsertId(); 
+
+                // Insertar en la tabla plazas
+                $sqlPlazas = "INSERT INTO plazas (
+                    numeroPlaza, id_Cargo, id_Institucion, sede
+                ) VALUES (
+                    :numeroPlaza, :id_Cargo, :id_Institucion, :sede
+                )";
+
+                $stmtPlazas = $conexion->prepare($sqlPlazas);
+                foreach ($datos["instituciones"] as $index => $institucion) {
+                    $numeroPlaza = $datos["numeroPlaza"] + $index;
+
+                    $stmtPlazas->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+                    $stmtPlazas->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+                    $stmtPlazas->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
+                    $stmtPlazas->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
+
+                    if (!$stmtPlazas->execute()) {
+                        throw new Exception("Error al insertar en la tabla plazas.");
+                    }
+                }
             }
 
+            // 2. Insertar en la tabla solicitudes
+            $estado = 1; //Borrador
+
+            $sqlSolicitud = "INSERT INTO solicitudes_suplente (
+                numeroTramite, fechaInicio, fechaFin, id_MotivoSuplencia,
+                observaciones, id_Cargo, id_EstadoSol
+            ) VALUES (
+                :numeroTramite, :fechaInicio, :fechaFin, :id_MotivoSuplencia, 
+                :observaciones, :id_Cargo, :id_EstadoSol
+            )";
+
+            // var_dump($datos); die;
+            $stmtSolicitud = $conexion->prepare($sqlSolicitud);
+            $stmtSolicitud->bindParam(":numeroTramite", $datos["numeroTramite"], PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":id_MotivoSuplencia", $datos["id_Motivo"], PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":observaciones", $datos["observaciones"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":id_EstadoSol", $estado, PDO::PARAM_INT);
+            
+
+            if (!$stmtSolicitud->execute()) {
+                throw new Exception("Error al insertar en la tabla solicitudes.");
+            }
+
+            $conexion->commit();
+            return ["status" => "ok"];
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage();
+            $conexion->rollBack();
+            return ["status" => "error", "message" => $e->getMessage()];
+        } finally {
+            $stmtCheckCargo = null;
+            $stmtUpdateCargo = null;
+            $stmtInsertCargo = null;
+            $stmtPlazas = null;
+            $stmtSolicitud = null;
+            $conexion = null;
         }
     }
 
     
+    public static function mdlObtenerDatosPorPlaza($numeroPlaza)
+    {
+
+        var_dump($numeroPlaza); die;
+        try {
+            $conexion = Conexion::conectar();
+
+            $sql = "SELECT 
+                c.id_Cargo, 
+                nc.nombreCargo, 
+                p.numeroPlaza,
+                c.hsCatedra,
+                g.grado, 
+                d.division, 
+                t.turno, 
+                tipo.tipo, 
+                GROUP_CONCAT(
+                    CONCAT(
+                        i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+                    ) ORDER BY p.sede DESC, p.numeroPlaza ASC
+                ) AS instituciones
+            FROM 
+                `cargos` AS c 
+                INNER JOIN `plazas` AS p ON p.id_Cargo = c.id_Cargo
+                INNER JOIN `instituciones` AS i ON p.id_Institucion = i.id_Institucion
+                LEFT JOIN `grados` AS g ON g.id_Grado = c.id_Grado 
+                LEFT JOIN `divisiones` AS d ON d.id_Division = c.id_Division
+                LEFT JOIN `turnos` AS t ON t.id_Turno = c.id_Turno
+                LEFT JOIN `nombres_cargos` AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+                LEFT JOIN `tipo_institucion` AS tipo ON tipo.id_Tipo = i.id_Tipo
+            WHERE 
+                c.eliminado = 0 and p.numeroPlaza = :numeroPlaza
+            GROUP BY 
+                c.id_Cargo;";
+
+            var_dump($numeroPlaza);
+            die();
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $resultado ? $resultado : false;
+        } catch (Exception $e) {
+            return false;
+        } finally {
+            $stmt = null;
+            $conexion = null;
+        }
+    }
+
+
 }
 

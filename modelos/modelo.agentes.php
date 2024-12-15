@@ -40,7 +40,7 @@ class ModeloAgentes{
         try {
             // SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;
             $stmt = Conexion::conectar()->prepare("INSERT INTO agentes (apellido, nombre, dni, telefono, direccion, email, usuario, password, id_Rol) VALUES (:apellido, :nombre, :dni, :telefono, :direccion, :email, :usuario, :password, :id_Rol)");
-
+            $encriptar = crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');
             $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
             $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
             $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
@@ -48,7 +48,7 @@ class ModeloAgentes{
             $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
             $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
             $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-            $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
+            $stmt->bindParam(":password", $encriptar, PDO::PARAM_STR);
             $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
 
             if ($stmt->execute()) {
@@ -89,7 +89,8 @@ class ModeloAgentes{
                 direccion = :direccion, email = :email, usuario = :usuario, 
                 password = :password, id_Rol = :id_Rol
                 WHERE id_Agente = :id_Agente");
-    
+                
+                $encriptar = crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');
                 $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
                 $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
                 $stmt->bindParam(":dni", $datos["dni"], PDO::PARAM_INT);
@@ -97,7 +98,7 @@ class ModeloAgentes{
                 $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
                 $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
                 $stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-                $stmt->bindParam(":password", crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$'), PDO::PARAM_STR);
+                $stmt->bindParam(":password", $encriptar, PDO::PARAM_STR);
                 $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
                 $stmt->bindParam(":id_Agente", $datos["id_Agente"], PDO::PARAM_INT);
             }

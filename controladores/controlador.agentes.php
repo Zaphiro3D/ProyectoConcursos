@@ -25,10 +25,16 @@ class ControladorAgentes{
             // Array con los nombres de los campos a validar
             $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena'];
 
-            // Validar campos vacíos
+            
             foreach ($campos as $campo) {
+                // Validar campos vacíos
                 if ($validador->string($_POST[$campo] ?? '')) {   
                     $errores[$campo] = "Por favor, complete este campo.";
+                }
+
+                // Validar max de caracteres
+                if ($validador->long($_POST[$campo] ?? '')) {   
+                    $errores[$campo] = "Debe ingresar menos de 100 caracteres.";
                 }
             }
 
@@ -135,10 +141,16 @@ class ControladorAgentes{
             // Array con los nombres de los campos a validar
             $campos = ['apellido', 'dni', 'nombre', 'email', 'contrasena', 'rol'];
 
-            // Validar campos vacíos
+            
             foreach ($campos as $campo) {
+                // Validar campos vacíos
                 if ($validador->string($_POST[$campo] ?? '')) {   
                     $errores[$campo] = "Por favor, complete este campo.";
+                }
+                
+                // Validar max de caracteres
+                if ($validador->long($_POST[$campo] ?? '')) {   
+                    $errores[$campo] = "Debe ingresar menos de 100 caracteres.";
                 }
             }
 

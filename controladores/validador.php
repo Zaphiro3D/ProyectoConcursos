@@ -8,6 +8,12 @@ class validador
         return strlen(trim($value)) === 0;
     }
 
+    //Validación de cantidad max de caracteres
+    public function long($value, $max = 100)
+    {
+        return strlen(trim($value)) >= $max;
+    }
+
     //Validación de teléfono
     public function telefono($telefono)
     {
@@ -41,6 +47,7 @@ class validador
         return false; // DNI inválido
     }
 
+    //Validación de Instituciones
     public static function instituciones($instituciones, $modelInstituciones)
     {
         $errores = [];
@@ -144,10 +151,93 @@ class validador
         return null; // Devuelve null si es válido
     }
     
+    //Validación para no duplicar valores en base de datos. Ej: DNI, CUE, numPlaza
     public function esUnico($modelo, $metodo, $valor, $condicConsulta = '')
     {
         // Llama al modelo y método específico
         return $modelo->$metodo($valor, $condicConsulta);
+    }
+
+    public static function validarFechaRango($fechaInicio, $fechaFin, $checkAbierto)
+    {
+        // Validar formato de entrada DD-MM-YYYY
+        $patronFecha = '/^\d{2}-\d{2}-\d{4}$/';
+
+        if ($checkAbierto != 'on'){
+
+            if (!preg_match($patronFecha, $fechaInicio) || !preg_match($patronFecha, $fechaFin)) {
+                return false; // Formato de fecha ingresado inválido
+            }
+
+            // Convertir fechas de DD-MM-YYYY a YYYY-MM-DD
+            $inicioConvertida = DateTime::createFromFormat('d-m-Y', $fechaInicio);
+            $finConvertida = DateTime::createFromFormat('d-m-Y', $fechaFin);
+
+            // Verificar que las fechas se hayan convertido correctamente
+            if (!$inicioConvertida || !$finConvertida) {
+                return false; // Error en la conversión de fechas
+            }
+
+            // Convertir a formato de base de datos (YYYY-MM-DD)
+            $inicio = $inicioConvertida->format('Y-m-d');
+            $fin = $finConvertida->format('Y-m-d');
+
+            // Comparar las fechas
+            if ($inicio > $fin) {
+                return false; // La fecha de inicio no puede ser posterior a la fecha de fin
+            }
+
+            return [
+                'fechaInicio' => $inicio,
+                'fechaFin' => $fin
+            ]; // Retornar las fechas en formato YYYY-MM-DD para la base de datos
+        } else{
+            if (!preg_match($patronFecha, $fechaInicio)) {
+                return false; // Formato de fecha ingresado inválido
+            }
+
+            // Convertir fechas de DD-MM-YYYY a YYYY-MM-DD
+            $inicioConvertida = DateTime::createFromFormat('d-m-Y', $fechaInicio);
+
+            // Verificar que las fechas se hayan convertido correctamente
+            if (!$inicioConvertida) {
+                return false; // Error en la conversión de fechas
+            }
+
+            // Convertir a formato de base de datos (YYYY-MM-DD)
+            $inicio = $inicioConvertida->format('Y-m-d');
+
+            return [
+                'fechaInicio' => $inicio,
+                'fechaFin' => $fechaFin
+            ]; // Retornar las fechas en formato YYYY-MM-DD para la base de datos
+        }
+    }
+
+    public static function validarDiaHorario($dia)
+    {
+        // Verificar que el día tenga las claves necesarias
+        if (!isset($dia['horaInicio'], $dia['horaFin'])) {
+            return false;
+        }
+
+        // Validar formato de hora (HH:MM)
+        $patronHora = '/^(?:[01]\d|2[0-3]):[0-5]\d$/';
+
+        if (!preg_match($patronHora, $dia['horaInicio']) || !preg_match($patronHora, $dia['horaFin'])) {
+            return false; // Formato de hora inválido
+        }
+
+        // Convertir las horas a formato de tiempo
+        $horaInicio = strtotime($dia['horaInicio']);
+        $horaFin = strtotime($dia['horaFin']);
+
+        // Verificar que la hora de inicio sea anterior a la hora de fin
+        if ($horaInicio >= $horaFin) {
+            return false; // Hora de inicio no puede ser igual o posterior a la hora de fin
+        }
+
+        return true; // El día y horario son válidos
     }
     
 

@@ -17,17 +17,17 @@ function toggleInstituciones() {
     // Institucion 2
     institucion2.style.display = radios[1].checked || radios[2].checked || radios[3].checked ? "block" : "none";
     lblinstitucion2.style.display = institucion2.style.display;
-    document.getElementById("divhsEst2").style.display = institucion2.style.display;
+    document.getElementById("divhsEst1").style.display = institucion2.style.display;
     
     // Institucion 3
     institucion3.style.display = radios[2].checked || radios[3].checked ? "block" : "none";
     lblinstitucion3.style.display = institucion3.style.display;
-    document.getElementById("divhsEst3").style.display = institucion3.style.display;
+    document.getElementById("divhsEst2").style.display = institucion3.style.display;
     
     // Institucion 4
     institucion4.style.display = radios[3].checked ? "block" : "none";
     lblinstitucion4.style.display = institucion4.style.display;
-    document.getElementById("divhsEst4").style.display = institucion4.style.display;
+    document.getElementById("divhsEst3").style.display = institucion4.style.display;
     
 }
 
@@ -60,9 +60,20 @@ function borrarHorario(dia, inst) {
 }
 
 // Cargo Abierto
-document.getElementById("checkAbierto").addEventListener("change", function() {
-    var fechaFinInput = document.getElementById("fechaFin");
-    fechaFinInput.value = this.checked ? "Abierto" : "";
+const checkbox = document.getElementById('checkAbierto');
+const fechaFinInput = document.getElementById('fechaFin');
+
+// Función para manejar el cambio en el checkbox
+checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+        // Si el checkbox está seleccionado, deshabilitar el campo de fecha
+        fechaFinInput.setAttribute('readonly', true);
+        fechaFinInput.value = 'Abierto';
+    } else {
+        // Si el checkbox no está seleccionado, habilitar el campo de fecha
+        fechaFinInput.removeAttribute('readonly');
+        fechaFinInput.value = '';
+    }
 });
 
 // Añade el evento de cambio a cada radio button para ejecutar la función cuando cambie la selección
@@ -70,10 +81,11 @@ radios.forEach(radio => {
     radio.addEventListener("change", toggleInstituciones);
 });
 
+
 // Oculta inicialmente todos los campos extra
 toggleInstituciones();
 
-autoSelectBestMatch('institucionSede', 'opcionesMotivo', 'idInstitucion1');
+// autoSelectBestMatch('motivo', 'opcionesMotivo', 'idMotivo');
 autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');
 autoSelectBestMatch('institucion1', 'OpcionesInstitucion', 'idInstitucion1');
 autoSelectBestMatch('institucion2', 'OpcionesInstitucion', 'idInstitucion2');

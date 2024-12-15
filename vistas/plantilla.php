@@ -79,6 +79,15 @@ $url = ControladorPlantilla::url();
 
                     if (isset($_GET["pagina"])) {
                         $rutas = explode('/', $_GET["pagina"]);
+
+                        // Verificar si es una solicitud AJAX
+                        if ($rutas[0] == "obtenerDatosPlaza") {
+                            $controlador = new ControladorSolSuplente();
+                            $controlador->ctrObtenerDatosPlaza();
+                            exit; // Importante para no cargar el resto de la página
+                        }
+
+                        // Validar otras rutas
                         if (
                             // Agentes
                             $rutas[0] == "agentes" ||
@@ -108,23 +117,26 @@ $url = ControladorPlantilla::url();
                             // General
                             $rutas[0] == "inicio" ||
                             $rutas[0] == "salir" 
-
-
                         ) {
                             include "vistas/modulos/" . $rutas[0] . ".php";
                         } else {
                             include "vistas/modulos/404.php";
                         }
-                    }else{
+                    } else {
                         include "vistas/modulos/inicio.php";
                     }
 
                     ?>
 
-                    <!-- Footer -->
-                    <?php include 'modulos/footer.php' ?>
+                    <?php include 'modulos/footer.php'; ?>
 
                 </div>
+
+
+
+
+
+                
                 <!-- ============================================================== -->
                 <!-- Fin del contenido -->
                 <!-- ============================================================== -->
