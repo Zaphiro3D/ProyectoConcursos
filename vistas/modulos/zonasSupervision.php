@@ -1,3 +1,7 @@
+<?php
+$eliminar = new ControladorZonas;
+$eliminar->ctrEliminarZona();
+?>
 <div class="container-xxl">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
@@ -30,24 +34,28 @@
                             $zonasSupervision = ControladorZonas::ctrMostrarZonas(null, null);
                             foreach ($zonasSupervision as $key => $value) {
                             ?>
-                                <tr style="background-color:#000888">
-                                    <td> <?php echo $value["zona"] ?></td>
-                                    <td> <?php echo $value["apellido"] . ' ' . $value["nombre"] ?></td>
-                                    <td> <?php echo $value["dni"] ?></td>
-                                    <td> <?php echo $value["telefono"] ?></td>
-                                    <td><a href="editar_zona/<?php echo $value["id_ZonaSupervision"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                    <button href="eliminar_zona" class="btn btn-danger btn-sm "><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tr style="background-color:#000888">
+                                <td> <?php echo $value["zona"] ?></td>
+                                <td> <?php echo $value["apellido"] . ' ' . $value["nombre"] ?></td>
+                                <td> <?php echo $value["dni"] ?></td>
+                                <td> <?php echo $value["telefono"] ?></td>
+                                <td><a href="editar_zona/<?php echo $value["id_ZonaSupervision"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                    <button
+                                        class="btn btn-danger btn-sm btnEliminarZona"
+                                        zona = <?php echo $value["zona"]; ?>
+                                        id_ZonaSupervision = <?php echo $value["id_ZonaSupervision"]; ?>>
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
 
                             <?php } ?>
 
                         </tbody>
                     </table>
+                    <input type="hidden" id="url" value="<?php echo $url; ?>">
                 </div>
-
             </div>
         </div>
     </div>
-
 </div>

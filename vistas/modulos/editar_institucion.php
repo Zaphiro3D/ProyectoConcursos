@@ -6,7 +6,7 @@ $institucion = ControladorInstituciones::ctrMostrarInstituciones($id , $valor);
 $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
 $zonas = ControladorZonas::ctrMostrarZonas(null,null);
 $tipos = ControladorInstituciones::ctrMostrarTipos();
-print_r($valor);
+//3print_r($valor);
 
 if ($institucion) {
 ?>

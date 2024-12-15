@@ -49,10 +49,11 @@ if ($zona_select) { ?>
                                 $agentes = ControladorAgentes::ctrMostrarAgentes(NULL, NULL);
                                 foreach ($agentes as $key => $value) {
                                 ?>
-
                                     <option id="<?php echo $value["id_Agente"] ?>" data-id="<?php echo $value["id_Agente"] ?>"><?php echo $value["apellido"] . ", " . $value["nombre"] . ' - DNI: ' . $value["dni"] ?> </option>
+
                                 <?php } ?>
                             </datalist>
+
 
                             <div class="pb-3"> <!-- Datalist Agentes  -->
                                 <div class="form-floating mb-1 mt-1">
@@ -60,8 +61,8 @@ if ($zona_select) { ?>
                                         list="OpcionesSupervisor"
                                         id="datalistSupervisor"
                                         placeholder="Escriba para buscar..."
-                                        data-id=""
-                                        value=""><?php echo "Supervisor Actual ". $zona_select["apellido"] . ", " . $zona_select["nombre"] . ' - DNI: ' . $zona_select["dni"] ?>
+
+                                        value="<?php echo $zona_select["supervisor"] ?>">
                                     </input>
                                     <label for=" datalistSupervisor">Escriba para buscar...</label>
                                 </div>
@@ -78,7 +79,39 @@ if ($zona_select) { ?>
                             </div>
                             <div class="card-body">
                                 <!-- Pantalla Seleccionar Supervisor -->
-                                <?php include 'seleccionar_institucion.php' ?>
+                                <?php //include 'seleccionar_institucion.php' 
+                                ?>
+
+                                <table id="tablaSelectMultiES" class="table table-striped table-hover dt-responsive nowrap w-100 tablaSelectMultiES">
+                                    <div class="table-title"></div>
+
+                                    <thead>
+                                        <tr>
+                                            <th>CUE</th>
+                                            <th>Tipo</th>
+                                            <th>N°</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $institucionesZona = ControladorZonas::ctrObtenerInstitucionZona($rutas[1]);
+                                        $institucionesAsignadas = array_column($institucionesZona, "id_institucion");
+                                        $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
+                                        print_r($institucionesAsignadas);
+                                        foreach ($institucion as $key => $value) {
+                                        ?>
+                                            <tr data-id_institucion="<?php echo $value['id_institucion']; ?>" style="background-color:#000888">
+                                                <td> <?php echo $value["cue"] ?></td>
+                                                <td> <?php echo $value["tipo"] ?></td>
+                                                <td> <?php echo $value["numero"] ?></td>
+                                                <td> <?php echo $value["institucion"] ?></td>
+                                            </tr>
+
+                                        <?php } ?>
+                                    </tbody>
+
+                                </table>
                             </div>
                         </div>
                         <input type="hidden" id="institucionesSeleccionadas" name="institucionesSeleccionadas">
@@ -123,24 +156,66 @@ if ($zona_select) { ?>
 <?php } ?>
 
 <script>
-    document.getElementById('datalistSupervisor').addEventListener('input', function() {
-        // Obtener el valor del input
-        var inputValue = this.value;
+    // Inicializar la variable institucionesAsignadas con los datos de PHP
+    let institucionesAsignadas = <?php echo json_encode($institucionesAsignadas); ?>;
 
-        // Obtener todas las opciones del datalist
-        var options = document.getElementById('OpcionesSupervisor').options;
+    $(document).ready(function() {
+        // Asegurarse de que las institucionesAsignadas tenga los valores correctos
+        console.log(institucionesAsignadas);
 
-        // Buscar el ID del agente seleccionado
-        for (var i = 0; i < options.length; i++) {
+        // Resaltar las filas que ya están en institucionesAsignadas
+        $("#tablaSelectMultiES tbody tr").each(function() {
+            const institucionId = $(this).data("id_institucion"); // Obtener el ID de la institución
+            if (institucionesAsignadas.includes(institucionId)) {
+                // Si la institución está en institucionesAsignadas, resaltar la fila
+                $(this).css("background-color", "#0000FF"); // Color azul
+            }
+        });
+
+        // Manejar clic en las filas de la tabla
+        $("#tablaSelectMultiES tbody").on("click", "tr", function() {
+            const institucionId = $(this).data("id_institucion"); // Obtener el ID de la institución
+            const row = $(this); // La fila seleccionada
+
+            // Comprobar si la institución ya está en la lista de seleccionadas
+            const index = institucionesAsignadas.indexOf(institucionId);
+
+            if (index === -1) {
+                // Si no está seleccionada, agregamos el ID y cambiamos el color de la fila a azul
+                institucionesAsignadas.push(institucionId);
+                row.css("background-color", "#0000FF"); // Cambiar a azul
+            } else {
+                // Si ya está seleccionada, la deseleccionamos y removemos el ID de la lista
+                institucionesAsignadas.splice(index, 1);
+                row.css("background-color", ""); // Quitar el color azul
+            }
+
+            // Actualizar el valor del campo oculto con los IDs de las instituciones seleccionadas
+            $("#institucionesSeleccionadas").val(institucionesAsignadas.join(","));
+        });
+
+        // Verificar la correcta asignación de las instituciones asignadas
+        console.log("Instituciones seleccionadas: ", institucionesAsignadas);
+    });
+
+    // Asignar el supervisor seleccionado al campo oculto
+    const datalistSupervisor = document.getElementById('datalistSupervisor');
+    const hiddenSupervisorId = document.getElementById('id_Supervisor');
+
+    datalistSupervisor.addEventListener('input', function() {
+        const inputValue = this.value;
+        const options = document.getElementById('OpcionesSupervisor').options;
+        let selectedSupervisorId = null;
+
+        // Verificar si el input coincide con una opción válida
+        for (let i = 0; i < options.length; i++) {
             if (options[i].value === inputValue) {
-
-                // Asignar el ID del agente al input oculto 
-                document.getElementById('id_Supervisor').value = options[i].getAttribute('data-id');
+                selectedSupervisorId = options[i].getAttribute('data-id');
                 break;
             }
         }
-    });
 
-    // Pasar el array PHP como un objeto JavaScript para que seleccione las especialidades
-    const institucionesSeleccionadas = <?php echo json_encode($institucionesAsignadas); ?>;
+        // Actualizar el campo oculto con el ID seleccionado
+        hiddenSupervisorId.value = selectedSupervisorId ? selectedSupervisorId : datalistSupervisor.getAttribute('data-id');
+    });
 </script>

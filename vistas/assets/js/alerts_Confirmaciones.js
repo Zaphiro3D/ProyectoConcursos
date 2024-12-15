@@ -14,7 +14,7 @@ $(document).on("click", ".btnGuardar", function (e) {
       tabla.rows({ selected: true }).every(function () {
           const idInstitucion = $(this.node()).data("id_institucion"); // Obtener el id_Institucion desde el atributo data-id_institucion
           institucionesSeleccionadas.push(idInstitucion);
-        //const data = this.data();
+          //const data = this.data();
           //institucionesSeleccionadas.push(data[0]); // El ID está en la primera columna
       });
     
@@ -245,13 +245,12 @@ $(document).on("click", ".btnEliminar", function () {
 
 $(document).on("click", ".btnEliminarZona", function () {
    
-  let id_agente = $(this).attr("id_Agente"); 
-  let apellido = $(this).attr("apellido"); 
-  let nombre = $(this).attr("nombre"); 
+  let id_ZonaSupervision = $(this).attr("id_ZonaSupervision"); 
+  let zona = $(this).attr("zona"); 
 
   Swal.fire({
     title: "¿Está seguro de eliminar la zona de supervisión?",
-    text: "Supervisión Escolar de Zona E",
+    text: "Zona: " + zona ,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -261,7 +260,7 @@ $(document).on("click", ".btnEliminarZona", function () {
   }).then(function (result) {
     if (result.value) {
       window.location =
-        "zonasSupervision";
+        "zonasSupervision" + "?id_ZonaSupervision=" + id_ZonaSupervision;
     }
   });
 });
