@@ -10,8 +10,8 @@ class ModeloZonas{
         if ($zona != null) {
 
             try {
-                $stmt = Conexion::conectar()->prepare(" SELECT z.id_ZonaSupervision, z.nombre as zona, a.apellido, a.nombre, a.dni, a.telefono,a.id_Agente FROM `agentes` as a inner join `zonas_supervision` as z ON z.id_Supervisor = a.id_Agente
-                and $zona=:valor");
+                $stmt = Conexion::conectar()->prepare("SELECT z.id_ZonaSupervision, z.nombre as zona, a.id_Agente ,a.apellido,a.nombre,a.dni ,CONCAT(a.apellido ,', ', a.nombre ,' - DNI:', a.dni) as supervisor , a.telefono FROM `agentes` as a inner join `zonas_supervision` as z ON z.id_Supervisor = a.id_Agente
+                and $zona=:valor and z.eliminado = 0");
                 $stmt->bindParam(":valor", $valor, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -20,7 +20,7 @@ class ModeloZonas{
             }
         } else {
             try {
-                $zonas = Conexion::conectar()->prepare("SELECT z.id_ZonaSupervision, z.nombre as zona, a.apellido , a.nombre , a.dni, a.telefono FROM `agentes` as a inner join `zonas_supervision` as z ON z.id_Supervisor = a.id_Agente;");
+                $zonas = Conexion::conectar()->prepare("SELECT z.id_ZonaSupervision, z.nombre as zona, a.id_Agente ,a.apellido,a.nombre,a.dni ,CONCAT(a.apellido ,', ', a.nombre ,' - DNI:', a.dni) as supervisor , a.telefono FROM `agentes` as a inner join `zonas_supervision` as z ON z.id_Supervisor = a.id_Agente and z.eliminado = 0");
                 $zonas->execute();
                 return $zonas->fetchAll(PDO::FETCH_ASSOC);
             } catch (Exception $e) {
@@ -93,54 +93,25 @@ class ModeloZonas{
             error_log("Error en mdlEditarZonas: " . $e->getMessage());
             return "Error: " . $e->getMessage();
         }
-        /*try {
-            if (empty($datos["id_ZonaSupervision"])) {
-                return "error_Zona_no_Encontrada";
-            }
+       
+    }
 
-            // Conexión y preparación de la consulta
-            $conexion = Conexion::conectar();
-            $stmtZona = $conexion->prepare("UPDATE zonas_supervision SET 
-            nombre = :nombre, id_Supervisor = :id_Supervisor 
-            where id_ZonaSupervision = :id_ZonaSupervision");
+    static public function mdlEliminarZona($datos){
+        try {
+            $elim = 1;
+            $stmt = Conexion::conectar()->prepare("UPDATE zonas_supervision SET eliminado = :eliminado where id_ZonaSupervision = :id_ZonaSupervision");
 
-            // Vinculación de parámetros
-            $stmtZona->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-            $stmtZona->bindParam(":id_Supervisor", $datos["id_Supervisor"], PDO::PARAM_INT);
-            $stmtZona->bindParam(":id_ZonaSupervision", $datos["id_ZonaSupervision"], PDO::PARAM_INT);
-
-            // Ejecutar la consulta
-            if ($stmtZona->execute()) {
-                $filasAfectadas = $stmtZona->rowCount();
-                return ($filasAfectadas > 0) ? "ok" : "no_changes";
-            } else {
-                return "error";
-            }
-        } catch (PDOException $e) {
-            // Registrar errores y devolver mensaje de error
-            error_log("Error en mdlEditarZonas: " . $e->getMessage());
-            return "Error: " . $e->getMessage();
-        }*/
-            /*
-            $stmt = Conexion::conectar()->prepare("UPDATE zonas_supervision SET 
-            nombre = :nombre, id_Supervisor = :id_Supervisor 
-            where id_ZonaSupervision = :id_ZonaSupervision");
-
-            //print_r($datos);
-            //return;
-
-            $stmt->bindParam(":id_ZonaSupervision", $datos["id_ZonaSupervision"], PDO::PARAM_INT);
-            $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-            $stmt->bindParam(":id_Supervisor", $datos["id_Supervisor"], PDO::PARAM_INT);
+            $stmt->bindParam(":id_ZonaSupervision", $datos, PDO::PARAM_INT);
+            $stmt->bindParam(":eliminado", $elim, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
                 return "ok";
             } else {
-                return print_r(Conexion::conectar()->errorInfo());
+                return "error";
             }
         } catch (Exception $e) {
             return "Error: " . $e->getMessage();
-        }*/
+        }
     }
 
     static public function mdlActualizarZonaSupervision($idZona, $instituciones)
@@ -171,28 +142,10 @@ class ModeloZonas{
         } catch (PDOException $e) {
             error_log("Error en mdlActualizarZonas: " . $e->getMessage());
             return "Error: " . $e->getMessage();}
-        /*try {
-            $conexion = Conexion::conectar();
-            $stmt = Conexion::conectar()->prepare(
-                "UPDATE instituciones SET id_ZonaSupervision = :id_ZonaSupervision, zona= :nombre WHERE id_institucion = :id_institucion"
-            );
-            
-            //$stmt->bindParam(":id_ZonaSupervision",$idZona,PDO::PARAM_INT);
-            
-            foreach ($instituciones as $idInsti) {
-                $stmt->bindParam(":nombre",$nombreZona,PDO::PARAM_STR);
-                $stmt->bindParam(":id_ZonaSupervision", $idZona, PDO::PARAM_INT);
-                $stmt->bindValue(":id_institucion", $idInsti, PDO::PARAM_INT);
-                $stmt->execute();
-            }
-            
-            return "ok";
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }*/
+        
     }
 
-    static public function mdlEliminarZonaSupervision($idZona){
+    static public function mdlEliminarZonaAsociada($idZona){
         $stmt = Conexion::conectar()->prepare(
             "UPDATE instituciones 
              SET id_ZonaSupervision = NULL 
@@ -208,9 +161,11 @@ class ModeloZonas{
     }
 
     static public function mdlObtenerInstitucionZona($idzona) {
-        $stmt= Conexion::conectar()->prepare("SELECT id_Institucion FROM instituciones WHERE id_ZonaSupervision = :id_ZonaSupervision");
+        $stmt= Conexion::conectar()->prepare("SELECT id_institucion FROM instituciones WHERE id_ZonaSupervision = :id_ZonaSupervision");
         $stmt->bindParam(":id_ZonaSupervision",$idzona,PDO::PARAM_INT);
         $stmt->execute();
         return $stmt ->fetchAll();
     }
+
+    
 }

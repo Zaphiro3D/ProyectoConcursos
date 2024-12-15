@@ -17,10 +17,10 @@
                         </thead>
                         <tbody>
                             <?php
-                            $institucionesZona = ControladorZonas::ctrObtenerInstitucionZona($rutas[1]);
-                            $institucionesAsignadas = array_column($institucionesZona, "id_Institucion");
+                            //$institucionesZona = ControladorZonas::ctrObtenerInstitucionZona($rutas[1]);
+                            //$institucionesAsignadas = array_column($institucionesZona, "id_institucion");
                             $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-                            print_r( $institucionesAsignadas);
+                            
                             foreach ($institucion as $key => $value) {
                             ?>
                                 <tr data-id_institucion="<?php echo $value['id_institucion']; ?>" style="background-color:#000888">

@@ -66,7 +66,7 @@ class ControladorZonas{
                 $instituciones = explode(",", $_POST["institucionesSeleccionadas"]);
                 // Eliminar asociaciones antiguas
                 
-                $respuestaEliminar = ModeloZonas::mdlEliminarZonaSupervision($datos["id_ZonaSupervision"]);
+                $respuestaEliminar = ModeloZonas::mdlEliminarZonaAsociada($datos["id_ZonaSupervision"]);
 
                 if ($respuestaEliminar == "ok") {
                     
@@ -119,6 +119,32 @@ class ControladorZonas{
         
         }
         
+    }
+
+    public function ctrEliminarZona(){
+        if (isset($_GET["id_ZonaSupervision"])){
+            $url = ControladorPlantilla::url() . "zonasSupervision";
+            $dato = $_GET["id_ZonaSupervision"];
+
+            $respuesta = ModeloZonas::mdlEliminarZona($dato);
+            
+            if ($respuesta == "ok") {
+                echo '<script>
+                fncSweetAlert(
+                "success", 
+                "La zona se eliminó correctamente",
+                "' . $url . '");
+                </script>';
+            } else {
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar la zona.',
+                    icon: 'error'
+                });
+                </script>";
+            }
+        }
     }
 
     public static function
