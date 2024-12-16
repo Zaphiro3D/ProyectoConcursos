@@ -179,7 +179,7 @@ class ModeloSolSuplente{
             }
 
             // 2. Insertar en la tabla solicitudes
-            $estado = 1; //Borrador
+            $estado = $datos["estado"];
 
             $sqlSolicitud = "INSERT INTO solicitudes_suplente (
                 numeroTramite, fechaInicio, fechaFin, id_MotivoSuplencia,
@@ -215,6 +215,82 @@ class ModeloSolSuplente{
             $stmtUpdateCargo = null;
             $stmtInsertCargo = null;
             $stmtPlazas = null;
+            $stmtSolicitud = null;
+            $conexion = null;
+        }
+    }
+
+    // ==============================================================
+    // Editar Solicitud de Suplente
+    // ==============================================================
+    public static function mdlEditarSolicitud($datos)
+    {
+        $conexion = Conexion::conectar();
+        try {
+            $conexion->beginTransaction();
+
+            // 1. Verificar si el id_Cargo existe en la tabla plazas
+            $sqlCheckCargo = "SELECT id_Cargo FROM plazas WHERE numeroPlaza = :numeroPlaza";
+            $stmtCheckCargo = $conexion->prepare($sqlCheckCargo);
+            $stmtCheckCargo->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
+            $stmtCheckCargo->execute();
+
+            $observacionesExtra = "";
+
+            if ($stmtCheckCargo->rowCount() > 0) {
+                $resultado = $stmtCheckCargo->fetchAll(PDO::FETCH_ASSOC);
+                // Si existe, actualizar el registro en la tabla cargos
+                $id_Cargo = $resultado[0]["id_Cargo"];
+
+                $sqlUpdateCargo = "UPDATE cargos SET 
+                    nombreDocente = :nombreDocente, 
+                    apellidoDocente = :apellidoDocente, 
+                    dniDocente = :dniDocente 
+                WHERE id_Cargo = :id_Cargo";
+
+                $stmtUpdateCargo = $conexion->prepare($sqlUpdateCargo);
+                $stmtUpdateCargo->bindParam(":nombreDocente", $datos["nombreDocente"], PDO::PARAM_STR);
+                $stmtUpdateCargo->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
+                $stmtUpdateCargo->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
+                $stmtUpdateCargo->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+
+                if (!$stmtUpdateCargo->execute()) {
+                    throw new Exception("Error al actualizar el cargo existente.");
+                }
+            }
+
+            // 2. Actualizar en la tabla solicitudes_suplente
+            $sqlSolicitud = "UPDATE solicitudes_suplente SET 
+                fechaInicio = :fechaInicio, 
+                fechaFin = :fechaFin, 
+                id_MotivoSuplencia = :id_MotivoSuplencia, 
+                observaciones = :observaciones, 
+                id_Cargo = :id_Cargo, 
+                id_EstadoSol = :id_EstadoSol
+                WHERE numeroTramite = :numeroTramite";
+
+            $observaciones = $datos["observaciones"] . $observacionesExtra;
+            $stmtSolicitud = $conexion->prepare($sqlSolicitud);
+            $stmtSolicitud->bindParam(":numeroTramite", $datos["numeroTramite"], PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":id_MotivoSuplencia", $datos["id_Motivo"], PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":observaciones", $observaciones, PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":id_EstadoSol", $datos["estado"], PDO::PARAM_INT);
+
+            if (!$stmtSolicitud->execute()) {
+                throw new Exception("Error al actualizar la solicitud.");
+            }
+
+            $conexion->commit();
+            return ["status" => "ok"];
+        } catch (Exception $e) {
+            $conexion->rollBack();
+            return ["status" => "error", "message" => $e->getMessage()];
+        } finally {
+            $stmtCheckCargo = null;
+            $stmtUpdateCargo = null;
             $stmtSolicitud = null;
             $conexion = null;
         }
@@ -289,6 +365,29 @@ class ModeloSolSuplente{
         } finally {
             $stmt = null;
             $conexion = null;
+        }
+    }
+
+    // ==============================================================
+    // Eliminar Cargo
+    // ==============================================================
+    static public function mdlEliminarSolicitud($datos)
+    {
+        try {
+            $elim = 8;
+            $stmt = Conexion::conectar()->prepare("UPDATE solicitudes_suplente 
+            SET id_EstadoSol = :id_EstadoSol where id_SolSuplente = :id_SolSuplente");
+            
+            $stmt->bindParam(":id_SolSuplente", $datos, PDO::PARAM_INT);
+            $stmt->bindParam(":id_EstadoSol", $elim , PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
         }
     }
     

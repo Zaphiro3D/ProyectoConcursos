@@ -1,3 +1,9 @@
+<?php
+    $solSuplente = ControladorSolSuplente::ctrMostrarSolSuplente();
+                            
+    $eliminar = new ControladorSolSuplente();
+    $eliminar -> ctrEliminarSolicitud();
+?>
 <div class="container-xxl">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
@@ -40,7 +46,6 @@
                         <tbody>
 
                             <?php
-                            $solSuplente = ControladorSolSuplente::ctrMostrarSolSuplente();
                             foreach ($solSuplente as $value):
                                 $instituciones = explode(',', $value['instituciones']);
                                 $horarios = explode(' | ', $value['horarios']);
@@ -55,15 +60,15 @@
                             ?>                                                          
                                 
                             <tr>    
-                                <td class="dt-control"></td>    
+                                <td class="dt-control"></td>                        
                                 <td><?php echo $instituciones[0]?></td>
                                 <td><?php echo $value["nombreCargo"] ?></td>
                                 <td><?php echo $value["hsCatedra"] ?></td>
                                 <td><?php echo $value["grado"] ?></td>
                                 <td><?php echo $value["division"] ?></td>
                                 <td><?php echo $value["turno"] ?></td>
-                                <td><?php echo $value["fechaInicio"] ?></td>
-                                <td><?php echo $value["fechaFin"] ?></td>
+                                <td><?php echo DateTime::createFromFormat('Y-m-d', $value["fechaInicio"])->format('d-m-Y')?></td>
+                                <td><?php echo DateTime::createFromFormat('Y-m-d', $value["fechaFin"])->format('d-m-Y') ?></td>
                                 <td><?php echo $value["motivo"] ?></td>
                                 <td><?php echo $value["docente"] ?></td>
                                 <td><?php echo $instituciones[1] ?? ''  ?></td>
@@ -154,11 +159,46 @@
                                     }?>
                                 </td>
                                 <!-- Fin columna estado -->
-                                <td><a href="editar_solsuplente/<?php echo $value["id_SolSuplente"] ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Editar"><i class="fas fa-edit"></i>
-                                    </a> <button href="eliminar_solsuplente" class="btn btn-danger btn-sm btnEliminar" id_eliminar=<?php echo $value["id_SolSuplente"]; ?> pag= "solicitudesSuplente" categoria = "Solicitud de Suplente" valorElim = "<?php echo $value["id_SolSuplente"]; ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Eliminar"><i class="fas fa-trash"></i></button> 
+                                <td><a 
+                                        href="editar_solsuplente/<?php echo $value["id_SolSuplente"] ?>" 
+                                        class="btn btn-warning btn-sm" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Editar"
+                                    ><i class="fas fa-edit"></i>
+                                    </a> 
+                                    <button 
+                                        href="eliminar_solsuplente" 
+                                        class="btn btn-danger btn-sm btnEliminar" 
+                                        id_eliminar=<?php echo $value["id_SolSuplente"]; ?> 
+                                        pag= "solicitudesSuplente" 
+                                        categoria = "Solicitud de Suplente" 
+                                        valorElim = "<?php echo $instituciones[0] . " - " . $value["nombreCargo"]; ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Eliminar"
+                                    ><i class="fas fa-trash"></i>
+                                    </button> 
                                     &nbsp;|&nbsp; 
-                                    <button href="aprobar_solic" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Aprobar"><i class="fas fa-circle-check"></i>
-                                    </button> <button href="rechazar_solic" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Rechazar"><i class="fas fa-circle-xmark"></i></button> 
+                                    <button 
+                                        href="aprobar_solic" 
+                                        class="btn btn-success btn-sm"
+                                        id_aprobar=<?php echo $value["id_SolSuplente"]; ?> 
+                                        pag= "solicitudesSuplente" 
+                                        valorAprobar = "<?php echo $value["id_SolSuplente"]; ?>" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Aprobar"
+                                    ><i class="fas fa-circle-check"></i>
+                                    </button> 
+                                    <button 
+                                        href="rechazar_solic" 
+                                        class="btn btn-danger btn-sm" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="bottom" 
+                                        data-bs-title="Rechazar"
+                                    ><i class="fas fa-circle-xmark"></i>
+                                    </button> 
                                 </td>
                                 <?php endforeach;?>
                             </tr>

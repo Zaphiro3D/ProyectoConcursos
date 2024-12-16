@@ -1,4 +1,3 @@
-
 <script>
  function redirectToPlaza() {
      const numeroPlaza = document.getElementById('numeroPlaza').value;
@@ -693,14 +692,17 @@ if (max(array_keys($rutas)) == 1){
 
                 </div>  <!-- col -->
             </div>
+            
+            <!-- Campo oculto para estado de suplencia -->
+            <input type="hidden" name="estado" id="estado">
 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                            <button type="submit" class="btn btn-outline-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
-                            <button type="button" class="btn btn-primary btnEliminar"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
+                            <button type="submit" class="btn btn-outline-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
+                            <button type="submit" class="btn btn-primary btnEliminar" onclick="cambiarEstado(2)"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                         </div>
                     </div>
                 </div>
@@ -711,4 +713,9 @@ if (max(array_keys($rutas)) == 1){
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>
-
+<script>
+    function cambiarEstado(estado) {
+        document.getElementById('estado').value = estado;
+        document.getElementById('formSolicitud').submit();
+    }
+</script>
