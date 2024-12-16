@@ -81,7 +81,6 @@ radios.forEach(radio => {
     radio.addEventListener("change", toggleInstituciones);
 });
 
-
 // Oculta inicialmente todos los campos extra
 toggleInstituciones();
 

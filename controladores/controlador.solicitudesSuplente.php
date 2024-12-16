@@ -17,7 +17,6 @@ class ControladorSolSuplente{
     // ==============================================================
     public function ctrAgregarSolicitud()
     {
-        
         $errores = []; // Inicializar arreglo de errores
         $validado = ""; // Inicializar clase de validación
 
@@ -139,7 +138,7 @@ class ControladorSolSuplente{
                     "dniDocente" => $dniDocente
                 ]);
 
-                $url = ControladorPlantilla::url() . "solicitudes";
+                $url = ControladorPlantilla::url() . "solicitudesSuplente";
                 if ($respuesta["status"] === "ok") {
                     echo '<script>
                         fncSweetAlert(
@@ -158,6 +157,7 @@ class ControladorSolSuplente{
                     </script>";
                 }
             } else {
+                // var_dump($errores);
                 $validado = "was-validated";
             }
         }
@@ -169,35 +169,35 @@ class ControladorSolSuplente{
         ];
     }
 
-    public function ctrObtenerDatosPlaza()
+    public function ctrBuscarDatosPorPlaza($numeroPlaza)
     {
-        var_dump($_POST); die;
-        print_r("Controlador flag");
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            http_response_code(405);
-            echo json_encode(["error" => "Método no permitido"]);
-            return;
-        }
 
-        if (!isset($_POST["numeroPlaza"])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Número de plaza requerido"]);
-            return;
-        }
+    $datosCargo = []; // Inicializar la variable para evitar errores
 
-        $numeroPlaza = intval($_POST["numeroPlaza"]);
-        var_dump($numeroPlaza); die;
+        if (!empty($numeroPlaza)) {
+            if ($numeroPlaza > 0) {
+                // Llamar al modelo para buscar los datos
+                $datosCargo = ModeloSolSuplente::mdlObtenerDatosPorPlaza($numeroPlaza);
 
-        $datosCargo = ModeloSolSuplente::mdlObtenerDatosPorPlaza($numeroPlaza);
-
-        if (!$datosCargo) {
-            echo json_encode(["error" => "No se encontraron datos para la plaza ingresada"]);
+                if (!$datosCargo) {
+                    // echo "<script>
+                    //     Swal.fire('Error', 'No se encontraron datos para la plaza ingresada.', 'error');
+                    // </script>";
+                }else{
+                    //redirigir
+                    //redirectToPlaza();
+                    
+                }
+            } else {
+                echo "<script>
+                    Swal.fire('Error', 'Número de plaza inválido.', 'error');
+                </script>";
+            }
         } else {
-            echo json_encode($datosCargo);
+            echo "Error: No se recibió el número de plaza.";    
         }
+
+        return $datosCargo; // Devolver los datos al formulario
     }
-
-
-
-    
 }
+

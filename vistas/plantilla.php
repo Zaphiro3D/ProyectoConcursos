@@ -80,12 +80,6 @@ $url = ControladorPlantilla::url();
                     if (isset($_GET["pagina"])) {
                         $rutas = explode('/', $_GET["pagina"]);
 
-                        // Verificar si es una solicitud AJAX
-                        if ($rutas[0] == "obtenerDatosPlaza") {
-                            $controlador = new ControladorSolSuplente();
-                            $controlador->ctrObtenerDatosPlaza();
-                            exit; // Importante para no cargar el resto de la página
-                        }
 
                         // Validar otras rutas
                         if (

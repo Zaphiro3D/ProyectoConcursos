@@ -3,6 +3,7 @@
 // ---------------------------------------------------
 $(document).on("click", ".btnGuardar", function (e) {
   e.preventDefault(); // Previene el envío automático del formulario
+  isSubmitting = true; // Evita que onchange redirija mientras se guarda
 
   // Inicializar arreglo para IDs de instituciones seleccionadas
   let institucionesSeleccionadas = [];
@@ -35,7 +36,6 @@ $(document).on("click", ".btnGuardar", function (e) {
       }
   }
 
-
   // Confirmación con SweetAlert
   Swal.fire({
       title: "¿Está seguro que desea guardar?",
@@ -49,6 +49,7 @@ $(document).on("click", ".btnGuardar", function (e) {
   }).then(function (result) {
       if (result.isConfirmed) {
           // Enviar el formulario manualmente si se confirma
+          console.log("submit");
             $("form").submit(); 
           
       }

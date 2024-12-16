@@ -106,6 +106,8 @@ class ModeloSolSuplente{
             $stmtCheckCargo->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
             $stmtCheckCargo->execute();
 
+            $observacionesExtra = "";
+
             if ($stmtCheckCargo->rowCount() > 0) {
                 $resultado = $stmtCheckCargo->fetchAll(PDO::FETCH_ASSOC);
                 // Si existe, actualizar el registro en la tabla cargos
@@ -137,6 +139,7 @@ class ModeloSolSuplente{
                     :apellidoDocente, :nombreDocente, :dniDocente, 0
                 )";
 
+                $observacionesExtra = "Pendiente de aprobación: Cargo inexistente.";
                 $stmtInsertCargo = $conexion->prepare($sqlInsertCargo);
                 $stmtInsertCargo->bindParam(":id_NombreCargo", $datos["id_NombreCargo"], PDO::PARAM_INT);
                 $stmtInsertCargo->bindParam(":id_Grado", $datos["id_Grado"], PDO::PARAM_INT);
@@ -187,12 +190,13 @@ class ModeloSolSuplente{
             )";
 
             // var_dump($datos); die;
+            $observaciones = $datos["observaciones"] . $observacionesExtra;
             $stmtSolicitud = $conexion->prepare($sqlSolicitud);
             $stmtSolicitud->bindParam(":numeroTramite", $datos["numeroTramite"], PDO::PARAM_INT);
             $stmtSolicitud->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
             $stmtSolicitud->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
             $stmtSolicitud->bindParam(":id_MotivoSuplencia", $datos["id_Motivo"], PDO::PARAM_INT);
-            $stmtSolicitud->bindParam(":observaciones", $datos["observaciones"], PDO::PARAM_STR);
+            $stmtSolicitud->bindParam(":observaciones", $observaciones, PDO::PARAM_STR);
             $stmtSolicitud->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
             $stmtSolicitud->bindParam(":id_EstadoSol", $estado, PDO::PARAM_INT);
             
@@ -219,49 +223,67 @@ class ModeloSolSuplente{
     
     public static function mdlObtenerDatosPorPlaza($numeroPlaza)
     {
-
-        var_dump($numeroPlaza); die;
         try {
             $conexion = Conexion::conectar();
 
-            $sql = "SELECT 
-                c.id_Cargo, 
-                nc.nombreCargo, 
-                p.numeroPlaza,
-                c.hsCatedra,
-                g.grado, 
-                d.division, 
-                t.turno, 
-                tipo.tipo, 
-                GROUP_CONCAT(
-                    CONCAT(
-                        i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-                    ) ORDER BY p.sede DESC, p.numeroPlaza ASC
-                ) AS instituciones
-            FROM 
-                `cargos` AS c 
-                INNER JOIN `plazas` AS p ON p.id_Cargo = c.id_Cargo
-                INNER JOIN `instituciones` AS i ON p.id_Institucion = i.id_Institucion
-                LEFT JOIN `grados` AS g ON g.id_Grado = c.id_Grado 
-                LEFT JOIN `divisiones` AS d ON d.id_Division = c.id_Division
-                LEFT JOIN `turnos` AS t ON t.id_Turno = c.id_Turno
-                LEFT JOIN `nombres_cargos` AS nc ON nc.id_NombreCargo = c.id_NombreCargo
-                LEFT JOIN `tipo_institucion` AS tipo ON tipo.id_Tipo = i.id_Tipo
-            WHERE 
-                c.eliminado = 0 and p.numeroPlaza = :numeroPlaza
-            GROUP BY 
-                c.id_Cargo;";
+            // 1. Verificar si el id_Cargo existe en la tabla plazas
+            $sqlCheckCargo = "SELECT id_Cargo FROM plazas WHERE numeroPlaza = :numeroPlaza";
+            $stmtCheckCargo = $conexion->prepare($sqlCheckCargo);
+            $stmtCheckCargo->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+            $stmtCheckCargo->execute();
 
-            var_dump($numeroPlaza);
-            die();
+            if ($stmtCheckCargo->rowCount() > 0) {
+                $resultado = $stmtCheckCargo->fetchAll(PDO::FETCH_ASSOC);
+                // Si existe, actualizar el registro en la tabla cargos
+                $id_Cargo = $resultado[0]["id_Cargo"];
 
-            $stmt = $conexion->prepare($sql);
-            $stmt->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
-            $stmt->execute();
+                $sql = "SELECT 
+                    c.id_Cargo,
+                    nc.id_NombreCargo, 
+                    nc.nombreCargo, 
+                    p.numeroPlaza,
+                    c.hsCatedra,
+                    c.id_Grado,
+                    c.id_Turno,
+                    c.id_Division,
+                    g.grado, 
+                    d.division, 
+                    t.turno,                
+                    c.nombreDocente,
+                    c.apellidoDocente,
+                    c.dniDocente,
+                    CONCAT(c.apellidoDocente, ', ' ,c.nombreDocente,' (', c.dniDocente, ') ') as docente,
+                    tipo.tipo, 
+                    GROUP_CONCAT(
+                        CONCAT(
+                            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+                        ) ORDER BY p.sede DESC, p.numeroPlaza ASC
+                    ) AS instituciones,
+                    GROUP_CONCAT(
+                            i.id_Institucion
+                    ) AS id_instituciones
+                FROM 
+                    `cargos` AS c 
+                    INNER JOIN `plazas` AS p ON p.id_Cargo = c.id_Cargo
+                    INNER JOIN `instituciones` AS i ON p.id_Institucion = i.id_Institucion
+                    LEFT JOIN `grados` AS g ON g.id_Grado = c.id_Grado 
+                    LEFT JOIN `divisiones` AS d ON d.id_Division = c.id_Division
+                    LEFT JOIN `turnos` AS t ON t.id_Turno = c.id_Turno
+                    LEFT JOIN `nombres_cargos` AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+                    LEFT JOIN `tipo_institucion` AS tipo ON tipo.id_Tipo = i.id_Tipo
+                WHERE 
+                    c.eliminado = 0 and p.id_Cargo = :id_Cargo
+                GROUP BY 
+                    c.id_Cargo ";
 
-            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+                $stmt = $conexion->prepare($sql);
+                $stmt->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
+                $stmt->execute();
 
-            return $resultado ? $resultado : false;
+                $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                return $resultado ? $resultado : false;
+            }
         } catch (Exception $e) {
             return false;
         } finally {
@@ -269,7 +291,6 @@ class ModeloSolSuplente{
             $conexion = null;
         }
     }
-
-
+    
 }
 
