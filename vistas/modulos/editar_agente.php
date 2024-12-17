@@ -4,7 +4,7 @@ $valor = $rutas[1];
 
 
 $agente_selec = ControladorAgentes::ctrMostrarAgentes($agente, $valor);
-$zonas = ControladorZonas::ctrMostrarZonas(null,null);
+$zonas = ControladorZonas::ctrMostrarZonas(null, null);
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $rol = ControladorAgentes::ctrMostrarRolAgentes();
 
@@ -40,7 +40,7 @@ if ($agente_selec) {
                                     <div class="form-floating mb-3">
                                         <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?php echo $_POST['dni'] ?? $agente_selec['dni']; ?>" required>
                                         <label for="dni">Número de DNI sin puntos</label>
-                                        <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                        <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div>
                                     </div>
 
                                 </div>
@@ -48,7 +48,7 @@ if ($agente_selec) {
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control <?php echo isset($errores['apellido']) ? 'is-invalid' : ''; ?>" id="apellido" name="apellido" placeholder="Apellido" value="<?php echo $_POST['apellido'] ?? $agente_selec['apellido']; ?>" required>
                                         <label for="apellido">Apellido completo</label>
-                                        <div class="invalid-feedback"><?php echo $errores['apellido'] ?? 'Por favor, complete este campo.'; ?></div>    
+                                        <div class="invalid-feedback"><?php echo $errores['apellido'] ?? 'Por favor, complete este campo.'; ?></div>
                                     </div>
                                 </div>
 
@@ -56,7 +56,7 @@ if ($agente_selec) {
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?php echo $_POST['nombre'] ?? $agente_selec['nombre']; ?>" required>
                                         <label for="nombre">Nombre completo</label>
-                                        <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                        <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@ if ($agente_selec) {
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo $_POST['email'] ?? $agente_selec['email']; ?>" required>
                                         <label for="email">Email</label>
-                                        <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                        <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div>
                                     </div>
                                 </div>
 
@@ -81,7 +81,7 @@ if ($agente_selec) {
                                     <div class="form-floating mb-3">
                                         <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo $_POST['telefono'] ?? $agente_selec['telefono']; ?>">
                                         <label for="telefono">Teléfono sin 0 ni 15</label>
-                                        <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
+                                        <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -100,22 +100,22 @@ if ($agente_selec) {
                                 <div class="col-lg-6">
                                     <h6 class="fs-15 mb-3">Rol</h6>
                                     <div class="form-floating mb-3">
-                                    <select 
-                                        class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" 
-                                        id="rol" 
-                                        name="rol" 
-                                        aria-label="rol" 
-                                        required>
-                                        <!-- Opción predeterminada no válida -->
-                                        <option value="" disabled <?php echo empty($_POST['rol']) && empty($agente_selec["id_Rol"]) ? 'selected' : ''; ?>>
-                                            Seleccione un rol
-                                        </option>
+                                        <select
+                                            class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>"
+                                            id="rol"
+                                            name="rol"
+                                            aria-label="rol"
+                                            required>
+                                            <!-- Opción predeterminada no válida -->
+                                            <option value="" disabled <?php echo empty($_POST['rol']) && empty($agente_selec["id_Rol"]) ? 'selected' : ''; ?>>
+                                                Seleccione un rol
+                                            </option>
 
-                                        <!-- Opciones dinámicas -->
-                                        <?php foreach ($rol as $key => $value): ?>
-                                            <option 
-                                                value="<?php echo $value["idrol"]; ?>" 
-                                                <?php
+                                            <!-- Opciones dinámicas -->
+                                            <?php foreach ($rol as $key => $value): ?>
+                                                <option
+                                                    value="<?php echo $value["idrol"]; ?>"
+                                                    <?php
                                                     // Priorizar selección del formulario si fue enviado
                                                     if (isset($_POST['rol']) && $_POST['rol'] == $value["idrol"]) {
                                                         echo 'selected';
@@ -124,15 +124,15 @@ if ($agente_selec) {
                                                     elseif (!isset($_POST['rol']) && $agente_selec["id_Rol"] == $value["idrol"]) {
                                                         echo 'selected';
                                                     }
-                                                ?>>
-                                                <?php echo htmlspecialchars($value["rol"]); ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <label for="rol">Elegir rol</label>
-                                    <div class="invalid-feedback">
-                                        <?php echo $errores['rol'] ?? 'Por favor, seleccione un rol válido.'; ?>
-                                    </div>
+                                                    ?>>
+                                                    <?php echo htmlspecialchars($value["rol"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label for="rol">Elegir rol</label>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errores['rol'] ?? 'Por favor, seleccione un rol válido.'; ?>
+                                        </div>
 
 
                                     </div>
@@ -151,7 +151,7 @@ if ($agente_selec) {
                                             <div class="form-floating mb-3">
                                                 <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?php echo $_POST['contrasena'] ?? $agente_selec['contrasena'] ?? 'Sin cambios'; ?>" required>
                                                 <label for="contrasena">Contraseña</label>
-                                                <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                                <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div>
 
                                             </div>
                                         </div>
@@ -176,7 +176,7 @@ if ($agente_selec) {
                                         <?php
                                         foreach ($instituciones as $key => $value) {
                                         ?>
-                                            <option id="<?php echo $value["id_institucion"]; ?>"><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
+                                            <option id="<?php echo $value["id_institucion"]; ?>" data-id="<?php echo $value["id_institucion"]; ?>"><?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> </option>
                                         <?php } ?>
                                     </datalist>
 
@@ -201,18 +201,24 @@ if ($agente_selec) {
 
                         <div class="card-body">
                             <div class="row">
+                                
 
                                 <div class="col-lg-12">
                                     <!-- Opciones Datalist Zonas -->
                                     <datalist id="OpcZonas" name="OpcZonas">
                                         <?php
-                                        foreach ($zonas as $key => $value) {
-                                        ?>
-                                            <option><?php echo $value["zona"] ?> </option>
+                                        foreach ($zonas as $key => $value) { ?>
+                                             
+                                            <option data-id="<?php echo $value["id_ZonaSupervision"] ?>"><?php echo $value["zona"] ?>
+                                            </option>
+
+
                                         <?php } ?>
                                     </datalist>
 
-                                    <div class="pb-3"> <!-- Datalist Zonas-->
+                                    <div class="pb-3"> <!-- Datalist Zonas
+                                                                                                                                            ?> </option>-->
+
                                         <div class="form-floating mb-1 mt-1">
                                             <input class="form-control fs-14" list="OpcZonas" id="dlZonas" name="dlZonas" placeholder="Escriba para buscar..."></input>
                                             <label for="dlZonas">Escriba para buscar...</label>

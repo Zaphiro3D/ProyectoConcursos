@@ -1,6 +1,6 @@
 <?php
 
-$zonas = ControladorZonas::ctrMostrarZonas(null,null);
+$zonas = ControladorZonas::ctrMostrarZonas(null, null);
 $instituciones = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $rol = ControladorAgentes::ctrMostrarRolAgentes();
 
@@ -35,7 +35,7 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="form-floating mb-3">
                                     <input type="number" class="form-control <?php echo isset($errores['dni']) ? 'is-invalid' : ''; ?>" id="dni" name="dni" placeholder="DNI" value="<?php echo htmlspecialchars($_POST['dni'] ?? ''); ?>" required>
                                     <label for="dni">Número de DNI sin puntos</label>
-                                    <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                    <div class="invalid-feedback"><?php echo $errores['dni'] ?? 'Por favor, complete este campo.'; ?></div>
                                 </div>
 
                             </div>
@@ -43,7 +43,7 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control <?php echo isset($errores['apellido']) ? 'is-invalid' : ''; ?>" id="apellido" name="apellido" placeholder="Apellido" value="<?php echo htmlspecialchars($_POST['apellido'] ?? ''); ?>" required>
                                     <label for="apellido">Apellido completo</label>
-                                    <div class="invalid-feedback"><?php echo $errores['apellido'] ?? 'Por favor, complete este campo.'; ?></div>    
+                                    <div class="invalid-feedback"><?php echo $errores['apellido'] ?? 'Por favor, complete este campo.'; ?></div>
                                 </div>
                             </div>
 
@@ -51,7 +51,7 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control <?php echo isset($errores['nombre']) ? 'is-invalid' : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" value="<?php echo htmlspecialchars($_POST['nombre'] ?? ''); ?>" required>
                                     <label for="nombre">Nombre completo</label>
-                                    <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                    <div class="invalid-feedback"><?php echo $errores['nombre'] ?? 'Por favor, complete este campo.'; ?></div>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="form-floating mb-3">
                                     <input type="email" class="form-control <?php echo isset($errores['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
                                     <label for="email">Email</label>
-                                    <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                    <div class="invalid-feedback"><?php echo $errores['email'] ?? 'Por favor, complete este campo.'; ?></div>
                                 </div>
                             </div>
 
@@ -76,7 +76,7 @@ $validado = $resultado['validado'] ?? '';
                                 <div class="form-floating mb-3">
                                     <input type="tel" class="form-control <?php echo isset($errores['telefono']) ? 'is-invalid' : ''; ?>" id="telefono" name="telefono" placeholder="Telefono" value="<?php echo htmlspecialchars($_POST['telefono'] ?? ''); ?>">
                                     <label for="telefono">Teléfono sin 0 ni 15</label>
-                                    <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>    
+                                    <div class="invalid-feedback"><?php echo $errores['telefono'] ?? ''; ?></div>
                                 </div>
                             </div>
                         </div>
@@ -98,11 +98,11 @@ $validado = $resultado['validado'] ?? '';
                                     <div class="col-lg-6">
                                         <h6 class="fs-15 mb-3">Rol</h6>
                                         <div class="form-floating mb-3">
-                                            <select 
-                                                class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>" 
-                                                id="rol" 
-                                                name="rol" 
-                                                aria-label="rol" 
+                                            <select
+                                                class="form-select <?php echo isset($errores['rol']) ? 'is-invalid' : ''; ?>"
+                                                id="rol"
+                                                name="rol"
+                                                aria-label="rol"
                                                 required>
                                                 <!-- Opción predeterminada no válida -->
                                                 <option value="" disabled <?php echo empty($_POST['rol']) ? 'selected' : ''; ?>>
@@ -111,8 +111,8 @@ $validado = $resultado['validado'] ?? '';
 
                                                 <!-- Opciones dinámicas -->
                                                 <?php foreach ($rol as $key => $value): ?>
-                                                    <option 
-                                                        value="<?php echo $value["idrol"]; ?>" 
+                                                    <option
+                                                        value="<?php echo $value["idrol"]; ?>"
                                                         <?php echo (isset($_POST['rol']) && $_POST['rol'] == $value["idrol"]) ? 'selected' : ''; ?>>
                                                         <?php echo htmlspecialchars($value["rol"]); ?>
                                                     </option>
@@ -139,7 +139,7 @@ $validado = $resultado['validado'] ?? '';
                                                 <div class="form-floating mb-3">
                                                     <input type="password" class="form-control <?php echo isset($errores['contrasena']) ? 'is-invalid' : ''; ?>" id="contrasena" name="contrasena" placeholder="Contraseña" value="<?php echo htmlspecialchars($_POST['contrasena'] ?? ''); ?>" required>
                                                     <label for="contrasena">Contraseña</label>
-                                                    <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div> 
+                                                    <div class="invalid-feedback"><?php echo $errores['contrasena'] ?? 'Por favor, complete este campo.'; ?></div>
 
                                                 </div>
                                             </div>
@@ -164,17 +164,18 @@ $validado = $resultado['validado'] ?? '';
                                             <?php
                                             foreach ($instituciones as $key => $value) {
                                             ?>
-                                                <option 
-                                                    id="<?php echo $value["id_institucion"]; ?>" 
-                                                    data-id="<?php echo $value["id_institucion"]; ?>"
-                                                >
-                                                <?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?> 
+                                                <option
+                                                    id="<?php echo $value["id_institucion"]; ?>"
+                                                    data-id="<?php echo $value["id_institucion"]; ?>">
+                                                    <?php echo $value["tipo"] . " N°" . $value["numero"] . '" ' . $value["institucion"] . '" ' . "CUE: {$value["cue"]}" ?>
                                                 </option>
                                             <?php } ?>
                                         </datalist>
 
+                                        <input type="hidden" id=id_institucion name="id_institucion" value="<?php echo $value["id_institucion"]; ?>">
                                         <div class="pb-3"> <!-- Datalist Instituciones-->
                                             <div class="form-floating mb-1 mt-1">
+
                                                 <input class="form-control fs-14" list="OpcInstituciones" id="dlInstituciones" name="dlInstituciones" placeholder="Escriba para buscar..."></input>
                                                 <label for="dlInstituciones">Escriba para buscar...</label>
                                             </div>
@@ -201,7 +202,7 @@ $validado = $resultado['validado'] ?? '';
                                             <?php
                                             foreach ($zonas as $key => $value) {
                                             ?>
-                                                <option data-id="<?php echo $value["id_ZonaSupervision"]; ?>" ><?php echo $value["zona"] ?> </option>
+                                                <option data-id="<?php echo $value["id_ZonaSupervision"]; ?>"><?php echo $value["zona"] ?> </option>
                                             <?php } ?>
                                         </datalist>
 
@@ -238,3 +239,4 @@ $validado = $resultado['validado'] ?? '';
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/agente.js"></script>
+<!-- Input oculto para almacenar el ID -->

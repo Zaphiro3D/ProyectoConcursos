@@ -61,17 +61,7 @@ class ControladorAgentes{
             }
 
             if (empty($errores)) {
-                if(isset($_POST["dlInstituciones"])){
-                    $id = "";
-                } else{
-                    if(isset($_POST["dlZonas"])){
-                        $id = "";
-                    } else{
-                        if (htmlspecialchars($_POST["id_Rol"]) == ""){
-                            $id = "";
-                        }
-                    }
-                }
+                
                 $datos = array(
                     "apellido" => htmlspecialchars($_POST["apellido"]),
                     "nombre" => htmlspecialchars($_POST["nombre"]),
@@ -83,36 +73,89 @@ class ControladorAgentes{
                     "password" => htmlspecialchars($_POST["contrasena"]),
                     "id_Rol" => htmlspecialchars($_POST["rol"])
                     
+                    
                 );
-                
+
                 // print_r($datos);
 
                 // return;
+                
+                
+                $idAgente = ModeloAgentes::mdlAgregarAgente($datos);
+                //print_r($idAgente);
+                //return;
+                if (is_numeric($idAgente)){
+                    if(!empty($_POST["dlInstituciones"])){
 
-                //podemos volver a la página de datos
+                        $idinsti = $_POST["id_autocompletar"];
+                        $respuestaDirector = ModeloAgentes::mdlAgregarDirector($idAgente,$idinsti);
 
+                        if($respuestaDirector == "ok"){
+                            $url = ControladorPlantilla::url() . "agentes";
+                                echo '<script>
+                                    fncSweetAlert(
+                                    "success",
+                                    "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
+                                    "' . $url . '"
+                                    );
+                                    </script>';
+                        } else{
+                                echo "<script>
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'No se pudieron agregar los datos del agente.',
+                                    icon: 'error'
+                                });
+                                </script>";
+                        }
+                       
+                    } elseif (!empty($_POST["dlZonas"])){
+                        
+                        $idZona = $_POST["id_autocompletar"];
+                        $respuestaSupervisor = ModeloAgentes::mdlCambiarSupervisor($idZona,$idAgente);
 
-                $url = ControladorPlantilla::url() . "agentes";
-                $respuesta = ModeloAgentes::mdlAgregarAgente($datos);
-
-                if ($respuesta == "ok") {
-                    echo '<script>
-                        fncSweetAlert(
-                        "success",
-                        "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
-                        "' . $url . '"
-                        );
-                        </script>';
+                        if ($respuestaSupervisor == "ok") {
+                            $url = ControladorPlantilla::url() . "agentes";
+                            echo '<script>
+                                fncSweetAlert(
+                                "success",
+                                "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
+                                "' . $url . '"
+                                );
+                                </script>';
+                        } else {
+                            echo "<script>
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudieron agregar los datos del agente.',
+                                icon: 'error'
+                            });
+                            </script>";
+                        }
+                        
+                    }
+                }else{
+                    if ($idAgente == "error") {
+                        echo "<script>
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'No se pudieron agregar los datos del agente.',
+                                    icon: 'error'
+                                });
+                                </script>";
+                    } else {
+                        $url = ControladorPlantilla::url() . "agentes";
+                        echo '<script>
+                                fncSweetAlert(
+                                "success",
+                                "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se agregó correctamente",
+                                "' . $url . '"
+                                );
+                            </script>';
+                    }
                 }
-                else{
-                    echo "<script>
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudieron agregar los datos del agente.',
-                        icon: 'error'
-                    });
-                    </script>";
-                }
+
+                
             }
             else{
                 $validado = "was-validated";
@@ -187,28 +230,79 @@ class ControladorAgentes{
                     "id_Rol" => htmlspecialchars($_POST["rol"]),
                     "id_Agente" => htmlspecialchars($_POST["id_Agente"])
                 );
-
-                $url = ControladorPlantilla::url() . "agentes";
-                $respuesta = ModeloAgentes::mdlEditarAgente($datos);
                 
-                if ($respuesta == "ok") {                
-                    echo '<script>
-                        fncSweetAlert(
-                        "success",
-                        "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
-                        "' . $url . '"
-                        );
-                        </script>';
-                }
-                else{
+                //$url = ControladorPlantilla::url() . "agentes";
+                $respuesta = ModeloAgentes::mdlEditarAgente($datos);
+                if ($respuesta == "ok") {
+
+                    if (!empty($_POST["dlInstituciones"]) && ($datos["id_Rol"] == 3)) {
+                        $idAgente= $datos["id_Agente"];
+                        
+                        $idinsti = $_POST["id_autocompletar"];
+                        
+                        $respuestaDirector = ModeloAgentes::mdlAgregarDirector($idAgente, $idinsti);
+
+                        if ($respuestaDirector == "ok") {
+                            $url = ControladorPlantilla::url() . "agentes";
+                            echo '<script>
+                            fncSweetAlert(
+                            "success",
+                            "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                            "' . $url . '"
+                            );
+                            </script>';
+                        }else{
+                            echo "<script>
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudieron actualizar los datos del agente.',
+                                icon: 'error'
+                            });
+                            </script>";
+                        }
+                    } elseif (!empty($_POST["dlZonas"]) && ($datos["id_Rol"] == 2)) {
+                        $idAgente = $datos["id_Agente"];
+                        $idZona = $_POST["id_autocompletar"];
+                        $respuestaSupervisor = ModeloAgentes::mdlCambiarSupervisor($idZona, $idAgente);
+
+                        if ($respuestaSupervisor == "ok") {
+                            $url = ControladorPlantilla::url() . "agentes";
+                            echo '<script>
+                            fncSweetAlert(
+                            "success",
+                            "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                            "' . $url . '"
+                            );
+                            </script>';
+                        } else {
+                            echo "<script>
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudieron actualizar los datos del agente.',
+                                icon: 'error'
+                            });
+                            </script>";
+                        }
+                    }else{
+                        $url = ControladorPlantilla::url() . "agentes";
+                        echo '<script>
+                            fncSweetAlert(
+                            "success",
+                            "El agente ' . htmlspecialchars($_POST["apellido"]) . ', ' . htmlspecialchars($_POST["nombre"]) . ' se actualizó correctamente",
+                            "' . $url . '"
+                            );
+                            </script>';
+                    }
+                } else {
                     echo "<script>
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudieron actualizar los datos del agente.',
-                        icon: 'error'
-                    });
-                    </script>";
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudieron actualizar los datos del agente.',
+                            icon: 'error'
+                        });
+                        </script>";
                 }
+                
             }
             else{
                 $validado = "was-validated";

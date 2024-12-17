@@ -39,7 +39,8 @@ class ModeloAgentes{
     {
         try {
             // SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol;
-            $stmt = Conexion::conectar()->prepare("INSERT INTO agentes (apellido, nombre, dni, telefono, direccion, email, usuario, password, id_Rol) VALUES (:apellido, :nombre, :dni, :telefono, :direccion, :email, :usuario, :password, :id_Rol)");
+            $conexion = Conexion::conectar();
+            $stmt = $conexion->prepare("INSERT INTO agentes (apellido, nombre, dni, telefono, direccion, email, usuario, password, id_Rol) VALUES (:apellido, :nombre, :dni, :telefono, :direccion, :email, :usuario, :password, :id_Rol)");
             $encriptar = crypt($datos["password"], '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');
             $stmt->bindParam(":apellido", $datos["apellido"], PDO::PARAM_STR);
             $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
@@ -51,8 +52,15 @@ class ModeloAgentes{
             $stmt->bindParam(":password", $encriptar, PDO::PARAM_STR);
             $stmt->bindParam(":id_Rol", $datos["id_Rol"], PDO::PARAM_INT);
 
+            
+
+            
             if ($stmt->execute()) {
-                return "ok";
+                if(($datos["id_Rol"]== 3) || ($datos["id_Rol"]) == 2){
+                    return $conexion->lastInsertId();
+                }else{
+                    return "ok";
+                }
             } else {
                 return "error";
             }
@@ -177,6 +185,43 @@ class ModeloAgentes{
             return $resultado['total'] == 0;
         }catch(Exception $e){
             return "Error:" . $e ->getMessage();
+        }
+    }
+
+    static public function mdlAgregarDirector($idAgente,$idInsti){
+        try{
+
+            $stmt = Conexion::conectar()->prepare("UPDATE instituciones SET id_Director = :id_Director WHERE id_Institucion = :id_Institucion");
+            $stmt->bindParam(":id_Director",$idAgente,PDO::PARAM_INT);
+            $stmt->bindParam(":id_Institucion", $idInsti, PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+
+        } catch (PDOException $e) {
+            error_log("Error en mdlAgregarDirector " . $e->getMessage());
+            return "Error: " . $e->getMessage();
+        }
+    }
+
+    static public function mdlCambiarSupervisor($idzona,$idSupervisor){
+        try {
+            $stml = Conexion::conectar()->prepare("UPDATE zonas_supervision SET id_Supervisor= :id_Supervisor WHERE id_ZonaSupervision = :id_ZonaSupervision");
+            $stml->bindParam(":id_Supervisor",$idSupervisor,PDO::PARAM_INT);
+            $stml->bindParam(":id_ZonaSupervision", $idzona, PDO::PARAM_INT);
+
+            if($stml->execute()){
+                return "ok";
+            } else {
+                return "error";
+            }
+
+        } catch (PDOException $e) {
+            error_log("Eroro en mdlCambiarSupervisor". $e->getMessage());
+            return "Error: " .$e->getMessage();
         }
     }
 }
