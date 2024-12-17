@@ -1,5 +1,5 @@
 <?php
-    $solSuplente = ControladorSolSuplente::ctrMostrarSolSuplente();
+    $solSuplente = ControladorSolSuplente::ctrMostrarSolSuplente(NULL, NULL);
                             
     $eliminar = new ControladorSolSuplente();
     $eliminar -> ctrEliminarSolicitud();

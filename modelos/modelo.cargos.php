@@ -9,7 +9,7 @@ class ModeloCargos{
     // ==============================================================
     static public function mdlMostrarCargos($id_cargo, $valor)
     {
-        //Si se manda un agente por parametro hace la consulta para un solo registro, sino trae todos. 
+        //Si se manda un id de cargo por parametro hace la consulta para un solo registro, sino trae todos. 
         if ($id_cargo != null) {
             try {
                 $stmt = Conexion::conectar()->prepare("SELECT 

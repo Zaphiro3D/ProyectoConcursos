@@ -1,12 +1,3 @@
-<script>
- function redirectToPlaza() {
-     const numeroPlaza = document.getElementById('numeroPlaza').value;
-     if (numeroPlaza) {
-         window.location.href = `http://localhost/ProyectoConcursos/nueva_solsuplente/${numeroPlaza}`;
-     }
- }
-</script>
-
 <?php
 // Función para opciones de select días
 function generarOpcionesDias()
@@ -26,30 +17,25 @@ $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
 $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
 $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
 
-$validador = new validador();
-
+//Controlador para la edición
 $controlador = new ControladorSolSuplente();
-$resultado = $controlador->ctrAgregarSolicitud();
+$resultado = $controlador->ctrEditarSolicitud();
 
-
+//Validación
+$validador = new validador();
 $errores = $resultado['errores'] ?? [];
 $validado = $resultado['validado'] ?? '';
 
-$plaza = NULL;
-$datosCargo = [];
-$insti = [];
-$id_Insti = [];
-if (max(array_keys($rutas)) == 1){
-    $plaza = $rutas[1];
-    $controlador = new ControladorSolSuplente();
-    $datosCargo = $controlador->ctrBuscarDatosPorPlaza($plaza);   
-    if($datosCargo){
-        $insti = explode(',', $datosCargo['instituciones']);
-        $id_Insti = explode(',', $datosCargo['id_instituciones']);
-    } else{
-        
-    }
-}
+//Necesario para cargar datos a editar
+$id_solic = "id_SolSuplente";
+$valor = $rutas[1];
+$solic_select = ControladorSolSuplente::ctrMostrarSolSuplente($id_solic, $valor);
+// var_dump($solic_select);
+$insti = explode(',', $solic_select['instituciones']);
+$id_Insti = explode(',', $solic_select['id_instituciones']);
+
+
+if ($solic_select) {
 ?>
 
 <div class="container-xxl">
@@ -84,7 +70,7 @@ if (max(array_keys($rutas)) == 1){
                                             name="institucionSede" 
                                             placeholder="Escriba para buscar..."
                                             oninput="autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');"
-                                            value="<?php echo htmlspecialchars($insti[0] ?? $_POST['institucionSede'] ?? $_POST['institucion1'] ?? ''); ?>"
+                                            value="<?php echo htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? $insti[0]?? ''); ?>"
                                             required
                                         >
                                         <div class="invalid-feedback"><?php echo $errores['insti1'] ?? 'Por favor, complete este campo.'; ?></div> 
@@ -114,7 +100,7 @@ if (max(array_keys($rutas)) == 1){
                                             onchange="redirectToPlaza();"      
                                             name="numeroPlaza" 
                                             id="numeroPlaza" 
-                                            value= "<?php echo $plaza ?? $datosCargo['numeroPlaza'] ?? $_POST['numeroPlaza'] ?? ''; ?>" 
+                                            value= "<?php echo $plaza ?? $_POST['numeroPlaza'] ?? $solic_select['numeroPlaza'] ?? ''; ?>" 
                                             placeholder="N° Plaza" required
                                             >
                                         <label for="numeroPlaza">N° Plaza</label>
@@ -132,7 +118,7 @@ if (max(array_keys($rutas)) == 1){
                                             aria-label="id_NombreCargo" 
                                             required>
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_NombreCargo']) && (empty($datosCargo) || empty($datosCargo["id_NombreCargo"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo empty($_POST['id_NombreCargo']) && (empty($solic_select) || empty($solic_select["id_NombreCargo"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($cargos as $key => $value): ?>
@@ -144,8 +130,8 @@ if (max(array_keys($rutas)) == 1){
                                                     if (isset($_POST['id_NombreCargo']) && $_POST['id_NombreCargo'] == $value["id_NombreCargo"]) {
                                                         echo 'selected';
                                                     }
-                                                    // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_NombreCargo
-                                                    elseif (!isset($_POST['id_NombreCargo']) && !empty($datosCargo) && isset($datosCargo["id_NombreCargo"]) && $datosCargo["id_NombreCargo"] == $value["id_NombreCargo"]) {
+                                                    // Si no hay envío, verificar si $solic_select está definido y tiene el índice id_NombreCargo
+                                                    elseif (!isset($_POST['id_NombreCargo']) && !empty($solic_select) && isset($solic_select["id_NombreCargo"]) && $solic_select["id_NombreCargo"] == $value["id_NombreCargo"]) {
                                                         echo 'selected';
                                                     }
                                                     ?>>
@@ -172,7 +158,7 @@ if (max(array_keys($rutas)) == 1){
                                             required>
                                             
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Turno']) && (empty($datosCargo) || empty($datosCargo["id_Turno"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo empty($_POST['id_Turno']) && (empty($solic_select) || empty($solic_select["id_Turno"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($turno as $key => $value): ?>
@@ -183,8 +169,8 @@ if (max(array_keys($rutas)) == 1){
                                                         if (isset($_POST['id_Turno']) && $_POST['id_Turno'] == $value["id_Turno"]) {
                                                             echo 'selected';
                                                         }
-                                                        // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Turno
-                                                        elseif (!isset($_POST['id_Turno']) && !empty($datosCargo) && isset($datosCargo["id_Turno"]) && $datosCargo["id_Turno"] == $value["id_Turno"]) {
+                                                        // Si no hay envío, verificar si $solic_select está definido y tiene el índice id_Turno
+                                                        elseif (!isset($_POST['id_Turno']) && !empty($solic_select) && isset($solic_select["id_Turno"]) && $solic_select["id_Turno"] == $value["id_Turno"]) {
                                                             echo 'selected';
                                                         }
                                                     ?>>
@@ -211,7 +197,7 @@ if (max(array_keys($rutas)) == 1){
                                             required>
 
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Grado']) && (empty($datosCargo) || empty($datosCargo["id_Grado"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo empty($_POST['id_Grado']) && (empty($solic_select) || empty($solic_select["id_Grado"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($grado as $key => $value): ?>
@@ -222,8 +208,8 @@ if (max(array_keys($rutas)) == 1){
                                                         if (isset($_POST['id_Grado']) && $_POST['id_Grado'] == $value["id_Grado"]) {
                                                             echo 'selected';
                                                         }
-                                                        // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Grado
-                                                        elseif (!isset($_POST['id_Grado']) && !empty($datosCargo) && isset($datosCargo["id_Grado"]) && $datosCargo["id_Grado"] == $value["id_Grado"]) {
+                                                        // Si no hay envío, verificar si $solic_select está definido y tiene el índice id_Grado
+                                                        elseif (!isset($_POST['id_Grado']) && !empty($solic_select) && isset($solic_select["id_Grado"]) && $solic_select["id_Grado"] == $value["id_Grado"]) {
                                                             echo 'selected';
                                                         }
                                                     ?>>
@@ -250,7 +236,7 @@ if (max(array_keys($rutas)) == 1){
                                             required>
 
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Division']) && (empty($datosCargo) || empty($datosCargo["id_Division"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo empty($_POST['id_Division']) && (empty($solic_select) || empty($solic_select["id_Division"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($division as $key => $value): ?>
@@ -261,8 +247,8 @@ if (max(array_keys($rutas)) == 1){
                                                         if (isset($_POST['id_Division']) && $_POST['id_Division'] == $value["id_Division"]) {
                                                             echo 'selected';
                                                         }
-                                                        // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Division
-                                                        elseif (!isset($_POST['id_Division']) && !empty($datosCargo) && isset($datosCargo["id_Division"]) && $datosCargo["id_Division"] == $value["id_Division"]) {
+                                                        // Si no hay envío, verificar si $solic_select está definido y tiene el índice id_Division
+                                                        elseif (!isset($_POST['id_Division']) && !empty($solic_select) && isset($solic_select["id_Division"]) && $solic_select["id_Division"] == $value["id_Division"]) {
                                                             echo 'selected';
                                                         }
                                                     ?>>
@@ -281,7 +267,7 @@ if (max(array_keys($rutas)) == 1){
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($datosCargo['hsCatedra'] ?? $_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
+                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? $solic_select['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
                                             <label for="hsCatedra">Hs. Cát.</label>
                                             <div class="invalid-feedback">
                                                 <?php echo $errores['hsCatedra'] ?? ''; ?>
@@ -309,7 +295,7 @@ if (max(array_keys($rutas)) == 1){
                                 <div class="col-lg-12">
                                     <div class="col-lg-12">
                                         <div class="form-floating my-3">
-                                            <input type="text" class="form-control <?php echo isset($errores['nombreDocente']) ? 'is-invalid' : ''; ?>" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($datosCargo['nombreDocente'] ?? $_POST['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
+                                            <input type="text" class="form-control <?php echo isset($errores['nombreDocente']) ? 'is-invalid' : ''; ?>" id="nombreDocente" name="nombreDocente"  value= "<?php echo htmlspecialchars($_POST['nombreDocente'] ?? $solic_select['nombreDocente'] ?? ''); ?>" placeholder="Nombre">
                                             <label for="nombreDocente">Nombre</label>
                                             <div class="invalid-feedback"><?php echo $errores['nombreDocente'] ?? ''; ?></div>
                                         </div>
@@ -317,7 +303,7 @@ if (max(array_keys($rutas)) == 1){
 
                                     <div class="col-lg-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control <?php echo isset($errores['apellidoDocente']) ? 'is-invalid' : ''; ?>" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($datosCargo['apellidoDocente'] ?? $_POST['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
+                                            <input type="text" class="form-control <?php echo isset($errores['apellidoDocente']) ? 'is-invalid' : ''; ?>" id="apellidoDocente" name="apellidoDocente"  value= "<?php echo htmlspecialchars($_POST['apellidoDocente'] ?? $solic_select['apellidoDocente'] ?? ''); ?>" placeholder="Apellido">
                                             <label for="apellidoDocente">Apellido</label>
                                             <div class="invalid-feedback"><?php echo $errores['apellidoDocente'] ?? ''; ?></div>
                                         </div>
@@ -326,7 +312,7 @@ if (max(array_keys($rutas)) == 1){
                                     <div class="col-lg-12">
                                         <!-- <h6 class="fs-15 mb-3">DNI</h6> -->
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control <?php echo isset($errores['dniDocente']) ? 'is-invalid' : ''; ?>" id="dniDocente" name="dniDocente" value= "<?php echo htmlspecialchars($datosCargo['dniDocente'] ?? $_POST['dniDocente'] ?? ''); ?>" placeholder="DNI">
+                                            <input type="number" class="form-control <?php echo isset($errores['dniDocente']) ? 'is-invalid' : ''; ?>" id="dniDocente" name="dniDocente" value= "<?php echo htmlspecialchars($_POST['dniDocente'] ?? $solic_select['dniDocente'] ?? ''); ?>" placeholder="DNI">
                                             <label for="dniDocente">Número de DNI sin puntos</label>
                                             <div class="invalid-feedback"><?php echo $errores['dniDocente'] ?? ''; ?></div>
                                         </div>
@@ -352,12 +338,23 @@ if (max(array_keys($rutas)) == 1){
                                     <datalist id="opcionesMotivo">
                                         <?php
                                         $motivoSol = ControladorSolSuplente::ctrMostrarDatosSol("motivos_suplencia");
+                                        $motivoSelec = ControladorSolSuplente::ctrMostrarDatosSol("motivos_suplencia", ' * ', " WHERE id_MotivoSuplencia = " . $solic_select['id_MotivoSuplencia'] );
+                                        
+                                        foreach ($motivoSelec as $key => $value) {
+                                            $articulo = ($value["articulo"] !== '' && $value["articulo"] !== 0) ? $value["articulo"] . " ": '';
+                                            $inciso = ($value["inciso"] !== '' && $value["inciso"] !== '0') ? ' "' . $value["inciso"] . '" - ' : '';
+                                            $resolucion = ($value["resolucion"] !== '' && $value["resolucion"] !== 0) ? $value["resolucion"] . " - " : '';
+                                            $motivo = $value["motivo"];
+                                            $motivoFinal = $articulo . $inciso . $resolucion . $motivo;
+                                        }
+
                                         foreach ($motivoSol as $key => $value) {
                                             $articulo = ($value["articulo"] !== '' && $value["articulo"] !== 0) ? $value["articulo"] . " ": '';
                                             $inciso = ($value["inciso"] !== '' && $value["inciso"] !== '0') ? ' "' . $value["inciso"] . '" - ' : '';
                                             $resolucion = ($value["resolucion"] !== '' && $value["resolucion"] !== 0) ? $value["resolucion"] . " - " : '';
                                             $motivo = $value["motivo"];
                                         ?>
+                                        
                                             <option data-id="<?php echo $value["id_MotivoSuplencia"]; ?>"><?php echo $articulo . $inciso . $resolucion . $motivo; ?></option>
                                         <?php } ?>
                                     </datalist>
@@ -371,18 +368,18 @@ if (max(array_keys($rutas)) == 1){
                                                 id="motivo" 
                                                 name="motivo" 
                                                 placeholder="Escriba para buscar..."
-                                                value="<?php echo htmlspecialchars($_POST['motivo'] ?? ''); ?>"
+                                                value="<?php echo htmlspecialchars($_POST['motivo'] ?? $motivoFinal ?? ''); ?>"
                                                 oninput="autoSelectBestMatch('motivo', 'opcionesMotivo', 'idMotivo')"
                                             >
                                         <!-- </div> -->
                                         <div class="invalid-feedback">
-                                            <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
+                                            <?= $errores["motivo"] ?? 'Por favor, complete este campo.'; ?>
                                         </div>
                                         <input 
                                             type="hidden" 
                                             id="idMotivo" 
                                             name="idMotivo" 
-                                            value="<?= $valorInstitucion = htmlspecialchars($_POST['idMotivo'] ?? ''); ?>"
+                                            value="<?= $valorInstitucion = htmlspecialchars( $_POST['idMotivo'] ??  $solic_select['id_MotivoSuplencia'] ?? ''); ?>"
                                         >
 
                                     </div>
@@ -403,7 +400,7 @@ if (max(array_keys($rutas)) == 1){
                                 <div class="row ">
                                     <div class="col-lg-6 mb-1">
                                         <label class="form-label">Fecha Inicio</label>
-                                        <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaInicio']) ? 'is-invalid' : ''; ?>" id="fechaInicio" name="fechaInicio" value= "<?php echo htmlspecialchars($_POST['fechaInicio'] ?? ''); ?>" placeholder="Fecha Inicio">
+                                        <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaInicio']) ? 'is-invalid' : ''; ?>" id="fechaInicio" name="fechaInicio" value= "<?php echo htmlspecialchars($_POST['fechaInicio'] ?? $solic_select['fechaInicio'] ?? ''); ?>" placeholder="Fecha Inicio">
                                         <div class="invalid-feedback"><?php echo $errores['fechaInicio'] ?? 'Debe completar este campo'; ?></div>
                                     </div>         
                                     
@@ -421,7 +418,7 @@ if (max(array_keys($rutas)) == 1){
                                         
                                         <!-- Campo de entrada para la fecha -->
                                         <div class="mt-2">
-                                            <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaFin']) ? 'is-invalid' : ''; ?>" id="fechaFin" name="fechaFin" value= "<?php echo htmlspecialchars($_POST['fechaFin'] ?? ''); ?>" placeholder="Fecha Fin">
+                                            <input type="text" class="form-control AR-datepicker <?php echo isset($errores['fechaFin']) ? 'is-invalid' : ''; ?>" id="fechaFin" name="fechaFin" value= "<?php echo htmlspecialchars($_POST['fechaFin'] ?? $solic_select['fechaFin'] ?? ''); ?>" placeholder="Fecha Fin">
                                             <div class="invalid-feedback"><?php echo $errores['fechaFin'] ?? 'Debe completar este campo'; ?></div>
                                         </div> 
                                     </div>
@@ -444,7 +441,7 @@ if (max(array_keys($rutas)) == 1){
                         <div class="card-body">
                             <div class="col-lg-12">
                                 <div class="form-floating my-3">
-                                    <input type="text" class="form-control <?php echo isset($errores['observaciones']) ? 'is-invalid' : ''; ?>" id="observaciones" name="observaciones" value= "<?php echo htmlspecialchars($_POST['observaciones'] ?? ''); ?>" placeholder="observaciones">
+                                    <input type="text" class="form-control <?php echo isset($errores['observaciones']) ? 'is-invalid' : ''; ?>" id="observaciones" name="observaciones" value= "<?php echo htmlspecialchars($_POST['observaciones'] ?? $solic_select['observaciones'] ?? ''); ?>" placeholder="observaciones">
                                     <label for="observaciones">Observaciones</label>
                                     <div class="invalid-feedback"><?php echo $errores['observaciones'] ?? ''; ?></div>
                                 </div>
@@ -701,8 +698,7 @@ if (max(array_keys($rutas)) == 1){
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                            <button type="submit" class="btn btn-outline-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
-                            <button type="submit" class="btn btn-primary btnEliminar" onclick="cambiarEstado(2)"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
+                            <button type="submit" class="btn btn-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
                         </div>
                     </div>
                 </div>
@@ -710,6 +706,10 @@ if (max(array_keys($rutas)) == 1){
         </div>
     </form>
 </div> <!-- container-fluid -->
+
+<?php } else { ?>
+    <h3>Solicitud no disponible</h3>
+<?php } ?>
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>

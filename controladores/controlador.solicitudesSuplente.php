@@ -2,8 +2,8 @@
 
 class ControladorSolSuplente{
 
-    static public function ctrMostrarSolSuplente(){
-        $respuesta = ModeloSolSuplente::mdlMostrarSolSuplente();
+    static public function ctrMostrarSolSuplente($id_cargo, $valor){
+        $respuesta = ModeloSolSuplente::mdlMostrarSolSuplente($id_cargo,$valor);
         return $respuesta;
     }
     
@@ -55,8 +55,13 @@ class ControladorSolSuplente{
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
                     
-                    foreach ($dias as $dia) {
-                        if (strlen($dia["dia"]) > 0) { // Excluir días vacíos
+                    foreach ($dias as $d => $dia) {
+                        // print_r("<br>dia: ");
+                        // var_dump($dia);
+                    
+                        // Verificar si $dia es un array válido y contiene la clave "dia"
+                        if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
+                            // Excluir días vacíos
                             if (!$validador->validarDiaHorario($dia)) {
                                 $errores["instituciones_$key"] = "Días u horarios inválidos para la institución $idInstitucion.";
                             } else {
@@ -64,6 +69,7 @@ class ControladorSolSuplente{
                             }
                         }
                     }
+                    
                     
 
                     $instituciones[] = [

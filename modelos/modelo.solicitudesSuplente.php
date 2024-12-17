@@ -7,67 +7,144 @@ class ModeloSolSuplente{
     // ==============================================================
     // Mostrar Solicitudes
     // ==============================================================
-    static public function mdlMostrarSolSuplente()
+    static public function mdlMostrarSolSuplente($id_solic,$valor)
     {
-        try {
-            $SolSuplente = Conexion::conectar()->prepare("SELECT 
-                c.id_Cargo, 
-                nc.nombreCargo,
-                c.hsCatedra, 
-                g.grado, 
-                d.division,
-                t.turno,ss.numeroTramite, 
-                ss.id_EstadoSol,
-                es.estado,
-                CONCAT(c.apellidoDocente, ', ' ,c.nombreDocente,' (', c.dniDocente, ') ') AS docente,
-                tipo.tipo, 
-                GROUP_CONCAT(
-                    DISTINCT CONCAT(
-                        i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-                    ) ORDER BY p.sede DESC
-                ) AS instituciones,
-                ss.fechaInicio,
-                ss.fechaFin,
-                ss.observaciones,
-                ss.id_SolSuplente,
-                ms.motivo,
-                GROUP_CONCAT(
-                    CONCAT('Esc. N°', i.numero, ': ',
-                        (SELECT 
-                            GROUP_CONCAT(
-                                CONCAT(dias.nombre, ' de ', TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', TIME_FORMAT(j.horaFin, '%H:%i'))
-                                ORDER BY dias.id_Dia ASC
-                                SEPARATOR ', '
+        // var_dump($valor); die();
+        if ($valor != null) {
+            try {
+                $SolSuplente = Conexion::conectar()->prepare("SELECT 
+                    c.id_Cargo, 
+                    nc.id_NombreCargo, 
+                    nc.nombreCargo,
+                    c.hsCatedra, 
+                    c.id_Grado,
+                    c.id_Turno,
+                    c.id_Division,
+                    g.grado, 
+                    d.division,
+                    t.turno,
+                    es.estado,
+                    c.nombreDocente,
+                    c.apellidoDocente,
+                    c.dniDocente,
+                    tipo.tipo, 
+                    GROUP_CONCAT(
+                        DISTINCT CONCAT(
+                            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+                        ) ORDER BY p.sede DESC
+                    ) AS instituciones,
+                    GROUP_CONCAT(
+                            i.id_Institucion
+                    ) AS id_instituciones,
+                    ss.fechaInicio,
+                    ss.fechaFin,
+                    ss.observaciones,
+                    ss.id_SolSuplente,
+                    ss.numeroTramite, 
+                    ss.id_EstadoSol,
+                    ss.id_MotivoSuplencia,
+                    ms.motivo,
+                    p.numeroPlaza,
+                    GROUP_CONCAT(
+                        CONCAT('Esc. N°', i.numero, ': ',
+                            (SELECT 
+                                GROUP_CONCAT(
+                                    CONCAT(dias.nombre, ' de ', TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', TIME_FORMAT(j.horaFin, '%H:%i'))
+                                    ORDER BY dias.id_Dia ASC
+                                    SEPARATOR ', '
+                                )
+                            FROM jornadas AS j
+                            INNER JOIN hs_semanal AS hs ON j.id_Jornada = hs.id_Jornada
+                            INNER JOIN dias ON dias.id_Dia = j.id_Dia
+                            WHERE hs.numeroPlaza = p.numeroPlaza
+                            order by id_hs_semanal desc
                             )
-                        FROM jornadas AS j
-                        INNER JOIN hs_semanal AS hs ON j.id_Jornada = hs.id_Jornada
-                        INNER JOIN dias ON dias.id_Dia = j.id_Dia
-                        WHERE hs.numeroPlaza = p.numeroPlaza
-                        order by id_hs_semanal desc
-                        )
-                    ) ORDER BY p.sede DESC, i.numero ASC
-                    SEPARATOR ' | '
-                ) AS horarios
-            FROM cargos AS c 
-            INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
-            INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
-            LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
-            LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
-            LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
-            LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
-            LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
-            LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
-            LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
-            LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
-            WHERE c.eliminado = 0 and ss.id_EstadoSol <> 8
-            GROUP BY c.id_Cargo;
-            ");
-            
-            $SolSuplente->execute();
-            return $SolSuplente->fetchAll(PDO::FETCH_ASSOC);
+                        ) ORDER BY p.sede DESC, i.numero ASC
+                        SEPARATOR ' | '
+                    ) AS horarios
+                FROM cargos AS c 
+                INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
+                INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
+                LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
+                LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
+                LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
+                LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+                LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
+                LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
+                LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
+                LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
+                WHERE c.eliminado = 0 and ss.id_EstadoSol <> 8 and ss.id_SolSuplente =:valor
+                GROUP BY c.id_Cargo;
+                ");
+                
+                $SolSuplente->bindParam(":valor",  $valor, PDO::PARAM_INT);
+                $SolSuplente->execute();
+                return $SolSuplente->fetch(PDO::FETCH_ASSOC);
 
-        } catch (Exception $e) {
-            return "Error: " .$e ->getMessage();
+            } catch (Exception $e) {
+                return "Error: " .$e ->getMessage();
+            }
+        } else {
+            try {
+                $SolSuplente = Conexion::conectar()->prepare("SELECT 
+                    c.id_Cargo, 
+                    nc.nombreCargo,
+                    c.hsCatedra, 
+                    g.grado, 
+                    d.division,
+                    t.turno,ss.numeroTramite, 
+                    ss.id_EstadoSol,
+                    es.estado,
+                    CONCAT(c.apellidoDocente, ', ' ,c.nombreDocente,' (', c.dniDocente, ') ') AS docente,
+                    tipo.tipo, 
+                    GROUP_CONCAT(
+                        DISTINCT CONCAT(
+                            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+                        ) ORDER BY p.sede DESC
+                    ) AS instituciones,
+                    ss.fechaInicio,
+                    ss.fechaFin,
+                    ss.observaciones,
+                    ss.id_SolSuplente,
+                    ms.motivo,
+                    GROUP_CONCAT(
+                        CONCAT('Esc. N°', i.numero, ': ',
+                            (SELECT 
+                                GROUP_CONCAT(
+                                    CONCAT(dias.nombre, ' de ', TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', TIME_FORMAT(j.horaFin, '%H:%i'))
+                                    ORDER BY dias.id_Dia ASC
+                                    SEPARATOR ', '
+                                )
+                            FROM jornadas AS j
+                            INNER JOIN hs_semanal AS hs ON j.id_Jornada = hs.id_Jornada
+                            INNER JOIN dias ON dias.id_Dia = j.id_Dia
+                            WHERE hs.numeroPlaza = p.numeroPlaza
+                            order by id_hs_semanal desc
+                            )
+                        ) ORDER BY p.sede DESC, i.numero ASC
+                        SEPARATOR ' | '
+                    ) AS horarios
+                FROM cargos AS c 
+                INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
+                INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
+                LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
+                LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
+                LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
+                LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+                LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
+                LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
+                LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
+                LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
+                WHERE c.eliminado = 0 and ss.id_EstadoSol <> 8
+                GROUP BY c.id_Cargo;
+                ");
+                
+                $SolSuplente->execute();
+                return $SolSuplente->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (Exception $e) {
+                return "Error: " .$e ->getMessage();
+            }
         }
 
     }
@@ -175,10 +252,61 @@ class ModeloSolSuplente{
                     if (!$stmtPlazas->execute()) {
                         throw new Exception("Error al insertar en la tabla plazas.");
                     }
+                    
                 }
             }
 
-            // 2. Insertar en la tabla solicitudes
+
+            // 2. Insertar en la tabla jornadas
+            foreach ($datos["instituciones"] as $index => $institucion) {
+
+                $sqlJornadas = "INSERT INTO jornadas (
+                    id_Dia, horaInicio, horaFin
+                ) VALUES (
+                    :id_Dia, :horaInicio, :horaFin
+                )";
+
+                $stmtJornadas = $conexion->prepare($sqlJornadas);
+                // print_r("<br>Institucion: <br>");
+                // var_dump($institucion); 
+                // print_r("<br>días: <br>");
+                // var_dump($institucion["dias"]); 
+                
+                foreach ($institucion["dias"] as $k => $jornada) {
+                    if($k > 0){
+                        // var_dump($jornada["dia"]); die();   
+                        $stmtJornadas->bindParam(":id_Dia", $jornada["dia"], PDO::PARAM_INT);
+                        $stmtJornadas->bindParam(":horaInicio", $jornada["horaInicio"], PDO::PARAM_STR);
+                        $stmtJornadas->bindParam(":horaFin", $jornada["horaFin"], PDO::PARAM_STR);
+
+                        if (!$stmtJornadas->execute()) {
+                            throw new Exception("Error al insertar en la tabla jornadas.");
+                        }
+
+                        // Obtener el ID de la jornada recién insertada
+                        $id_Jornada = $conexion->lastInsertId();
+
+                        // Insertar en la tabla hs_semanal
+                        $sqlHsSemanal = "INSERT INTO hs_semanal (
+                            id_Jornada, numeroPlaza
+                        ) VALUES (
+                            :id_Jornada, :numeroPlaza
+                        )";
+
+                        $stmtHsSemanal = $conexion->prepare($sqlHsSemanal);
+                        $stmtHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                        $stmtHsSemanal->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+
+                        if (!$stmtHsSemanal->execute()) {
+                            throw new Exception("Error al insertar en la tabla hs_semanal.");
+                        }
+                    }
+                }
+                // die();
+            }
+
+
+            // 3. Insertar en la tabla solicitudes
             $estado = $datos["estado"];
 
             $sqlSolicitud = "INSERT INTO solicitudes_suplente (
@@ -214,6 +342,7 @@ class ModeloSolSuplente{
             $stmtCheckCargo = null;
             $stmtUpdateCargo = null;
             $stmtInsertCargo = null;
+            $stmtJornadas = null;
             $stmtPlazas = null;
             $stmtSolicitud = null;
             $conexion = null;
