@@ -8,16 +8,6 @@
 </script>
 
 <?php
-// Función para opciones de select días
-function generarOpcionesDias()
-{
-    $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
-    $opciones = '<option value="">...</option>';
-    foreach ($dias as $value) {
-        $opciones .= "<option>{$value['nombre']}</option>";
-    }
-    return $opciones;
-}
 
 // Para opciones de selects
 $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
@@ -25,6 +15,7 @@ $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null
 $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
 $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
 $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+$dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
 
 $validador = new validador();
 
@@ -46,8 +37,6 @@ if (max(array_keys($rutas)) == 1){
     if($datosCargo){
         $insti = explode(',', $datosCargo['instituciones']);
         $id_Insti = explode(',', $datosCargo['id_instituciones']);
-    } else{
-        
     }
 }
 ?>
@@ -566,7 +555,7 @@ if (max(array_keys($rutas)) == 1){
     
                             foreach ($institucion as $key => $value) { ?>
                                 <option 
-                                    value="<?php echo $value["institucion"] . ' ' . ' N°' . $value["numero"] . ' (CUE: ' . $value["cue"] . ')'; ?>" 
+                                    value="<?php echo $value["institucion"] . ' N°' . $value["numero"] . ' (CUE: ' . $value["cue"] . ')'; ?>" 
                                     id="<?php echo $value["id_institucion"]; ?>"
                                     data-id="<?php echo $value["id_institucion"]; ?>"
                                 >
@@ -587,12 +576,8 @@ if (max(array_keys($rutas)) == 1){
 
                         for ($i = 0; $i < count($labels); $i++): 
                             // Obtener el valor previamente enviado si existe
-                            if($i == 0){
-                                $valorInstitucion = htmlspecialchars( $insti[$i] ?? $_POST['institucion1'] ?? $_POST['institucionSede'] ?? '');
-                            }else{
-                                // $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
-                                $valorInstitucion = ControladorInstituciones::ctrObtenerNombreInstitucion($id_Insti[$i] ?? $_POST['instituciones'][$i]['id_Institucion'] ?? '');
-                            }
+                            $valorInstitucion = $_POST['institucion' . $i + 1 ] ?? $insti[$i] ?? '';
+                            $id_Institucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $id_Insti[$i] ?? '';
                         ?>
                             <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                 <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
@@ -613,7 +598,7 @@ if (max(array_keys($rutas)) == 1){
                                         type="hidden" 
                                         id="idInstitucion<?= $i + 1 ?>" 
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
-                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        value="<?= htmlspecialchars($id_Institucion); ?>"
                                     >
                                 </div>
 
@@ -631,13 +616,35 @@ if (max(array_keys($rutas)) == 1){
                                     <!-- Días -->
                                     <div class="col-12 col-md-5">
                                         <h6 class="d-md-none">Día <?php echo $numDia; ?></h6>
+
                                         <select 
                                             class="form-select" 
                                             id="dia<?php echo $numDia; ?>Est<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][dia]"
-                                        >
-                                            <?php echo generarOpcionesDias(); ?>
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][dia]" 
+                                            required>
+                                            <!-- Opción predeterminada -->
+                                            <option value="" disabled <?php echo empty($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"]) ? 'selected' : ''; ?>>
+                                                
+                                            </option>
+
+                                            <!-- Opciones dinámicas -->
+                                            <?php 
+                                            foreach ($dias as $key => $value): ?>
+                                                <option 
+                                                    value="<?php echo $value["id_Dia"]; ?>" 
+                                                    <?php
+                                                        // Comprobar si hay datos enviados en el formulario
+                                                        if (isset($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"]) && 
+                                                            $_POST["instituciones"][$i]["dias"][$numDia-1]["dia"] == $value["id_Dia"]) {
+                                                            echo 'selected';
+                                                        }
+                                                    ?>>
+                                                    <?php echo htmlspecialchars($value["nombre"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
                                         </select>
+
+
                                     </div>
 
                                     <!-- Hora Inicio -->
@@ -645,7 +652,7 @@ if (max(array_keys($rutas)) == 1){
                                         <h6 class="d-md-none">Hora Inicio</h6>
                                         <input 
                                             id="horaIni<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaInicio]" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][horaInicio]" 
                                             type="text" 
                                             class="form-control 24hours-timepicker" 
                                             placeholder="..."
@@ -657,7 +664,7 @@ if (max(array_keys($rutas)) == 1){
                                         <h6 class="d-md-none">Hora Fin</h6>
                                         <input 
                                             id="horaFin<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaFin]" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][horaFin]" 
                                             type="text" 
                                             class="form-control 24hours-timepicker" 
                                             placeholder="..."
@@ -702,7 +709,7 @@ if (max(array_keys($rutas)) == 1){
                         <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
                             <button type="submit" class="btn btn-outline-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
-                            <button type="submit" class="btn btn-primary btnEliminar" onclick="cambiarEstado(2)"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
+                            <button type="submit" class="btn btn-primary btnGuardar" onclick="cambiarEstado(2)"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                         </div>
                     </div>
                 </div>

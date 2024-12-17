@@ -2,8 +2,8 @@
 
 class ControladorSolSuplente{
 
-    static public function ctrMostrarSolSuplente(){
-        $respuesta = ModeloSolSuplente::mdlMostrarSolSuplente();
+    static public function ctrMostrarSolSuplente($id_cargo, $valor){
+        $respuesta = ModeloSolSuplente::mdlMostrarSolSuplente($id_cargo,$valor);
         return $respuesta;
     }
     
@@ -55,8 +55,13 @@ class ControladorSolSuplente{
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
                     
-                    foreach ($dias as $dia) {
-                        if (strlen($dia["dia"]) > 0) { // Excluir días vacíos
+                    foreach ($dias as $d => $dia) {
+                        // print_r("<br>dia: ");
+                        // var_dump($dia);
+                    
+                        // Verificar si $dia es un array válido y contiene la clave "dia"
+                        if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
+                            // Excluir días vacíos
                             if (!$validador->validarDiaHorario($dia)) {
                                 $errores["instituciones_$key"] = "Días u horarios inválidos para la institución $idInstitucion.";
                             } else {
@@ -64,6 +69,7 @@ class ControladorSolSuplente{
                             }
                         }
                     }
+                    
                     
 
                     $instituciones[] = [
@@ -190,13 +196,46 @@ class ControladorSolSuplente{
             $inst = [];
             foreach ($_POST["instituciones"] as $key => $institucion) {
                 $idInstitucion = intval($institucion["id_Institucion"]);
+                $diasValidos[] = '';
+                // Verificar que el ID de la institución sea mayor a 0
                 if ($idInstitucion > 0) {
+                    $dias = $institucion["dias"] ?? [];
+                    
+                    foreach ($dias as $d => $dia) {
+                        // print_r("<br>dia: ");
+                        // var_dump($dia);
+                    
+                        // Verificar si $dia es un array válido y contiene la clave "dia"
+                        if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
+                            // Excluir días vacíos
+                            if (!$validador->validarDiaHorario($dia)) {
+                                $errores["instituciones_$key"] = "Días u horarios inválidos para la institución $idInstitucion.";
+                            } else {
+                                $diasValidos[] = $dia; // Agregar solo días válidos
+                            }
+                        }
+                    }
+
                     $instituciones[] = [
                         "id_Institucion" => $idInstitucion,
                         "sede" => $key === 0 ? 1 : 0, // La primera institución es la sede
+                        "dias" => $diasValidos // Usar solo los días válidos
                     ];
+                    $inst[$key] =  $idInstitucion;
                 }
             }
+
+            $erroresInstituciones = $validador->instituciones($inst, ModeloInstituciones::class);
+            // Merge de errores de instituciones con el resto de los errores
+            $errores = array_merge($errores, $erroresInstituciones);
+
+            // Obtener el valor de "Comparte con"
+            $comparte = $_POST['gridRadiosComparte'] ?? 'noComparte';
+
+            // Validar las instituciones según el número que comparte
+            $erroresInstituciones = $validador->validarInstitucionesPorComparte($comparte, $instituciones);
+
+            $errores = array_merge($errores, $erroresInstituciones);
 
             // Validar las horas cátedra (enteros positivos)
             $errorHorasCatedra = Validador::validarEnteroPositivo($_POST["hsCatedra"] ?? 0);
@@ -234,7 +273,6 @@ class ControladorSolSuplente{
                 }
 
                 $respuesta = ModeloSolSuplente::mdlEditarSolicitud([
-                    "numeroTramite" => intval($_POST["numeroTramite"]),
                     "id_NombreCargo" => intval($_POST["id_NombreCargo"]),
                     "id_Grado" => $id_Grado,
                     "id_Division" => $id_Division,
@@ -347,6 +385,12 @@ class ControladorSolSuplente{
             }
         }
     }
+
+    public static function ctrMostrarHorariosSol($valor) {
+        $horarios = ModeloSolSuplente::mdlMostrarHorariosSol($valor);
+        return $horarios;
+    }
+    
 
 
 
