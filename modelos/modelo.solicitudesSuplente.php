@@ -13,68 +13,68 @@ class ModeloSolSuplente{
         if ($valor != null) {
             try {
                 $SolSuplente = Conexion::conectar()->prepare("SELECT 
-                    c.id_Cargo, 
-                    nc.id_NombreCargo, 
-                    nc.nombreCargo,
-                    c.hsCatedra, 
-                    c.id_Grado,
-                    c.id_Turno,
-                    c.id_Division,
-                    g.grado, 
-                    d.division,
-                    t.turno,
-                    es.estado,
-                    c.nombreDocente,
-                    c.apellidoDocente,
-                    c.dniDocente,
-                    tipo.tipo, 
-                    GROUP_CONCAT(
-                        DISTINCT CONCAT(
-                            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-                        ) ORDER BY p.sede DESC
-                    ) AS instituciones,
-                    GROUP_CONCAT(
-                            i.id_Institucion
-                    ) AS id_instituciones,
-                    ss.fechaInicio,
-                    ss.fechaFin,
-                    ss.observaciones,
-                    ss.id_SolSuplente,
-                    ss.numeroTramite, 
-                    ss.id_EstadoSol,
-                    ss.id_MotivoSuplencia,
-                    ms.motivo,
-                    p.numeroPlaza,
-                    GROUP_CONCAT(
-                        CONCAT('Esc. N°', i.numero, ': ',
-                            (SELECT 
-                                GROUP_CONCAT(
-                                    CONCAT(dias.nombre, ' de ', TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', TIME_FORMAT(j.horaFin, '%H:%i'))
-                                    ORDER BY dias.id_Dia ASC
-                                    SEPARATOR ', '
-                                )
-                            FROM jornadas AS j
-                            INNER JOIN hs_semanal AS hs ON j.id_Jornada = hs.id_Jornada
-                            INNER JOIN dias ON dias.id_Dia = j.id_Dia
-                            WHERE hs.numeroPlaza = p.numeroPlaza
-                            order by id_hs_semanal desc
-                            )
-                        ) ORDER BY p.sede DESC, i.numero ASC
-                        SEPARATOR ' | '
-                    ) AS horarios
-                FROM cargos AS c 
-                INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
-                INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
-                LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
-                LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
-                LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
-                LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
-                LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
-                LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
-                LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
-                LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
-                WHERE c.eliminado = 0 and ss.id_EstadoSol <> 8 and ss.id_SolSuplente =:valor
-                GROUP BY c.id_Cargo;
+    c.id_Cargo, 
+    nc.id_NombreCargo, 
+    nc.nombreCargo,
+    c.hsCatedra, 
+    c.id_Grado,
+    c.id_Turno,
+    c.id_Division,
+    g.grado, 
+    d.division,
+    t.turno,
+    es.estado,
+    c.nombreDocente,
+    c.apellidoDocente,
+    c.dniDocente,
+    tipo.tipo, 
+    GROUP_CONCAT(
+        DISTINCT CONCAT(
+            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+        ) ORDER BY p.sede DESC
+    ) AS instituciones,
+    GROUP_CONCAT(
+        DISTINCT i.id_Institucion
+    ) AS id_instituciones,
+    ss.fechaInicio,
+    ss.fechaFin,
+    ss.observaciones,
+    ss.id_SolSuplente,
+    ss.numeroTramite, 
+    ss.id_EstadoSol,
+    ss.id_MotivoSuplencia,
+    ms.motivo,
+    p.numeroPlaza,
+    (
+        SELECT GROUP_CONCAT(
+            CONCAT(
+                dias.nombre, ' de ', 
+                TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', 
+                TIME_FORMAT(j.horaFin, '%H:%i')
+            ) ORDER BY j.id_Dia ASC, j.horaInicio ASC
+            SEPARATOR ', '
+        )
+        FROM hs_semanal AS hs
+        INNER JOIN jornadas AS j ON j.id_Jornada = hs.id_Jornada
+        INNER JOIN dias ON j.id_Dia = dias.id_Dia
+        WHERE hs.numeroPlaza = p.numeroPlaza
+    ) AS horarios
+FROM cargos AS c 
+INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
+INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
+LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
+LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
+LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
+LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
+LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
+LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
+LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
+WHERE c.eliminado = 0 
+  AND ss.id_EstadoSol <> 8 
+  AND ss.id_SolSuplente =:valor
+GROUP BY c.id_Cargo;
+
                 ");
                 
                 $SolSuplente->bindParam(":valor",  $valor, PDO::PARAM_INT);
@@ -388,7 +388,90 @@ class ModeloSolSuplente{
                 }
             }
 
-            // 2. Actualizar en la tabla solicitudes_suplente
+            // 2. Obtener las jornadas existentes
+            $sqlJornadasExistentes = "SELECT id_Jornada, id_Dia, horaInicio, horaFin 
+                                    FROM jornadas 
+                                    WHERE id_Jornada IN (
+                                        SELECT id_Jornada FROM hs_semanal WHERE numeroPlaza = :numeroPlaza
+                                    )";
+            $stmtJornadasExistentes = $conexion->prepare($sqlJornadasExistentes);
+            $stmtJornadasExistentes->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
+            $stmtJornadasExistentes->execute();
+            $jornadasExistentes = $stmtJornadasExistentes->fetchAll(PDO::FETCH_ASSOC);
+
+            // Mapear jornadas existentes
+            $jornadasExistentesMap = [];
+            foreach ($jornadasExistentes as $jornada) {
+                $jornadasExistentesMap[$jornada["id_Jornada"]] = $jornada;
+            }
+
+            // Preparar consultas
+            $sqlInsertJornada = "INSERT INTO jornadas (id_Dia, horaInicio, horaFin) 
+                                VALUES (:id_Dia, :horaInicio, :horaFin)";
+            $stmtInsertJornada = $conexion->prepare($sqlInsertJornada);
+
+            $sqlUpdateJornada = "UPDATE jornadas SET id_Dia = :id_Dia, horaInicio = :horaInicio, horaFin = :horaFin 
+                                WHERE id_Jornada = :id_Jornada";
+            $stmtUpdateJornada = $conexion->prepare($sqlUpdateJornada);
+
+            $sqlDeleteJornada = "DELETE FROM jornadas WHERE id_Jornada = :id_Jornada";
+            $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
+
+            // var_dump($datos["instituciones"]); die();
+            // Procesar las nuevas jornadas
+            foreach ($datos["instituciones"] as $institucion) {
+                foreach ($institucion["dias"] as $dia) {
+                    if (isset($dia["id_Jornada"])) {
+                        // Jornada existente: actualizar si hay cambios
+                        if (isset($jornadasExistentesMap[$dia["id_Jornada"]])) {
+                            $jornadaExistente = $jornadasExistentesMap[$dia["id_Jornada"]];
+                            if ($jornadaExistente["id_Dia"] != $dia["id_Dia"] ||
+                                $jornadaExistente["horaInicio"] != $dia["horaInicio"] ||
+                                $jornadaExistente["horaFin"] != $dia["horaFin"]
+                            ) {
+                                // Actualizar jornada
+                                $stmtUpdateJornada->bindParam(":id_Jornada", $dia["id_Jornada"], PDO::PARAM_INT);
+                                $stmtUpdateJornada->bindParam(":id_Dia", $dia["id_Dia"], PDO::PARAM_INT);
+                                $stmtUpdateJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
+                                $stmtUpdateJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
+                                $stmtUpdateJornada->execute();
+                            }
+                            unset($jornadasExistentesMap[$dia["id_Jornada"]]);
+                        }
+                    } else {
+                        // Nueva jornada: insertar
+                        $stmtInsertJornada->bindParam(":id_Dia", $dia["id_Dia"], PDO::PARAM_INT);
+                        $stmtInsertJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
+                        $stmtInsertJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
+                        $stmtInsertJornada->execute();
+
+                        $id_Jornada = $conexion->lastInsertId();
+
+                        // Asociar con hs_semanal
+                        $sqlInsertHsSemanal = "INSERT INTO hs_semanal (id_Jornada, numeroPlaza) 
+                                            VALUES (:id_Jornada, :numeroPlaza)";
+                        $stmtInsertHsSemanal = $conexion->prepare($sqlInsertHsSemanal);
+                        $stmtInsertHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                        $stmtInsertHsSemanal->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
+                        $stmtInsertHsSemanal->execute();
+                    }
+                }
+            }
+
+            // Eliminar las jornadas restantes
+            foreach ($jornadasExistentesMap as $id_Jornada => $jornada) {
+                $stmtDeleteJornada->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                $stmtDeleteJornada->execute();
+
+                // Eliminar también de hs_semanal
+                $sqlDeleteHsSemanal = "DELETE FROM hs_semanal WHERE id_Jornada = :id_Jornada";
+                $stmtDeleteHsSemanal = $conexion->prepare($sqlDeleteHsSemanal);
+                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                $stmtDeleteHsSemanal->execute();
+            }
+
+
+            // 3. Actualizar en la tabla solicitudes_suplente
             $sqlSolicitud = "UPDATE solicitudes_suplente SET 
                 fechaInicio = :fechaInicio, 
                 fechaFin = :fechaFin, 
@@ -519,6 +602,47 @@ class ModeloSolSuplente{
             return "Error: " . $e->getMessage();
         }
     }
+
+    // ==============================================================
+    // Mostrar Horarios
+    // ==============================================================
+    public static function mdlMostrarHorariosSol($id_SolSuplente) {
+        // Ejecuta la consulta SQL (simplificada)
+        $stmt = Conexion::conectar()->prepare("SELECT 
+            i.id_Institucion,
+            j.id_Dia, 
+            j.horaInicio, 
+            j.horaFin
+        FROM cargos AS c
+        INNER JOIN plazas as p ON p.id_Cargo = c.id_Cargo
+        INNER JOIN instituciones AS i ON i.id_Institucion = p.id_Institucion
+        INNER JOIN hs_semanal AS hs ON hs.numeroPlaza = p.numeroPlaza
+        INNER JOIN jornadas AS j ON j.id_Jornada = hs.id_Jornada
+        INNER JOIN solicitudes_suplente AS ss ON c.id_Cargo = ss.id_Cargo
+        WHERE c.eliminado = 0 AND ss.id_SolSuplente = :id_SolSuplente");
+    
+        $stmt->bindParam(":id_SolSuplente", $id_SolSuplente, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        // Procesar los resultados para organizar por cargo y día
+        $horariosOrganizados = [];
+        while ($row = $stmt->fetch()) {
+            $id_Institucion = $row['id_Institucion'];
+            $idDia = $row['id_Dia'];
+    
+            // Organiza por cargo y día
+            $horariosOrganizados[$id_Institucion][$idDia] = [
+                'dia' => $row['id_Dia'],
+                'horaInicio' => $row['horaInicio'],
+                'horaFin' => $row['horaFin']
+            ];
+            print_r("<br>");
+            var_dump($horariosOrganizados[$id_Institucion][$idDia]);
+        }
+    
+        return $horariosOrganizados; // Devuelve el array organizado
+    }
+    
     
 }
 

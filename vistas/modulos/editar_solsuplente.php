@@ -1,21 +1,11 @@
 <?php
-// Función para opciones de select días
-function generarOpcionesDias()
-{
-    $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
-    $opciones = '<option value="">...</option>';
-    foreach ($dias as $value) {
-        $opciones .= "<option>{$value['nombre']}</option>";
-    }
-    return $opciones;
-}
-
 // Para opciones de selects
 $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
 $turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
 $grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
 $division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
+$dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
 
 //Controlador para la edición
 $controlador = new ControladorSolSuplente();
@@ -30,10 +20,14 @@ $validado = $resultado['validado'] ?? '';
 $id_solic = "id_SolSuplente";
 $valor = $rutas[1];
 $solic_select = ControladorSolSuplente::ctrMostrarSolSuplente($id_solic, $valor);
-// var_dump($solic_select);
+
+// Procesa las instituciones, id 
 $insti = explode(',', $solic_select['instituciones']);
 $id_Insti = explode(',', $solic_select['id_instituciones']);
 
+//Procesa los horarios
+$horariosOrganizados = ControladorSolSuplente::ctrMostrarHorariosSol($valor);
+// var_dump($horariosOrganizados);
 
 if ($solic_select) {
 ?>
@@ -584,12 +578,11 @@ if ($solic_select) {
 
                         for ($i = 0; $i < count($labels); $i++): 
                             // Obtener el valor previamente enviado si existe
-                            if($i == 0){
-                                $valorInstitucion = htmlspecialchars( $insti[$i] ?? $_POST['institucion1'] ?? $_POST['institucionSede'] ?? '');
-                            }else{
-                                // $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
-                                $valorInstitucion = ControladorInstituciones::ctrObtenerNombreInstitucion($id_Insti[$i] ?? $_POST['instituciones'][$i]['id_Institucion'] ?? '');
-                            }
+                            $valorInstitucion = $_POST['institucion' . $i + 1 ] ?? $insti[$i] ?? '';
+                            $id_Institucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $id_Insti[$i] ?? '';
+                            
+                            // Ajusta el array de horarios al ID de la institución
+                            $horarios = $horariosOrganizados[$id_Institucion] ?? [];
                         ?>
                             <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                 <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
@@ -610,7 +603,7 @@ if ($solic_select) {
                                         type="hidden" 
                                         id="idInstitucion<?= $i + 1 ?>" 
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
-                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        value="<?= htmlspecialchars($id_Institucion); ?>"
                                     >
                                 </div>
 
@@ -623,59 +616,83 @@ if ($solic_select) {
                                 </div>
 
                                 <!-- Estructura por día -->
-                                <?php for ($numDia = 1; $numDia <= 5; $numDia++): ?>
+                                <?php for ($numDia = 1; $numDia <= 5; $numDia++): 
+                                    $diaData = $horarios[$numDia] ?? [];
+                                ?>
                                 <div class="row align-items-center mb-2">
                                     <!-- Días -->
                                     <div class="col-12 col-md-5">
                                         <h6 class="d-md-none">Día <?php echo $numDia; ?></h6>
                                         <select 
                                             class="form-select" 
-                                            id="dia<?php echo $numDia; ?>Est<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][dia]"
-                                        >
-                                            <?php echo generarOpcionesDias(); ?>
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][dia]" 
+                                            required>
+                                            <option value="" disabled 
+                                                <?php echo empty($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"])
+                                                        && empty($diaData['dia']) ? 'selected' : ''; ?>>
+                                                Seleccione un día
+                                            </option>
+
+                                            <?php foreach ($dias as $key => $value): ?>
+
+                                                <option value="<?php echo $value["id_Dia"]; ?>"
+                                                    <?php 
+                                                        // Priorizar $_POST si existe, de lo contrario usar $horariosOrganizados
+                                                        if (
+                                                            isset($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"]) &&
+                                                            $_POST["instituciones"][$i]["dias"][$numDia-1]["dia"] == $value["id_Dia"]
+                                                        ) {
+                                                            echo 'selected';
+                                                        } elseif (
+                                                            isset($diaData['dia']) && $diaData['dia'] == $value["id_Dia"]
+                                                        ) {
+                                                            echo 'selected';
+                                                        }
+                                                    ?>>
+                                                    <?php echo htmlspecialchars($value["nombre"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
 
                                     <!-- Hora Inicio -->
                                     <div class="col-12 col-md-3">
-                                        <h6 class="d-md-none">Hora Inicio</h6>
                                         <input 
-                                            id="horaIni<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaInicio]" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][horaInicio]" 
                                             type="text" 
                                             class="form-control 24hours-timepicker" 
-                                            placeholder="..."
-                                        >
+                                            placeholder="HH:MM"
+                                            value="<?php 
+                                                // Priorizar $_POST si existe, de lo contrario usar $horariosOrganizados
+                                                echo $_POST["instituciones"][$i]["dias"][$numDia-1]["horaInicio"] ?? 
+                                                     $diaData['horaInicio']  ?? ''; 
+                                            ?>">
                                     </div>
 
                                     <!-- Hora Fin -->
                                     <div class="col-12 col-md-3">
-                                        <h6 class="d-md-none">Hora Fin</h6>
                                         <input 
-                                            id="horaFin<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
-                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia; ?>][horaFin]" 
+                                            name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][horaFin]" 
                                             type="text" 
                                             class="form-control 24hours-timepicker" 
-                                            placeholder="..."
-                                        >
+                                            placeholder="HH:MM"
+                                            value="<?php 
+                                                // Priorizar $_POST si existe, de lo contrario usar $horariosOrganizados
+                                                echo $_POST["instituciones"][$i]["dias"][$numDia-1]["horaFin"] ?? 
+                                                     $diaData['horaFin']  ?? ''; 
+                                            ?>">
                                     </div>
 
-                                    <!-- Botón Borrar Horario -->
+                                    <!-- Botón Borrar -->
                                     <div class="col-12 col-md-1 text-md-center">
-                                        <button 
-                                            type="button" 
-                                            class="btn btn-outline-primary w-100 mt-md-0 mt-2" 
-                                            data-bs-toggle="tooltip" 
-                                            data-bs-placement="bottom" 
-                                            data-bs-title="Borrar Horarios Día <?php echo $numDia; ?>" 
-                                            onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)"
-                                        >
+                                        <button type="button" class="btn btn-outline-primary" 
+                                                onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)">
                                             <i class="fa-solid fa-eraser"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <?php endfor; ?>
+
                             </div> <!-- Fin Establecimiento <?= $i + 1 ?> -->
 
                             <?php if($i != 3)  {  ?>
@@ -698,7 +715,7 @@ if ($solic_select) {
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
                             <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
-                            <button type="submit" class="btn btn-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
+                            <button type="submit" class="btn btn-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
                         </div>
                     </div>
                 </div>

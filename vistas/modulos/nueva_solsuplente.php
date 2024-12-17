@@ -37,8 +37,6 @@ if (max(array_keys($rutas)) == 1){
     if($datosCargo){
         $insti = explode(',', $datosCargo['instituciones']);
         $id_Insti = explode(',', $datosCargo['id_instituciones']);
-    } else{
-        
     }
 }
 ?>
@@ -578,12 +576,8 @@ if (max(array_keys($rutas)) == 1){
 
                         for ($i = 0; $i < count($labels); $i++): 
                             // Obtener el valor previamente enviado si existe
-                            if($i == 0){
-                                $valorInstitucion = htmlspecialchars( $insti[$i] ?? $_POST['institucion1'] ?? $_POST['institucionSede'] ?? '');
-                            }else{
-                                // $valorInstitucion = $_POST['instituciones'][$i]['id_Institucion'] ?? '';
-                                $valorInstitucion = ControladorInstituciones::ctrObtenerNombreInstitucion($id_Insti[$i] ?? $_POST['instituciones'][$i]['id_Institucion'] ?? '');
-                            }
+                            $valorInstitucion = $_POST['institucion' . $i + 1 ] ?? $insti[$i] ?? '';
+                            $id_Institucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $id_Insti[$i] ?? '';
                         ?>
                             <div class="row" id="Est<?= $i + 1 ?>"> <!-- Establecimiento <?= $i + 1 ?> -->
                                 <div class="pb-2"> <!-- Datalist Instituciones <?= $i + 1 ?> -->
@@ -604,7 +598,7 @@ if (max(array_keys($rutas)) == 1){
                                         type="hidden" 
                                         id="idInstitucion<?= $i + 1 ?>" 
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
-                                        value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        value="<?= htmlspecialchars($id_Institucion); ?>"
                                     >
                                 </div>
 
