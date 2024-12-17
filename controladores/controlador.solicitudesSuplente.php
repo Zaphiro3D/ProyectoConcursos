@@ -20,7 +20,7 @@ class ControladorSolSuplente{
         $errores = []; // Inicializar arreglo de errores
         $validado = ""; // Inicializar clase de validación
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {          
             $validador = new Validador();
             // Obtener y validar campos requeridos
             $campos = ['id_NombreCargo', 'id_Turno', 'fechaInicio', 'fechaFin', 'hsCatedra', 'motivo'];
@@ -79,6 +79,7 @@ class ControladorSolSuplente{
                     ];
                     $inst[$key] =  $idInstitucion;
                 }
+                
             }
 
             $erroresInstituciones = $validador->instituciones($inst, ModeloInstituciones::class);
@@ -182,6 +183,8 @@ class ControladorSolSuplente{
         $validado = ""; // Inicializar clase de validación
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // var_dump($_POST); die();
+
             $validador = new Validador();
             
             // Obtener y validar campos requeridos
@@ -200,29 +203,34 @@ class ControladorSolSuplente{
                 // Verificar que el ID de la institución sea mayor a 0
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
-                    
+                    // print_r("<br>dia: ");
+                        // var_dump($dias);
                     foreach ($dias as $d => $dia) {
                         // print_r("<br>dia: ");
-                        // var_dump($dia);
+                        // var_dump($dias[$d]);
                     
                         // Verificar si $dia es un array válido y contiene la clave "dia"
-                        if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
+
+                        if (is_array($dias[$d]) && isset($dias[$d]["dia"]) && strlen($dias[$d]["dia"]) > 0) { 
                             // Excluir días vacíos
-                            if (!$validador->validarDiaHorario($dia)) {
+                            if (!$validador->validarDiaHorario($dias[$d])) {
                                 $errores["instituciones_$key"] = "Días u horarios inválidos para la institución $idInstitucion.";
                             } else {
-                                $diasValidos[] = $dia; // Agregar solo días válidos
+                                $diasValidos[] = $dias[$d]; // Agregar solo días válidos
                             }
                         }
                     }
-
+                    // var_dump($diasValidos);
+                    // die();
                     $instituciones[] = [
                         "id_Institucion" => $idInstitucion,
                         "sede" => $key === 0 ? 1 : 0, // La primera institución es la sede
                         "dias" => $diasValidos // Usar solo los días válidos
                     ];
                     $inst[$key] =  $idInstitucion;
+                    
                 }
+                // var_dump($instituciones);
             }
 
             $erroresInstituciones = $validador->instituciones($inst, ModeloInstituciones::class);

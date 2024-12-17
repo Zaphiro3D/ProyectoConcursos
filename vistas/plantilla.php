@@ -80,7 +80,6 @@ $url = ControladorPlantilla::url();
                     if (isset($_GET["pagina"])) {
                         $rutas = explode('/', $_GET["pagina"]);
 
-
                         // Validar otras rutas
                         if (
                             // Agentes

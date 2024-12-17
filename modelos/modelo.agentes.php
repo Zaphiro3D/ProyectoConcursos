@@ -152,7 +152,7 @@ class ModeloAgentes{
             $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
             $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             return "Error: " . $e->getMessage();
         }

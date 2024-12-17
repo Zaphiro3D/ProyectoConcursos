@@ -13,68 +13,67 @@ class ModeloSolSuplente{
         if ($valor != null) {
             try {
                 $SolSuplente = Conexion::conectar()->prepare("SELECT 
-    c.id_Cargo, 
-    nc.id_NombreCargo, 
-    nc.nombreCargo,
-    c.hsCatedra, 
-    c.id_Grado,
-    c.id_Turno,
-    c.id_Division,
-    g.grado, 
-    d.division,
-    t.turno,
-    es.estado,
-    c.nombreDocente,
-    c.apellidoDocente,
-    c.dniDocente,
-    tipo.tipo, 
-    GROUP_CONCAT(
-        DISTINCT CONCAT(
-            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-        ) ORDER BY p.sede DESC
-    ) AS instituciones,
-    GROUP_CONCAT(
-        DISTINCT i.id_Institucion
-    ) AS id_instituciones,
-    ss.fechaInicio,
-    ss.fechaFin,
-    ss.observaciones,
-    ss.id_SolSuplente,
-    ss.numeroTramite, 
-    ss.id_EstadoSol,
-    ss.id_MotivoSuplencia,
-    ms.motivo,
-    p.numeroPlaza,
-    (
-        SELECT GROUP_CONCAT(
-            CONCAT(
-                dias.nombre, ' de ', 
-                TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', 
-                TIME_FORMAT(j.horaFin, '%H:%i')
-            ) ORDER BY j.id_Dia ASC, j.horaInicio ASC
-            SEPARATOR ', '
-        )
-        FROM hs_semanal AS hs
-        INNER JOIN jornadas AS j ON j.id_Jornada = hs.id_Jornada
-        INNER JOIN dias ON j.id_Dia = dias.id_Dia
-        WHERE hs.numeroPlaza = p.numeroPlaza
-    ) AS horarios
-FROM cargos AS c 
-INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
-INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
-LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
-LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
-LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
-LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
-LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
-LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
-LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
-LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
-WHERE c.eliminado = 0 
-  AND ss.id_EstadoSol <> 8 
-  AND ss.id_SolSuplente =:valor
-GROUP BY c.id_Cargo;
-
+                    c.id_Cargo, 
+                    nc.id_NombreCargo, 
+                    nc.nombreCargo,
+                    c.hsCatedra, 
+                    c.id_Grado,
+                    c.id_Turno,
+                    c.id_Division,
+                    g.grado, 
+                    d.division,
+                    t.turno,
+                    es.estado,
+                    c.nombreDocente,
+                    c.apellidoDocente,
+                    c.dniDocente,
+                    tipo.tipo, 
+                    GROUP_CONCAT(
+                        DISTINCT CONCAT(
+                            i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
+                        ) ORDER BY p.sede DESC
+                    ) AS instituciones,
+                    GROUP_CONCAT(
+                        DISTINCT i.id_Institucion
+                    ) AS id_instituciones,
+                    ss.fechaInicio,
+                    ss.fechaFin,
+                    ss.observaciones,
+                    ss.id_SolSuplente,
+                    ss.numeroTramite, 
+                    ss.id_EstadoSol,
+                    ss.id_MotivoSuplencia,
+                    ms.motivo,
+                    p.numeroPlaza,
+                    (
+                        SELECT GROUP_CONCAT(
+                            CONCAT(
+                                dias.nombre, ' de ', 
+                                TIME_FORMAT(j.horaInicio, '%H:%i'), ' a ', 
+                                TIME_FORMAT(j.horaFin, '%H:%i')
+                            ) ORDER BY j.id_Dia ASC, j.horaInicio ASC
+                            SEPARATOR ', '
+                        )
+                        FROM hs_semanal AS hs
+                        INNER JOIN jornadas AS j ON j.id_Jornada = hs.id_Jornada
+                        INNER JOIN dias ON j.id_Dia = dias.id_Dia
+                        WHERE hs.numeroPlaza = p.numeroPlaza
+                    ) AS horarios
+                FROM cargos AS c 
+                INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
+                INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
+                LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
+                LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
+                LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
+                LEFT JOIN nombres_cargos AS nc ON nc.id_NombreCargo = c.id_NombreCargo
+                LEFT JOIN tipo_institucion AS tipo ON tipo.id_Tipo = i.id_Tipo
+                LEFT JOIN solicitudes_suplente AS ss ON ss.id_Cargo = c.id_Cargo
+                LEFT JOIN motivos_suplencia AS ms ON ms.id_MotivoSuplencia = ss.id_MotivoSuplencia
+                LEFT JOIN estados_solicitud AS es ON es.id_EstadoSol = ss.id_EstadoSol
+                WHERE c.eliminado = 0 
+                AND ss.id_EstadoSol <> 8 
+                AND ss.id_SolSuplente =:valor
+                GROUP BY c.id_Cargo;
                 ");
                 
                 $SolSuplente->bindParam(":valor",  $valor, PDO::PARAM_INT);
@@ -182,7 +181,7 @@ GROUP BY c.id_Cargo;
             $stmtCheckCargo = $conexion->prepare($sqlCheckCargo);
             $stmtCheckCargo->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
             $stmtCheckCargo->execute();
-
+            $numeroPlaza = $datos["numeroPlaza"];
             $observacionesExtra = "";
 
             if ($stmtCheckCargo->rowCount() > 0) {
@@ -202,7 +201,7 @@ GROUP BY c.id_Cargo;
                 $stmtUpdateCargo->bindParam(":apellidoDocente", $datos["apellidoDocente"], PDO::PARAM_STR);
                 $stmtUpdateCargo->bindParam(":dniDocente", $datos["dniDocente"], PDO::PARAM_INT);
                 $stmtUpdateCargo->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
-
+                
                 if (!$stmtUpdateCargo->execute()) {
                     throw new Exception("Error al actualizar el cargo existente.");
                 }
@@ -240,15 +239,16 @@ GROUP BY c.id_Cargo;
                     :numeroPlaza, :id_Cargo, :id_Institucion, :sede
                 )";
 
+
                 $stmtPlazas = $conexion->prepare($sqlPlazas);
                 foreach ($datos["instituciones"] as $index => $institucion) {
                     $numeroPlaza = $datos["numeroPlaza"] + $index;
-
+                    
                     $stmtPlazas->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
                     $stmtPlazas->bindParam(":id_Cargo", $id_Cargo, PDO::PARAM_INT);
                     $stmtPlazas->bindParam(":id_Institucion", $institucion["id_Institucion"], PDO::PARAM_INT);
                     $stmtPlazas->bindParam(":sede", $institucion["sede"], PDO::PARAM_BOOL);
-
+                    
                     if (!$stmtPlazas->execute()) {
                         throw new Exception("Error al insertar en la tabla plazas.");
                     }
@@ -256,10 +256,9 @@ GROUP BY c.id_Cargo;
                 }
             }
 
-
             // 2. Insertar en la tabla jornadas
             foreach ($datos["instituciones"] as $index => $institucion) {
-
+                
                 $sqlJornadas = "INSERT INTO jornadas (
                     id_Dia, horaInicio, horaFin
                 ) VALUES (
@@ -267,14 +266,10 @@ GROUP BY c.id_Cargo;
                 )";
 
                 $stmtJornadas = $conexion->prepare($sqlJornadas);
-                // print_r("<br>Institucion: <br>");
-                // var_dump($institucion); 
-                // print_r("<br>días: <br>");
-                // var_dump($institucion["dias"]); 
-                
+
                 foreach ($institucion["dias"] as $k => $jornada) {
-                    if($k > 0){
-                        // var_dump($jornada["dia"]); die();   
+                    
+                    if($k > 0){  
                         $stmtJornadas->bindParam(":id_Dia", $jornada["dia"], PDO::PARAM_INT);
                         $stmtJornadas->bindParam(":horaInicio", $jornada["horaInicio"], PDO::PARAM_STR);
                         $stmtJornadas->bindParam(":horaFin", $jornada["horaFin"], PDO::PARAM_STR);
@@ -302,9 +297,9 @@ GROUP BY c.id_Cargo;
                         }
                     }
                 }
-                // die();
+                
             }
-
+            
 
             // 3. Insertar en la tabla solicitudes
             $estado = $datos["estado"];
@@ -316,7 +311,7 @@ GROUP BY c.id_Cargo;
                 :numeroTramite, :fechaInicio, :fechaFin, :id_MotivoSuplencia, 
                 :observaciones, :id_Cargo, :id_EstadoSol
             )";
-
+            
             // var_dump($datos); die;
             $observaciones = $datos["observaciones"] . $observacionesExtra;
             $stmtSolicitud = $conexion->prepare($sqlSolicitud);
@@ -357,13 +352,15 @@ GROUP BY c.id_Cargo;
         $conexion = Conexion::conectar();
         try {
             $conexion->beginTransaction();
+            // var_dump($datos);
+            // var_dump($datos ['instituciones']); die();
 
             // 1. Verificar si el id_Cargo existe en la tabla plazas
             $sqlCheckCargo = "SELECT id_Cargo FROM plazas WHERE numeroPlaza = :numeroPlaza";
             $stmtCheckCargo = $conexion->prepare($sqlCheckCargo);
             $stmtCheckCargo->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
             $stmtCheckCargo->execute();
-
+            $numeroPlaza = $datos["numeroPlaza"];
             $observacionesExtra = "";
 
             if ($stmtCheckCargo->rowCount() > 0) {
@@ -418,20 +415,25 @@ GROUP BY c.id_Cargo;
             $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
 
             // var_dump($datos["instituciones"]); die();
+            
             // Procesar las nuevas jornadas
             foreach ($datos["instituciones"] as $institucion) {
-                foreach ($institucion["dias"] as $dia) {
-                    if (isset($dia["id_Jornada"])) {
+
+                foreach ($institucion["dias"] as $k => $dia) {  
+                    var_dump($institucion["dias"][1]); 
+                    die();
+
+                    if (isset($dia["dia"])) {
                         // Jornada existente: actualizar si hay cambios
                         if (isset($jornadasExistentesMap[$dia["id_Jornada"]])) {
                             $jornadaExistente = $jornadasExistentesMap[$dia["id_Jornada"]];
-                            if ($jornadaExistente["id_Dia"] != $dia["id_Dia"] ||
+                            if ($jornadaExistente["id_Dia"] != $dia["dia"] ||
                                 $jornadaExistente["horaInicio"] != $dia["horaInicio"] ||
                                 $jornadaExistente["horaFin"] != $dia["horaFin"]
                             ) {
                                 // Actualizar jornada
                                 $stmtUpdateJornada->bindParam(":id_Jornada", $dia["id_Jornada"], PDO::PARAM_INT);
-                                $stmtUpdateJornada->bindParam(":id_Dia", $dia["id_Dia"], PDO::PARAM_INT);
+                                $stmtUpdateJornada->bindParam(":id_Dia", $dia["dia"], PDO::PARAM_INT);
                                 $stmtUpdateJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
                                 $stmtUpdateJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
                                 $stmtUpdateJornada->execute();
@@ -440,7 +442,7 @@ GROUP BY c.id_Cargo;
                         }
                     } else {
                         // Nueva jornada: insertar
-                        $stmtInsertJornada->bindParam(":id_Dia", $dia["id_Dia"], PDO::PARAM_INT);
+                        $stmtInsertJornada->bindParam(":id_Dia", $dia["dia"], PDO::PARAM_INT);
                         $stmtInsertJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
                         $stmtInsertJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
                         $stmtInsertJornada->execute();
@@ -626,18 +628,18 @@ GROUP BY c.id_Cargo;
         
         // Procesar los resultados para organizar por cargo y día
         $horariosOrganizados = [];
+        $i = 0;
         while ($row = $stmt->fetch()) {
             $id_Institucion = $row['id_Institucion'];
             $idDia = $row['id_Dia'];
+            // $i ++;
     
             // Organiza por cargo y día
-            $horariosOrganizados[$id_Institucion][$idDia] = [
+            $horariosOrganizados[$id_Institucion][$idDia][] = [ 
                 'dia' => $row['id_Dia'],
                 'horaInicio' => $row['horaInicio'],
                 'horaFin' => $row['horaFin']
             ];
-            print_r("<br>");
-            var_dump($horariosOrganizados[$id_Institucion][$idDia]);
         }
     
         return $horariosOrganizados; // Devuelve el array organizado

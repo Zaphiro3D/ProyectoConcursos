@@ -355,8 +355,8 @@ class ControladorAgentes{
     static public function ctrIngresoAgente()
     {
         if (isset($_POST["email"])) {
-        
-            if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
+            if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
+            // if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
 
                 $encriptar = crypt(trim($_POST["password"]), '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
                 // print_r($encriptar);
@@ -365,17 +365,18 @@ class ControladorAgentes{
 
                 $valor = $_POST["email"];
                 $respuesta = ModeloAgentes::mdlBuscarAgentes($item,$valor);
-                foreach ($respuesta as $key => $value) {
-                    if (is_array($value) && ($value["email"] ==
-                        $_POST["email"] && $value["password"] == $encriptar)) {
+
+                    if (is_array($respuesta) && ($respuesta["email"] ==
+                        $_POST["email"] && $respuesta["password"] == $encriptar)) {
                         
                         echo '<script>
                             fncSweetAlert("loading", "Ingresando..", "")
                             </script>';
                         
                         $_SESSION["iniciarSesion"] = "ok";
-                        $_SESSION["id_agente"] = $value["id_agente"];
-                        $_SESSION["nombre"] = $value["nombre"];
+                        $_SESSION["id_agente"] = $respuesta["id_agente"];
+                        $_SESSION["nombre"] = $respuesta["nombre"] . ' ' . $respuesta["apellido"];
+                        $_SESSION["autorizacion"] = $respuesta["id_Rol"];
 
                         echo '<script>
                         window.location = "inicio";
@@ -389,7 +390,7 @@ class ControladorAgentes{
                             });
                             </script>";
                     }
-                }
+
             }
         }
     }

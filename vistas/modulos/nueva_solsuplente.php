@@ -11,11 +11,11 @@
 
 // Para opciones de selects
 $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
-$cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
-$turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos", "*", null);
-$grado = ControladorSolSuplente::ctrMostrarDatosSol("grados", "*", null);
-$division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones", "*", null);
-$dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
+$cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos");
+$turno = ControladorSolSuplente::ctrMostrarDatosSol("turnos");
+$grado = ControladorSolSuplente::ctrMostrarDatosSol("grados");
+$division = ControladorSolSuplente::ctrMostrarDatosSol("divisiones");
+$dias = ControladorSolSuplente::ctrMostrarDatosSol("dias");
 
 $validador = new validador();
 

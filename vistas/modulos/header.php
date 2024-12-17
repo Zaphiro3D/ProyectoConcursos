@@ -64,7 +64,7 @@
                     <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <!-- <img src="vistas/assets/images/users/user-11.jpg" alt="user-image" class="rounded-circle"> -->
                         <span class="pro-user-name ms-1">
-                            DDE Concordia <i class="mdi mdi-chevron-down"></i>
+                            <?php echo $_SESSION["nombre"]?> <i class="mdi mdi-chevron-down"></i>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
