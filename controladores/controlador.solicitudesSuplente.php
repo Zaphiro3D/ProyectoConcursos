@@ -146,6 +146,7 @@ class ControladorSolSuplente{
                     "estado" => intval($_POST["estado"])
                 ]);
 
+                print_r($respuesta); 
                 $url = ControladorPlantilla::url() . "solicitudesSuplente";
                 if ($respuesta["status"] === "ok") {
                     echo '<script>
@@ -394,13 +395,287 @@ class ControladorSolSuplente{
         }
     }
 
+    // ==============================================================
+    // Mostrar Horarios Solicitud
+    // ==============================================================
     public static function ctrMostrarHorariosSol($valor) {
         $horarios = ModeloSolSuplente::mdlMostrarHorariosSol($valor);
         return $horarios;
     }
     
+    // ==============================================================
+    // Rechazar Solicitud
+    // ==============================================================
+    static public function ctrRechazarSolicitud()
+    {
+        switch ($_SESSION["autorizacion"]) {
+            case 1: //Jefe
+                # code...
+                break;
+
+            case 2: //Supervisor
+                # code...
+                break;
+            
+            case 3: //Director
+                # code...
+                break;
+
+            case 4: //Administrativo
+                # code...
+                break;
+
+            default:
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Permimsos Insuficientes',
+                    icon: 'error'
+                });
+                </script>";
+                break;
+        }
 
 
+        if (isset($_GET["id_rechazar"])) {
+
+            $url = ControladorPlantilla::url() . "solicitudesSuplente";
+            $id = $_GET["id_rechazar"];
+            $estado = $_GET["id_estado"];
+            $estadoNuevo = NULL;
+
+            switch ($estado) {
+                case 1: //Borrador
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se puede rechazar una solicitud en borrador',
+                        icon: 'error'
+                    });
+                    </script>";
+                    break;
+                    
+                case 2: //Pendiente en Supervisión
+                    //cambiar estado a 4. Vuelve a verlo la escuela
+                    $estadoNuevo = 4;
+                    $mensaje = "Se enviará a la escuela para su corrección.";
+                    break;
+
+                case 3: //Pendiente en Administración
+                    //cambiar estado a 5. Vuelve a verlo el supervisor
+                    $estadoNuevo = 5;
+                    $mensaje = "Se enviará a la supervisión para su corrección.";
+                    break;
+
+                case 4: //Rechazado por Supervisión
+                    //Escuela intenta rechazar
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se puede rechazar esta solicitud',
+                        icon: 'error'
+                    });
+                    </script>";
+                    break;
+
+                case 5: //Rechazado por Administración
+                    //supervisor rechaza, vuelve a la escuela
+                    $estadoNuevo = 4;
+                    $mensaje = "Se enviará a la escuela para su corrección.";
+                    break;
+
+                case 6: //A Concursar
+                    //vuelve a 3 pendiente en administracion
+                    $estadoNuevo = 3;
+                    $mensaje = "Vuelve a estar pendiente en administración";
+                    break;
+
+                case 7: //Ya Concursado
+                    //vuelve a 6 a concursar
+                    $estadoNuevo = 6;
+                    $mensaje = "Vuelve a estar para concursar";
+                    break;  
+                default: // 8 Eliminado // otro
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se puede rechazar esta solicitud',
+                        icon: 'error'
+                    });
+                    </script>";
+                    break;
+            }
+
+            if ($estadoNuevo){
+                $respuesta = ModeloSolSuplente::mdlRechazarSolicitud($estadoNuevo, $id);
+
+                if ($respuesta == "ok") {
+
+
+                    echo '<script>
+
+                    Swal.fire({
+                        title: "Solicitud Rechazada",
+                        text: "La solicitud ha sido rechazada. ' . $mensaje . '",
+                        icon: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Cancelar",
+                        confirmButtonText: "OK",
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location =
+                            "solicitudesSuplente";
+                        }
+                    });
+                    </script>';
+                }
+                else{
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo rechazar la solicitud.',
+                        icon: 'error'
+                    });
+                    </script>";
+                }
+            }
+        }
+
+    }
+
+
+    // ==============================================================
+    // Aprobar Solicitud
+    // ==============================================================
+    static public function ctrAprobarSolicitud()
+    {
+        switch ($_SESSION["autorizacion"]) {
+            case 1: //Jefe
+                # code...
+                break;
+
+            case 2: //Supervisor
+                # code...
+                break;
+            
+            case 3: //Director
+                # code...
+                break;
+
+            case 4: //Administrativo
+                # code...
+                break;
+
+            default:
+                echo "<script>
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Permimsos Insuficientes',
+                    icon: 'error'
+                });
+                </script>";
+                exit();
+                break;
+        }
+
+
+        if (isset($_GET["id_aprobar"])) {
+
+            $url = ControladorPlantilla::url() . "solicitudesSuplente";
+            $id = $_GET["id_aprobar"];
+            $estado = $_GET["id_estado"];
+            $estadoNuevo = NULL;
+            switch ($estado) {
+                case 1: //Borrador
+                    $estadoNuevo = 2;
+                    $mensaje = "La solicitud ha sido enviada a la Supervisión correspondiente.";
+                    break;
+                    
+                case 2: //Pendiente en Supervisión
+                    $estadoNuevo = 3;
+                    $mensaje = "La solicitud ha sido enviada a la administración para su corrección.";
+                    break;
+
+                case 3: //Pendiente en Administración
+                    $estadoNuevo = 6;
+                    $mensaje = "La solicitud ha sido aprobada. Se agregará al listado de cargos a concursar.";
+                    break;
+
+                case 4: //Rechazado por Supervisión
+                    $estadoNuevo = 2;
+                    $mensaje = "La solicitud ha sido enviada a la Supervisión correspondiente.";
+                    
+                    break;
+
+                case 5: //Rechazado por Administración
+                    $estadoNuevo = 3;
+                    $mensaje = "La solicitud ha sido enviada a la escuela para su corrección.";
+                    break;
+
+                case 6: //A Concursar
+                    $estadoNuevo = 7;
+                    $mensaje = "La solicitud ha sido marcada como ya concursada.";
+                    break;
+
+                case 7: //Ya Concursado
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se puede aprobar una solicitud que ya se ha concursado',
+                        icon: 'error'
+                    });
+                    </script>";
+                default: // 8 Eliminado // otro
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se puede aprobar esta solicitud',
+                        icon: 'error'
+                    });
+                    </script>";
+                    break;
+            }
+
+            if ($estadoNuevo){
+                $respuesta = ModeloSolSuplente::mdlAprobarSolicitud($estadoNuevo, $id);
+
+                if ($respuesta == "ok") {
+                    echo '<script>
+
+                    Swal.fire({
+                        title: "Solicitud Aprobada",
+                        text: "' . $mensaje . '",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Cancelar",
+                        confirmButtonText: "OK",
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location =
+                            "solicitudesSuplente";
+                        }
+                    });
+                    </script>';
+                }
+                else{
+                    echo "<script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo aprobar la solicitud.',
+                        icon: 'error'
+                    });
+                    </script>";
+                }
+            }
+        }
+
+
+
+    }
 
 }
 

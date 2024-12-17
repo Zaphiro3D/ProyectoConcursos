@@ -2,13 +2,14 @@
  function redirectToPlaza() {
      const numeroPlaza = document.getElementById('numeroPlaza').value;
      if (numeroPlaza) {
-         window.location.href = `http://localhost/ProyectoConcursos/nueva_solsuplente/${numeroPlaza}`;
+         const url = "<?php echo ControladorPlantilla::url(); ?>";
+         window.location.href = `${url}/nueva_solsuplente/${numeroPlaza}`;
      }
  }
 </script>
 
-<?php
 
+<?php
 // Para opciones de selects
 $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos");

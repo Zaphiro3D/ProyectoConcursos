@@ -3,6 +3,13 @@
                             
     $eliminar = new ControladorSolSuplente();
     $eliminar -> ctrEliminarSolicitud();
+
+    $aprobar = new ControladorSolSuplente();
+    $aprobar -> ctrAprobarSolicitud();
+
+    $rechazar = new ControladorSolSuplente();
+    $rechazar -> ctrRechazarSolicitud();
+
 ?>
 <div class="container-xxl">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -180,29 +187,34 @@
                                     ><i class="fas fa-trash"></i>
                                     </button> 
                                     &nbsp;|&nbsp; 
-                                    <button 
-                                        href="aprobar_solic" 
+                                    <a 
+                                        href="<?php echo "solicitudesSuplente?id_aprobar=" . $value["id_SolSuplente"]  . '&id_estado=' . $value["id_EstadoSol"] ?>"
                                         class="btn btn-success btn-sm"
                                         id_aprobar=<?php echo $value["id_SolSuplente"]; ?> 
+                                        id_estado=<?php echo $value["id_EstadoSol"]; ?>
                                         pag= "solicitudesSuplente" 
                                         valorAprobar = "<?php echo $value["id_SolSuplente"]; ?>" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="bottom" 
                                         data-bs-title="Aprobar"
                                     ><i class="fas fa-circle-check"></i>
-                                    </button> 
-                                    <button 
-                                        href="rechazar_solic" 
+                                    </a> 
+                                    <a 
+                                        href="<?php echo "solicitudesSuplente?id_rechazar=" . $value["id_SolSuplente"]  . '&id_estado=' . $value["id_EstadoSol"] ?>" 
                                         class="btn btn-danger btn-sm" 
+                                        id_rechazar=<?php echo $value["id_SolSuplente"]; ?> 
+                                        id_estado=<?php echo $value["id_EstadoSol"]; ?>
+                                        pag= "solicitudesSuplente" 
+                                        valorRechazar = "<?php echo $value["id_SolSuplente"]; ?>"
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="bottom" 
                                         data-bs-title="Rechazar"
                                     ><i class="fas fa-circle-xmark"></i>
-                                    </button> 
+                                    </a> 
                                 </td>
                                 <?php endforeach;?>
                             </tr>
-                            
+
 
                         </tbody>
                     </table>

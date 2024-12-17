@@ -267,12 +267,13 @@ class ModeloSolSuplente{
 
                 $stmtJornadas = $conexion->prepare($sqlJornadas);
 
-                foreach ($institucion["dias"] as $k => $jornada) {
-                    
+                foreach ($institucion["dias"] as  $k => $jornada) {
+                    //print_r($institucion['dias'][1]['dia']);
+                    // var_dump($institucion["dias"] ); 
                     if($k > 0){  
-                        $stmtJornadas->bindParam(":id_Dia", $jornada["dia"], PDO::PARAM_INT);
-                        $stmtJornadas->bindParam(":horaInicio", $jornada["horaInicio"], PDO::PARAM_STR);
-                        $stmtJornadas->bindParam(":horaFin", $jornada["horaFin"], PDO::PARAM_STR);
+                        $stmtJornadas->bindParam(":id_Dia", $institucion['dias'][$k]['dia'], PDO::PARAM_INT);
+                        $stmtJornadas->bindParam(":horaInicio", $institucion['dias'][$k]['horaInicio'], PDO::PARAM_STR);
+                        $stmtJornadas->bindParam(":horaFin", $institucion['dias'][$k]['horaFin'], PDO::PARAM_STR);
 
                         if (!$stmtJornadas->execute()) {
                             throw new Exception("Error al insertar en la tabla jornadas.");
@@ -386,7 +387,7 @@ class ModeloSolSuplente{
             }
 
             // 2. Obtener las jornadas existentes
-            $sqlJornadasExistentes = "SELECT id_Jornada, id_Dia, horaInicio, horaFin 
+            $sqlJornadasExistentes = "SELECT id_Jornada 
                                     FROM jornadas 
                                     WHERE id_Jornada IN (
                                         SELECT id_Jornada FROM hs_semanal WHERE numeroPlaza = :numeroPlaza
@@ -395,73 +396,27 @@ class ModeloSolSuplente{
             $stmtJornadasExistentes->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
             $stmtJornadasExistentes->execute();
             $jornadasExistentes = $stmtJornadasExistentes->fetchAll(PDO::FETCH_ASSOC);
-
+            // print_r($jornadasExistentes);
+            // die();
             // Mapear jornadas existentes
-            $jornadasExistentesMap = [];
-            foreach ($jornadasExistentes as $jornada) {
-                $jornadasExistentesMap[$jornada["id_Jornada"]] = $jornada;
-            }
-
+            // $jornadasExistentesMap = [];
+            // foreach ($jornadasExistentes as $i => $jornada) {
+            //     $jornadasExistentesMap[$i] = $jornada;
+            //     // print_r($jornadasExistentesMap[$jornada["id_Jornada"]]);
+            // }
+            //  var_dump($jornadasExistentesMap); die();
             // Preparar consultas
-            $sqlInsertJornada = "INSERT INTO jornadas (id_Dia, horaInicio, horaFin) 
+            $sqlJornadas = "INSERT INTO jornadas (id_Dia, horaInicio, horaFin) 
                                 VALUES (:id_Dia, :horaInicio, :horaFin)";
-            $stmtInsertJornada = $conexion->prepare($sqlInsertJornada);
+            $stmtJornadas = $conexion->prepare($sqlJornadas);
 
-            $sqlUpdateJornada = "UPDATE jornadas SET id_Dia = :id_Dia, horaInicio = :horaInicio, horaFin = :horaFin 
-                                WHERE id_Jornada = :id_Jornada";
-            $stmtUpdateJornada = $conexion->prepare($sqlUpdateJornada);
 
             $sqlDeleteJornada = "DELETE FROM jornadas WHERE id_Jornada = :id_Jornada";
             $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
-
-            // var_dump($datos["instituciones"]); die();
             
-            // Procesar las nuevas jornadas
-            foreach ($datos["instituciones"] as $institucion) {
-
-                foreach ($institucion["dias"] as $k => $dia) {  
-                    var_dump($institucion["dias"][1]); 
-                    die();
-
-                    if (isset($dia["dia"])) {
-                        // Jornada existente: actualizar si hay cambios
-                        if (isset($jornadasExistentesMap[$dia["id_Jornada"]])) {
-                            $jornadaExistente = $jornadasExistentesMap[$dia["id_Jornada"]];
-                            if ($jornadaExistente["id_Dia"] != $dia["dia"] ||
-                                $jornadaExistente["horaInicio"] != $dia["horaInicio"] ||
-                                $jornadaExistente["horaFin"] != $dia["horaFin"]
-                            ) {
-                                // Actualizar jornada
-                                $stmtUpdateJornada->bindParam(":id_Jornada", $dia["id_Jornada"], PDO::PARAM_INT);
-                                $stmtUpdateJornada->bindParam(":id_Dia", $dia["dia"], PDO::PARAM_INT);
-                                $stmtUpdateJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
-                                $stmtUpdateJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
-                                $stmtUpdateJornada->execute();
-                            }
-                            unset($jornadasExistentesMap[$dia["id_Jornada"]]);
-                        }
-                    } else {
-                        // Nueva jornada: insertar
-                        $stmtInsertJornada->bindParam(":id_Dia", $dia["dia"], PDO::PARAM_INT);
-                        $stmtInsertJornada->bindParam(":horaInicio", $dia["horaInicio"], PDO::PARAM_STR);
-                        $stmtInsertJornada->bindParam(":horaFin", $dia["horaFin"], PDO::PARAM_STR);
-                        $stmtInsertJornada->execute();
-
-                        $id_Jornada = $conexion->lastInsertId();
-
-                        // Asociar con hs_semanal
-                        $sqlInsertHsSemanal = "INSERT INTO hs_semanal (id_Jornada, numeroPlaza) 
-                                            VALUES (:id_Jornada, :numeroPlaza)";
-                        $stmtInsertHsSemanal = $conexion->prepare($sqlInsertHsSemanal);
-                        $stmtInsertHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
-                        $stmtInsertHsSemanal->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
-                        $stmtInsertHsSemanal->execute();
-                    }
-                }
-            }
 
             // Eliminar las jornadas restantes
-            foreach ($jornadasExistentesMap as $id_Jornada => $jornada) {
+            foreach ($jornadasExistentes as $id_Jornada => $jornada) {
                 $stmtDeleteJornada->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
                 $stmtDeleteJornada->execute();
 
@@ -472,6 +427,46 @@ class ModeloSolSuplente{
                 $stmtDeleteHsSemanal->execute();
             }
 
+            // 2. Insertar en la tabla jornadas
+            foreach ($datos["instituciones"] as $institucion) { 
+                foreach ($institucion['dias'] as $dia) { 
+                    if (!empty($dia)) { // Verifica si el valor no está vacío 
+                        $sqlJornadas = "INSERT INTO jornadas (
+                            id_Dia, horaInicio, horaFin
+                        ) VALUES (
+                            :id_Dia, :horaInicio, :horaFin
+                        )";
+                        $stmtJornadas = $conexion->prepare($sqlJornadas);
+                        $stmtJornadas->bindParam(":id_Dia", $dia['dia'], PDO::PARAM_INT);
+                        $stmtJornadas->bindParam(":horaInicio", $dia['horaInicio'], PDO::PARAM_STR);
+                        $stmtJornadas->bindParam(":horaFin", $dia['horaFin'], PDO::PARAM_STR);
+                        
+                        if (!$stmtJornadas->execute()) {
+                            throw new Exception("Error al insertar en la tabla jornadas.");
+                        }
+                        
+                        // Obtener el ID de la jornada recién insertada
+                        $id_Jornada = $conexion->lastInsertId();
+
+                        // Insertar en la tabla hs_semanal
+                        $sqlHsSemanal = "INSERT INTO hs_semanal (
+                            id_Jornada, numeroPlaza
+                        ) VALUES (
+                            :id_Jornada, :numeroPlaza
+                        )";
+
+                        $stmtHsSemanal = $conexion->prepare($sqlHsSemanal);
+                        $stmtHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                        $stmtHsSemanal->bindParam(":numeroPlaza", $numeroPlaza, PDO::PARAM_INT);
+
+                        if (!$stmtHsSemanal->execute()) {
+                            throw new Exception("Error al insertar en la tabla hs_semanal.");
+                        }
+
+                        echo "Día: " . $dia['dia'] . ", Hora de inicio: " . $dia['horaInicio'] . ", Hora de fin: " . $dia['horaFin'] . "<br>"; 
+                    } 
+                } 
+            }
 
             // 3. Actualizar en la tabla solicitudes_suplente
             $sqlSolicitud = "UPDATE solicitudes_suplente SET 
@@ -645,6 +640,53 @@ class ModeloSolSuplente{
         return $horariosOrganizados; // Devuelve el array organizado
     }
     
+    // ==============================================================
+    // Rechazar Solicitud
+    // ==============================================================
+    static public function mdlRechazarSolicitud($estado, $id) // este estado es el 'nuevo'
+    {
+        try {
+            // $elim = 8;
+            $stmt = Conexion::conectar()->prepare("UPDATE solicitudes_suplente 
+            SET id_EstadoSol = :id_EstadoSol where id_SolSuplente = :id_SolSuplente");
+            
+            $stmt->bindParam(":id_SolSuplente", $id, PDO::PARAM_INT);
+            $stmt->bindParam(":id_EstadoSol", $estado , PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+
+    }
+
+    // ==============================================================
+    // Aprobar Solicitud
+    // ==============================================================
+    static public function mdlAprobarSolicitud($estado, $id) // este estado es el 'nuevo'
+    {
+        try {
+            // $elim = 8;
+            $stmt = Conexion::conectar()->prepare("UPDATE solicitudes_suplente 
+            SET id_EstadoSol = :id_EstadoSol where id_SolSuplente = :id_SolSuplente");
+            
+            $stmt->bindParam(":id_SolSuplente", $id, PDO::PARAM_INT);
+            $stmt->bindParam(":id_EstadoSol", $estado , PDO::PARAM_INT);
+            
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+
+    }
     
 }
 
