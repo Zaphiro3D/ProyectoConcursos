@@ -411,17 +411,17 @@ class ModeloSolSuplente{
 
             // Eliminar las jornadas restantes
             foreach ($jornadasExistentes as $id_Jornada => $jornada) {
-                $stmtDeleteJornada->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                $stmtDeleteJornada->bindParam(":id_Jornada", $jornada, PDO::PARAM_INT);
                 $stmtDeleteJornada->execute();
 
                 // Eliminar también de hs_semanal
                 $sqlDeleteHsSemanal = "DELETE FROM hs_semanal WHERE id_Jornada = :id_Jornada";
                 $stmtDeleteHsSemanal = $conexion->prepare($sqlDeleteHsSemanal);
-                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $id_Jornada, PDO::PARAM_INT);
+                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $jornada, PDO::PARAM_INT);
                 $stmtDeleteHsSemanal->execute();
             }
 
-            // 2. Insertar en la tabla jornadas
+            // 3. Insertar en la tabla jornadas
             foreach ($datos["instituciones"] as $i => $institucion) { 
                 foreach ($institucion['dias'] as $dia) { 
                     if (!empty($dia)) { // Verifica si el valor no está vacío 
@@ -463,7 +463,7 @@ class ModeloSolSuplente{
                 } 
             }
 
-            // 3. Actualizar en la tabla solicitudes_suplente
+            // 4. Actualizar en la tabla solicitudes_suplente
             $sqlSolicitud = "UPDATE solicitudes_suplente SET 
                 fechaInicio = :fechaInicio, 
                 fechaFin = :fechaFin, 

@@ -177,6 +177,9 @@ class ControladorSolSuplente{
         ];
     }
 
+    // ==============================================================
+    // Editar Solicitud de Suplente
+    // ==============================================================
     public function ctrEditarSolicitud()
     {
         $errores = []; // Inicializar arreglo de errores

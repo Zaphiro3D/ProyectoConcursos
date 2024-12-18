@@ -359,18 +359,10 @@ class ControladorAgentes{
             //if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
 
                 $encriptar = crypt(trim($_POST["password"]), '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
-                //print_r($encriptar);
-                //echo '<br>';
-                //return;
-               // $item = "email";
 
                 $valor = $_POST["email"];
                 $respuesta = ModeloAgentes::mdlBuscarAgentes($valor);
-                //print_r($respuesta["password"]);
-                //echo '<br>';
-                //print_r($encriptar);
-                //return;
-                //
+
                 if (is_array($respuesta) && ($respuesta["email"] ==
                     $_POST["email"] && $respuesta["password"] == $encriptar)) {
                     
@@ -382,6 +374,22 @@ class ControladorAgentes{
                     $_SESSION["id_agente"] = $respuesta["id_Agente"];
                     $_SESSION["nombre"] = $respuesta["nombre"] . ' ' . $respuesta["apellido"];
                     $_SESSION["autorizacion"] = $respuesta["id_Rol"];
+
+
+                    switch ($respuesta["id_Rol"]) {
+                        case 1:
+                            $_SESSION["titulo"] = 'Director Departamental';
+                            break;
+                        case 2:
+                            $_SESSION["titulo"] = 'Supervisor';
+                            break;   
+                        case 3:
+                            $_SESSION["titulo"] = 'Director';
+                            break;
+                        case 4:
+                            $_SESSION["titulo"] = 'Administrativo';
+                            break;
+                    }
 
                     echo '<script>
                     window.location = "inicio";

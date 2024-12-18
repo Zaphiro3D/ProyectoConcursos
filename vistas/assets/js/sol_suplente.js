@@ -55,8 +55,11 @@ institucion1.addEventListener("input", function() {
 function borrarHorario(dia, inst) {
     const horaInicio = document.getElementById(`horaIni${dia}E${inst}`);
     const horaFin = document.getElementById(`horaFin${dia}E${inst}`);
+    const dias = document.getElementById(`dia${dia}E${inst}`);
+
     if (horaInicio) horaInicio.value = "";
     if (horaFin) horaFin.value = "";
+    if (dias) dias.value = "";
 }
 
 // Cargo Abierto

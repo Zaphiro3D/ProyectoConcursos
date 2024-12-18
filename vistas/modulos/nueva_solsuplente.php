@@ -627,11 +627,11 @@ if ($rol<4) {
 
                                         <select 
                                             class="form-select" 
-                                            id="dia<?php echo $numDia; ?>Est<?php echo $i+1; ?>" 
+                                            id="dia<?php echo $numDia; ?>E<?php echo $i+1; ?>" 
                                             name="instituciones[<?= $i ?>][dias][<?php echo $numDia-1; ?>][dia]" 
                                             required>
                                             <!-- Opción predeterminada -->
-                                            <option value="" disabled <?php echo empty($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"]) ? 'selected' : ''; ?>>
+                                            <option value="" <?php echo empty($_POST["instituciones"][$i]["dias"][$numDia-1]["dia"]) ? 'selected' : ''; ?>>
                                                 
                                             </option>
 
@@ -687,7 +687,7 @@ if ($rol<4) {
                                             data-bs-toggle="tooltip" 
                                             data-bs-placement="bottom" 
                                             data-bs-title="Borrar Horarios Día <?php echo $numDia; ?>" 
-                                            onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i; ?>)"
+                                            onclick="borrarHorario(<?php echo $numDia; ?>,<?php echo $i+1; ?>)"
                                         >
                                             <i class="fa-solid fa-eraser"></i>
                                         </button>
