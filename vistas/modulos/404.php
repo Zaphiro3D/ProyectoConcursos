@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="maintenance-img">
-                        <img src="<?php echo $url; ?>vistas/assets/images/svg/404-error.svg" class="img-fluid" alt="coming-soon">
+                        <img src="<?php echo $url; ?>vistas/assets/images/svg/404-error.svg" class="img-fluid" alt="404">
                     </div>
                     
                     <div class="text-center">

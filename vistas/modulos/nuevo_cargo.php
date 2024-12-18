@@ -1,15 +1,4 @@
 <?php
-// Función para opciones de select días
-function generarOpcionesDias()
-{
-    $dias = ControladorSolSuplente::ctrMostrarDatosSol("dias", "*", null);
-    $opciones = '<option value="">...</option>';
-    foreach ($dias as $value) {
-        $opciones .= "<option>{$value['nombre']}</option>";
-    }
-    return $opciones;
-}
-
 // Para opciones de selects
 $institucion = ControladorInstituciones::ctrMostrarInstituciones(null, null);
 $cargos = ControladorSolSuplente::ctrMostrarDatosSol("nombres_cargos", "*", null);
@@ -25,6 +14,12 @@ $resultado = $controlador->ctrAgregarCargo();
 
 $errores = $resultado['errores'] ?? [];
 $validado = $resultado['validado'] ?? '';
+
+if (isset($_SESSION["autorizacion"])) {
+    $rol = $_SESSION["autorizacion"];
+}
+
+if ($rol==1) {
 
 ?>
 
@@ -419,7 +414,7 @@ $validado = $resultado['validado'] ?? '';
                 <div class="col-lg-12">
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-outline-dark btnVolver" pag="cargos"> <i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
+                            <button type="button" class="btn btn-outline-dark btnVolver" pag="<?php echo ControladorPlantilla::url(); ?>cargos"> <i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
                             <button type="submit" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                         </div>
                     </div>
@@ -428,6 +423,19 @@ $validado = $resultado['validado'] ?? '';
         </div>
     </form>
 </div> <!-- container-fluid -->
+<?php } else { ?>
+    <?php include 'acceso_denegado.php'; ?>
+    <script>
+    Swal.fire({
+        title: "Error",
+        text: "Permisos Insuficientes.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+    }).then(function (result) {
+    });
+  </script>
+<?php } ?>
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
 <script src="<?php echo $url; ?>vistas/assets/js/cargos.js"></script>

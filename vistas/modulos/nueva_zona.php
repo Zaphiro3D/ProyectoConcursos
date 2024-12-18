@@ -1,3 +1,11 @@
+<?php
+if (isset($_SESSION["autorizacion"])) {
+    $rol = $_SESSION["autorizacion"];
+}
+
+if ($rol==1) {
+?>
+
 <div class="container-xxl">
 
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -77,7 +85,7 @@
                         <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                             <div class="d-flex flex-wrap gap-2">
                                 <input type="hidden" name="id_Supervisor" id="id_Supervisor">
-                                <button type="button" class="btn btn-outline-dark btnVolver" pag="zonasSupervision"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
+                                <button type="button" class="btn btn-outline-dark btnVolver" pag="<?php echo ControladorPlantilla::url(); ?>zonasSupervision"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button>
                                 <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button>
                             </div>
                         </div>
@@ -90,6 +98,19 @@
     </form>
 
 </div> <!-- container-fluid -->
+<?php } else { ?>
+    <?php include 'acceso_denegado.php'; ?>
+    <script>
+    Swal.fire({
+        title: "Error",
+        text: "Permisos Insuficientes.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+    }).then(function (result) {
+    });
+  </script>
+<?php } ?>
 
 <script>
     document.getElementById('datalistSupervisor').addEventListener('input', function() {

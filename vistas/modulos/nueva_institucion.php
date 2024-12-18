@@ -1,8 +1,14 @@
 <?php
     
-    $agentes = ControladorAgentes::ctrMostrarAgentes(null,null);
-    $zonas = ControladorZonas::ctrMostrarZonas(null,null);
-    $tipos = ControladorInstituciones::ctrMostrarTipos();
+$agentes = ControladorAgentes::ctrMostrarAgentes(null,null);
+$zonas = ControladorZonas::ctrMostrarZonas(null,null);
+$tipos = ControladorInstituciones::ctrMostrarTipos();
+
+if (isset($_SESSION["autorizacion"])) {
+    $rol = $_SESSION["autorizacion"];
+}
+
+if ($rol==1) {
 ?>
 
 <div class="container-xxl">
@@ -122,7 +128,7 @@
                     <div class="col-lg-6">
                         <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                             <div class="d-flex flex-wrap gap-2">  
-                                <button type="button" class="btn btn-outline-dark btnVolver" pag = "instituciones"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
+                                <button type="button" class="btn btn-outline-dark btnVolver" pag = "<?php echo ControladorPlantilla::url(); ?>instituciones"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
                                 <button type="button" class="btn btn-primary btnGuardar"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar</button> 
                             </div>
                         </div>
@@ -134,6 +140,20 @@
         </div>
     </form>                                        
 </div> <!-- container-fluid -->
+<?php } else { ?>
+    <?php include 'acceso_denegado.php'; ?>
+    <script>
+    Swal.fire({
+        title: "Error",
+        text: "Permisos Insuficientes.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+    }).then(function (result) {
+    });
+  </script>
+<?php } ?>
+
 
 <script>
 // Función para guardar el id en el campo oculto y 

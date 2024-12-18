@@ -718,7 +718,7 @@ if ($rol<4) {
                 <div class="col-lg-12">
                     <div class="px-2 py-2 d-flex align-items-sm-center flex-sm-row flex-column">
                         <div class="d-flex flex-wrap gap-2">  
-                            <button type="button" class="btn btn-outline-dark btnVolver" pag = "solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
+                            <button type="button" class="btn btn-outline-dark btnVolver" pag = "<?php echo ControladorPlantilla::url(); ?>solicitudesSuplente"><i class="fa-solid fa-caret-left"></i> &nbsp; Cancelar</button> 
                             <button type="submit" class="btn btn-outline-primary btnGuardar" onclick="cambiarEstado(1)"><i class="fa-solid fa-floppy-disk"></i> &nbsp; Guardar Borrador</button> 
                             <button type="submit" class="btn btn-primary btnGuardar" onclick="cambiarEstado(2)"><i class="fa-solid fa-paper-plane"></i> &nbsp; Enviar</button> 
                         </div>

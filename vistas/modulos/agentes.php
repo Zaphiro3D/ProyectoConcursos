@@ -91,28 +91,3 @@ if (isset($_SESSION["autorizacion"])) {
     </div>
 
 </div>
-
-
-<script>
-    /*const rol = "<?php echo $rol; ?>";
-
-    if (rol == "2" || rol == "3" || rol == "4") {
-        // Ocultar el encabezado de "Acciones"
-        document.querySelectorAll('.acciones-columna').forEach(th => {
-            th.style.display = 'none';
-        });
-        // Vaciar el contenido del encabezado de "Acciones" en el <th>
-        document.querySelectorAll('.acciones-columna').forEach(th => {
-            th.innerHTML = ''; // Vacía el contenido del <th>
-        });
-
-        // Ocultar las celdas de "Acciones" en cada fila
-        document.querySelectorAll('.acciones-celda').forEach(td => {
-            td.style.display = 'none';
-        });
-
-        document.querySelectorAll('.acciones-celda .btn').forEach(button => {
-            button.style.display = 'none';
-        });
-    }*/
-</script>
