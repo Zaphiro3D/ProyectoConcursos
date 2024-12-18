@@ -2,8 +2,9 @@
  function redirectToPlaza() {
      const numeroPlaza = document.getElementById('numeroPlaza').value;
      if (numeroPlaza) {
+
          const url = "<?php echo ControladorPlantilla::url(); ?>";
-         window.location.href = `${url}/nueva_solsuplente/${numeroPlaza}`;
+         window.location.href = `${url}nueva_solsuplente/${numeroPlaza}`;
      }
  }
 </script>
@@ -40,6 +41,12 @@ if (max(array_keys($rutas)) == 1){
         $id_Insti = explode(',', $datosCargo['id_instituciones']);
     }
 }
+
+if (isset($_SESSION["autorizacion"])) {
+    $rol = $_SESSION["autorizacion"];
+}
+
+if ($rol<4) {
 ?>
 
 <div class="container-xxl">
@@ -356,7 +363,7 @@ if (max(array_keys($rutas)) == 1){
                                         <!-- <div class="form-floating"> -->
                                             <label for="motivo" id="lblIdMotivo" class="form-label">Motivo</label>
                                             <input 
-                                                class="form-control fs-14 <?= isset($errores["insti" . ($i + 1)]) ? 'is-invalid' : '' ?>" 
+                                                class="form-control fs-14 <?= isset($errores["motivo"]) ? 'is-invalid' : '' ?>" 
                                                 list="opcionesMotivo" 
                                                 id="motivo" 
                                                 name="motivo" 
@@ -366,7 +373,7 @@ if (max(array_keys($rutas)) == 1){
                                             >
                                         <!-- </div> -->
                                         <div class="invalid-feedback">
-                                            <?= $errores["insti" . ($i + 1)] ?? 'Por favor, complete este campo.'; ?>
+                                            <?= $errores["motivo"] ?? 'Por favor, complete este campo.'; ?>
                                         </div>
                                         <input 
                                             type="hidden" 
@@ -703,6 +710,9 @@ if (max(array_keys($rutas)) == 1){
             
             <!-- Campo oculto para estado de suplencia -->
             <input type="hidden" name="estado" id="estado">
+             <!-- Campo oculto para id_Cargo-->
+            <input type="hidden" name="id_Cargo" id="id_Cargo" value= "<?php echo htmlspecialchars($datosCargo['id_Cargo'] ?? $_POST['id_Cargo'] ?? ''); ?>">
+
 
             <div class="row">
                 <div class="col-lg-12">
@@ -718,9 +728,24 @@ if (max(array_keys($rutas)) == 1){
         </div>
     </form>
 </div> <!-- container-fluid -->
+<?php } else { ?>
+    <h3>Usuario No Autorizado</h3>
+    <script>
+    Swal.fire({
+        title: "Error",
+        text: "Permisos Insuficientes.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+    }).then(function (result) {
+    });
+  </script>
+<?php } ?>
+
+<?php ?>
 
 <!-- Script js específico para modificaciones dinámicas de formulario -->
-<script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></script>
+<script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></>
 <script>
     function cambiarEstado(estado) {
         document.getElementById('estado').value = estado;

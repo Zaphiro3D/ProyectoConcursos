@@ -34,9 +34,13 @@ class ControladorSolSuplente{
             $cargo = $_POST['id_NombreCargo'] ?? '';
 
             // Decidir qué campos validar según el cargo
-            $campos = ['id_Turno', 'id_NombreCargo'];
+            $campos = ['id_Turno', 'motivo', 'id_NombreCargo'];
             if ($validador->requiereGradoDivision($cargo)) {
                 $campos = array_merge($campos, ['id_Grado', 'id_Division']);
+            }
+
+            if (!$validador->esUnico(new ModeloSolSuplente, 'mdlSolicUnica', intval($_POST['id_Cargo']), ' and id_EstadoSol < 7')) {
+                $errores['numeroPlaza'] = "Ya existe una solicitud para este cargo";
             }
 
             // Validar los selects necesarios en el formulario.
@@ -55,10 +59,7 @@ class ControladorSolSuplente{
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
                     
-                    foreach ($dias as $d => $dia) {
-                        // print_r("<br>dia: ");
-                        // var_dump($dia);
-                    
+                    foreach ($dias as $d => $dia) {                    
                         // Verificar si $dia es un array válido y contiene la clave "dia"
                         if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
                             // Excluir días vacíos
@@ -69,8 +70,6 @@ class ControladorSolSuplente{
                             }
                         }
                     }
-                    
-                    
 
                     $instituciones[] = [
                         "id_Institucion" => $idInstitucion,
@@ -356,7 +355,7 @@ class ControladorSolSuplente{
                 </script>";
             }
         } else {
-            echo "Error: No se recibió el número de plaza.";    
+            // echo "Error: No se recibió el número de plaza.";    
         }
 
         return $datosCargo; // Devolver los datos al formulario
