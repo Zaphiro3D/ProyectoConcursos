@@ -108,6 +108,7 @@ $url = ControladorPlantilla::url();
                             $rutas[0] == "editar_solsuplente"||
 
                             // General
+                            $rutas[0] == "acceso_denegado" ||
                             $rutas[0] == "inicio" ||
                             $rutas[0] == "salir" 
                         ) {

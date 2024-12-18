@@ -729,7 +729,7 @@ if ($rol<4) {
     </form>
 </div> <!-- container-fluid -->
 <?php } else { ?>
-    <h3>Usuario No Autorizado</h3>
+    <?php include 'acceso_denegado.php'; ?>
     <script>
     Swal.fire({
         title: "Error",
@@ -742,10 +742,8 @@ if ($rol<4) {
   </script>
 <?php } ?>
 
-<?php ?>
-
 <!-- Script js específico para modificaciones dinámicas de formulario -->
-<script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></>
+<script src="<?php echo $url; ?>vistas/assets/js/sol_suplente.js"></></script>
 <script>
     function cambiarEstado(estado) {
         document.getElementById('estado').value = estado;
