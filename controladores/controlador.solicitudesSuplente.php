@@ -58,7 +58,6 @@ class ControladorSolSuplente{
                 // Verificar que el ID de la institución sea mayor a 0
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
-                    
                     foreach ($dias as $d => $dia) {                    
                         // Verificar si $dia es un array válido y contiene la clave "dia"
                         if (is_array($dia) && isset($dia["dia"]) && strlen($dia["dia"]) > 0) { 
@@ -145,7 +144,7 @@ class ControladorSolSuplente{
                     "estado" => intval($_POST["estado"])
                 ]);
 
-                print_r($respuesta); 
+                // print_r($respuesta); 
                 $url = ControladorPlantilla::url() . "solicitudesSuplente";
                 if ($respuesta["status"] === "ok") {
                     echo '<script>
@@ -191,7 +190,7 @@ class ControladorSolSuplente{
             $validador = new Validador();
             
             // Obtener y validar campos requeridos
-            $campos = ['id_NombreCargo', 'id_Turno', 'fechaInicio', 'fechaFin', 'hsCatedra', 'motivo'];
+            $campos = [ 'fechaInicio', 'fechaFin', 'motivo'];
             foreach ($campos as $campo) {
                 if ($validador->validarSelect($_POST[$campo] ?? '')) {
                     $errores[$campo] = "Por favor, seleccione $campo correctamente.";
@@ -200,40 +199,33 @@ class ControladorSolSuplente{
 
             // Validar instituciones asociadas al cargo
             $inst = [];
+            
             foreach ($_POST["instituciones"] as $key => $institucion) {
                 $idInstitucion = intval($institucion["id_Institucion"]);
                 $diasValidos[] = '';
                 // Verificar que el ID de la institución sea mayor a 0
                 if ($idInstitucion > 0) {
                     $dias = $institucion["dias"] ?? [];
-                    // print_r("<br>dia: ");
-                        // var_dump($dias);
-                    foreach ($dias as $d => $dia) {
-                        // print_r("<br>dia: ");
-                        // var_dump($dias[$d]);
-                    
+                    $iDia = 0;
+                    foreach ($dias as $d => $dia) {                        
                         // Verificar si $dia es un array válido y contiene la clave "dia"
-
                         if (is_array($dias[$d]) && isset($dias[$d]["dia"]) && strlen($dias[$d]["dia"]) > 0) { 
                             // Excluir días vacíos
                             if (!$validador->validarDiaHorario($dias[$d])) {
                                 $errores["instituciones_$key"] = "Días u horarios inválidos para la institución $idInstitucion.";
                             } else {
-                                $diasValidos[] = $dias[$d]; // Agregar solo días válidos
+                                $diasValidos[$idInstitucion][] = $dias[$d]; // Agregar solo días válidos
                             }
                         }
                     }
-                    // var_dump($diasValidos);
-                    // die();
                     $instituciones[] = [
                         "id_Institucion" => $idInstitucion,
                         "sede" => $key === 0 ? 1 : 0, // La primera institución es la sede
-                        "dias" => $diasValidos // Usar solo los días válidos
+                        "dias" => $diasValidos[$idInstitucion] // Usar solo los días válidos
                     ];
                     $inst[$key] =  $idInstitucion;
                     
                 }
-                // var_dump($instituciones);
             }
 
             $erroresInstituciones = $validador->instituciones($inst, ModeloInstituciones::class);
@@ -269,26 +261,9 @@ class ControladorSolSuplente{
 
             // Si no hay errores, procesar el formulario
             if (empty($errores)) {
-                $id_Grado = intval($_POST["id_Grado"]);
-                $id_Division = intval($_POST["id_Division"]);
                 $dniDocente = intval($_POST["dniDocente"]);
-                
-                if ($id_Grado == '' || $id_Grado == 0) {
-                    $id_Grado = NULL;
-                }
-                if ($id_Division == '' || $id_Division == 0) {
-                    $id_Division = NULL;
-                }
-                if ($dniDocente == '' || $dniDocente == 0) {
-                    $dniDocente = NULL;
-                }
 
-                $respuesta = ModeloSolSuplente::mdlEditarSolicitud([
-                    "id_NombreCargo" => intval($_POST["id_NombreCargo"]),
-                    "id_Grado" => $id_Grado,
-                    "id_Division" => $id_Division,
-                    "id_Turno" => intval($_POST["id_Turno"]),
-                    "hsCatedra" => intval($_POST["hsCatedra"]),
+                $respuesta = ModeloSolSuplente::mdlEditarSolicitud([   
                     "observaciones" => htmlspecialchars($_POST["observaciones"] ?? ''),
                     "fechaInicio" => $fechas["fechaInicio"],
                     "fechaFin" => $fechas["fechaFin"],
@@ -298,7 +273,8 @@ class ControladorSolSuplente{
                     "nombreDocente" => htmlspecialchars($_POST["nombreDocente"]),
                     "apellidoDocente" => htmlspecialchars($_POST["apellidoDocente"]),
                     "dniDocente" => $dniDocente,
-                    "estado" => intval($_POST["estado"])
+                    "estado" => intval($_POST["estado"]),
+                    "id_sol" => intval($_POST["id_sol"])
                 ]);
 
                 $url = ControladorPlantilla::url() . "solicitudesSuplente";

@@ -32,10 +32,10 @@ class ModeloSolSuplente{
                     GROUP_CONCAT(
                         DISTINCT CONCAT(
                             i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-                        ) ORDER BY p.sede DESC
+                        ) ORDER BY p.sede DESC, p.numeroPlaza ASC
                     ) AS instituciones,
                     GROUP_CONCAT(
-                        DISTINCT i.id_Institucion ORDER BY p.sede DESC
+                        DISTINCT i.id_Institucion ORDER BY p.sede DESC, p.numeroPlaza ASC
                     ) AS id_instituciones,
                     ss.fechaInicio,
                     ss.fechaFin,
@@ -105,7 +105,7 @@ class ModeloSolSuplente{
                     GROUP_CONCAT(
                         DISTINCT CONCAT(
                             i.nombre, ' N°', i.numero, ' (CUE: ', i.cue, ')'
-                        ) ORDER BY p.sede DESC
+                        ) ORDER BY p.sede DESC, p.numeroPlaza ASC
                     ) AS instituciones,
                     ss.fechaInicio,
                     ss.fechaFin,
@@ -126,12 +126,12 @@ class ModeloSolSuplente{
                             INNER JOIN dias ON dias.id_Dia = j.id_Dia
                             WHERE hs.numeroPlaza = p.numeroPlaza
                             )
-                        ) ORDER BY p.sede DESC, i.numero ASC
+                        ) ORDER BY p.sede DESC, p.numeroPlaza ASC
                         SEPARATOR ' || '
                     ) AS horarios_por_escuela
                 FROM cargos AS c 
-                INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
-                INNER JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
+                LEFT JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
+                LEFT JOIN instituciones AS i ON p.id_Institucion = i.id_Institucion
                 LEFT JOIN grados AS g ON g.id_Grado = c.id_Grado 
                 LEFT JOIN divisiones AS d ON d.id_Division = c.id_Division
                 LEFT JOIN turnos AS t ON t.id_Turno = c.id_Turno
@@ -355,8 +355,6 @@ class ModeloSolSuplente{
         $conexion = Conexion::conectar();
         try {
             $conexion->beginTransaction();
-            // var_dump($datos);
-            // var_dump($datos ['instituciones']); die();
 
             // 1. Verificar si el id_Cargo existe en la tabla plazas
             $sqlCheckCargo = "SELECT id_Cargo FROM plazas WHERE numeroPlaza = :numeroPlaza";
@@ -365,6 +363,8 @@ class ModeloSolSuplente{
             $stmtCheckCargo->execute();
             $numeroPlaza = $datos["numeroPlaza"];
             $observacionesExtra = "";
+
+
 
             if ($stmtCheckCargo->rowCount() > 0) {
                 $resultado = $stmtCheckCargo->fetchAll(PDO::FETCH_ASSOC);
@@ -390,7 +390,7 @@ class ModeloSolSuplente{
 
             foreach ($datos["instituciones"] as $key => $institucion) {
                 $plaza = $datos['numeroPlaza'] + $key;
-                print_r("Plaza: ". $plaza. '<br>');
+                
                 // 2. Obtener las jornadas existentes
                 $sqlJornadasExistentes = "SELECT id_Jornada 
                 FROM jornadas 
@@ -412,37 +412,32 @@ class ModeloSolSuplente{
                 $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
 
 
-                // Eliminar las jornadas restantes
+                // Eliminar las jornadas
                 foreach ($jornadasExistentes as $id_Jornada => $jornada) {
-                print_r("Jornada:");
-                var_dump($jornada);
-                print_r("ID: " . $id_Jornada);
-                // die();
+                    // Eliminar también de hs_semanal
+                    $sqlDeleteHsSemanal = "DELETE FROM hs_semanal WHERE id_Jornada = :id_Jornada";
+                    $stmtDeleteHsSemanal = $conexion->prepare($sqlDeleteHsSemanal);
+                    $stmtDeleteHsSemanal->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
+                    $stmtDeleteHsSemanal->execute();
 
-                $stmtDeleteJornada->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
-                $stmtDeleteJornada->execute();
-
-                // Eliminar también de hs_semanal
-                $sqlDeleteHsSemanal = "DELETE FROM hs_semanal WHERE id_Jornada = :id_Jornada";
-                $stmtDeleteHsSemanal = $conexion->prepare($sqlDeleteHsSemanal);
-                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
-                $stmtDeleteHsSemanal->execute();
+                    $stmtDeleteJornada->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
+                    $stmtDeleteJornada->execute();
                 }
-
 
             }
             
             // 3. Insertar en la tabla jornadas
-            print_r($datos["instituciones"] );
-            die();
             foreach ($datos["instituciones"] as $i => $institucion) { 
                 foreach ($institucion['dias'] as $dia) { 
                     if (!empty($dia)) { // Verifica si el valor no está vacío 
+                        
+                        
                         $sqlJornadas = "INSERT INTO jornadas (
                             id_Dia, horaInicio, horaFin
                         ) VALUES (
                             :id_Dia, :horaInicio, :horaFin
                         )";
+                        
                         $stmtJornadas = $conexion->prepare($sqlJornadas);
                         $stmtJornadas->bindParam(":id_Dia", $dia['dia'], PDO::PARAM_INT);
                         $stmtJornadas->bindParam(":horaInicio", $dia['horaInicio'], PDO::PARAM_STR);
@@ -484,11 +479,13 @@ class ModeloSolSuplente{
                 observaciones = :observaciones, 
                 id_Cargo = :id_Cargo, 
                 id_EstadoSol = :id_EstadoSol
-                WHERE numeroTramite = :numeroTramite";
-
-            $observaciones = $datos["observaciones"] . $observacionesExtra;
+                WHERE id_SolSuplente = :id_SolSuplente";
+               
+            // var_dump ($datos['id_sol']);
+            // die();
+            $observaciones = $datos["observaciones"] .'. ' .$observacionesExtra;
             $stmtSolicitud = $conexion->prepare($sqlSolicitud);
-            $stmtSolicitud->bindParam(":numeroTramite", $datos["numeroTramite"], PDO::PARAM_INT);
+            $stmtSolicitud->bindParam(":id_SolSuplente", $datos["id_sol"], PDO::PARAM_INT);
             $stmtSolicitud->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
             $stmtSolicitud->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
             $stmtSolicitud->bindParam(":id_MotivoSuplencia", $datos["id_Motivo"], PDO::PARAM_INT);

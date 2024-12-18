@@ -32,13 +32,21 @@ $plaza = NULL;
 $datosCargo = [];
 $insti = [];
 $id_Insti = [];
+
+//variables para control de edición de los campos
+$deshabilitar = '';
+$read = '';
+
 if (max(array_keys($rutas)) == 1){
     $plaza = $rutas[1];
     $controlador = new ControladorSolSuplente();
     $datosCargo = $controlador->ctrBuscarDatosPorPlaza($plaza);   
+    
     if($datosCargo){
         $insti = explode(',', $datosCargo['instituciones']);
         $id_Insti = explode(',', $datosCargo['id_instituciones']);
+        $deshabilitar = "disabled";
+        $read = "readonly"; 
     }
 }
 
@@ -82,6 +90,7 @@ if ($rol<4) {
                                             placeholder="Escriba para buscar..."
                                             oninput="autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');"
                                             value="<?php echo htmlspecialchars($insti[0] ?? $_POST['institucionSede'] ?? $_POST['institucion1'] ?? ''); ?>"
+                                            <?php echo $read?> 
                                             required
                                         >
                                         <div class="invalid-feedback"><?php echo $errores['insti1'] ?? 'Por favor, complete este campo.'; ?></div> 
@@ -127,9 +136,10 @@ if ($rol<4) {
                                             id="id_NombreCargo" 
                                             name="id_NombreCargo" 
                                             aria-label="id_NombreCargo" 
+                                            
                                             required>
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_NombreCargo']) && (empty($datosCargo) || empty($datosCargo["id_NombreCargo"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo $deshabilitar; echo empty($_POST['id_NombreCargo']) && (empty($datosCargo) || empty($datosCargo["id_NombreCargo"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($cargos as $key => $value): ?>
@@ -145,7 +155,11 @@ if ($rol<4) {
                                                     elseif (!isset($_POST['id_NombreCargo']) && !empty($datosCargo) && isset($datosCargo["id_NombreCargo"]) && $datosCargo["id_NombreCargo"] == $value["id_NombreCargo"]) {
                                                         echo 'selected';
                                                     }
-                                                    ?>>
+                                                    else{
+                                                        echo $deshabilitar;
+                                                    }
+                                                    
+                                                    ?> >
                                                     <?php echo ($value["nombreCargo"]); ?>
                                                 </option>
                                             <?php endforeach; ?>
@@ -169,7 +183,7 @@ if ($rol<4) {
                                             required>
                                             
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Turno']) && (empty($datosCargo) || empty($datosCargo["id_Turno"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo $deshabilitar; echo empty($_POST['id_Turno']) && (empty($datosCargo) || empty($datosCargo["id_Turno"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($turno as $key => $value): ?>
@@ -183,6 +197,9 @@ if ($rol<4) {
                                                         // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Turno
                                                         elseif (!isset($_POST['id_Turno']) && !empty($datosCargo) && isset($datosCargo["id_Turno"]) && $datosCargo["id_Turno"] == $value["id_Turno"]) {
                                                             echo 'selected';
+                                                        }
+                                                        else{
+                                                            echo $deshabilitar;
                                                         }
                                                     ?>>
                                                     <?php echo ($value["turno"]); ?>
@@ -208,7 +225,7 @@ if ($rol<4) {
                                             required>
 
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Grado']) && (empty($datosCargo) || empty($datosCargo["id_Grado"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo $deshabilitar; echo empty($_POST['id_Grado']) && (empty($datosCargo) || empty($datosCargo["id_Grado"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($grado as $key => $value): ?>
@@ -222,6 +239,9 @@ if ($rol<4) {
                                                         // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Grado
                                                         elseif (!isset($_POST['id_Grado']) && !empty($datosCargo) && isset($datosCargo["id_Grado"]) && $datosCargo["id_Grado"] == $value["id_Grado"]) {
                                                             echo 'selected';
+                                                        }
+                                                        else{
+                                                            echo $deshabilitar;
                                                         }
                                                     ?>>
                                                     <?php echo ($value["grado"]); ?>
@@ -247,7 +267,7 @@ if ($rol<4) {
                                             required>
 
                                             <!-- Opción predeterminada -->
-                                            <option value="" <?php echo empty($_POST['id_Division']) && (empty($datosCargo) || empty($datosCargo["id_Division"])) ? 'selected' : ''; ?>> </option>
+                                            <option value="" <?php echo $deshabilitar; echo empty($_POST['id_Division']) && (empty($datosCargo) || empty($datosCargo["id_Division"])) ? 'selected' : ''; ?>> </option>
 
                                             <!-- Opciones dinámicas -->
                                             <?php foreach ($division as $key => $value): ?>
@@ -261,6 +281,9 @@ if ($rol<4) {
                                                         // Si no hay envío, verificar si $datosCargo está definido y tiene el índice id_Division
                                                         elseif (!isset($_POST['id_Division']) && !empty($datosCargo) && isset($datosCargo["id_Division"]) && $datosCargo["id_Division"] == $value["id_Division"]) {
                                                             echo 'selected';
+                                                        }
+                                                        else{
+                                                            echo $deshabilitar;
                                                         }
                                                     ?>>
                                                     <?php echo ($value["division"]); ?>
@@ -278,7 +301,7 @@ if ($rol<4) {
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($datosCargo['hsCatedra'] ?? $_POST['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
+                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($datosCargo['hsCatedra'] ?? $_POST['hsCatedra'] ?? ''); ?>"  <?php echo $read?> placeholder="hsCat">
                                             <label for="hsCatedra">Hs. Cát.</label>
                                             <div class="invalid-feedback">
                                                 <?php echo $errores['hsCatedra'] ?? ''; ?>
@@ -501,6 +524,7 @@ if ($rol<4) {
                                             name="gridRadiosComparte" 
                                             id="noComparte" 
                                             value="noComparte" 
+                                            <?php echo $deshabilitar?>
                                             <?= $checkSeleccionado === 'noComparte' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
@@ -513,6 +537,7 @@ if ($rol<4) {
                                             name="gridRadiosComparte" 
                                             id="comparte1" 
                                             value="comparte1" 
+                                            <?php echo $deshabilitar?>
                                             <?= $checkSeleccionado === 'comparte1' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
@@ -525,6 +550,7 @@ if ($rol<4) {
                                             name="gridRadiosComparte" 
                                             id="comparte2" 
                                             value="comparte2" 
+                                            <?php echo $deshabilitar?>
                                             <?= $checkSeleccionado === 'comparte2' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
@@ -537,6 +563,7 @@ if ($rol<4) {
                                             name="gridRadiosComparte" 
                                             id="comparte3" 
                                             value="comparte3" 
+                                            <?php echo $deshabilitar?>
                                             <?= $checkSeleccionado === 'comparte3' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
@@ -597,6 +624,7 @@ if ($rol<4) {
                                         name="instituciones[<?= $i ?>][id_Institucion]" 
                                         placeholder="Escriba para buscar..."
                                         value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                        <?php echo $read?> 
                                         oninput="autoSelectBestMatch('institucion<?= $i + 1 ?>', 'OpcionesInstitucion', 'idInstitucion<?= $i + 1 ?>');"
                                     >
                                     <div class="invalid-feedback">

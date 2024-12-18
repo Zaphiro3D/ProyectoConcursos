@@ -25,6 +25,7 @@ if (isset($rutas[1])){
     // Procesa las instituciones, id 
     $insti = explode(',', $solic_select['instituciones']);
     $id_Insti = explode(',', $solic_select['id_instituciones']);
+    
 
     //Procesa los horarios
     $horariosOrganizados = ControladorSolSuplente::ctrMostrarHorariosSol($valor);
@@ -33,11 +34,12 @@ if (isset($rutas[1])){
 if ($solic_select) {
 ?>
 
+
 <div class="container-xxl">
     <form method="POST" name="formSolic" novalidate>
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
-                <h4 class="fs-22 fw-bold m-0">Nueva Solicitud de Suplente</h4>
+                <h4 class="fs-22 fw-bold m-0">Editar Solicitud de Suplente</h4>
             </div>
         </div>
         
@@ -67,6 +69,7 @@ if ($solic_select) {
                                             oninput="autoSelectBestMatch('institucionSede', 'OpcionesInstitucion', 'idInstitucion1');"
                                             value="<?php echo htmlspecialchars($_POST['institucionSede'] ?? $_POST['institucion1'] ?? $insti[0]?? ''); ?>"
                                             required
+                                            readonly
                                         >
                                         <div class="invalid-feedback"><?php echo $errores['insti1'] ?? 'Por favor, complete este campo.'; ?></div> 
                                     </div>
@@ -91,12 +94,13 @@ if ($solic_select) {
                                         <input 
                                             type="number" 
                                             class="form-control border-primary border-3 <?php echo isset($errores['numeroPlaza']) ? 'is-invalid' : ''; ?>" 
-                                            list="numeroPlaza" 
-                                            onchange="redirectToPlaza();"      
+                                            list="numeroPlaza"    
                                             name="numeroPlaza" 
                                             id="numeroPlaza" 
                                             value= "<?php echo $plaza ?? $_POST['numeroPlaza'] ?? $solic_select['numeroPlaza'] ?? ''; ?>" 
-                                            placeholder="N° Plaza" required
+                                            placeholder="N° Plaza" 
+                                            required
+                                            readonly
                                             >
                                         <label for="numeroPlaza">N° Plaza</label>
                                         <div class="invalid-feedback"><?php echo $errores['numeroPlaza'] ?? 'Por favor, complete este campo.'; ?></div> 
@@ -111,6 +115,8 @@ if ($solic_select) {
                                             id="id_NombreCargo" 
                                             name="id_NombreCargo" 
                                             aria-label="id_NombreCargo" 
+                                            readonly
+                                            disabled
                                             required>
                                             <!-- Opción predeterminada -->
                                             <option value="" <?php echo empty($_POST['id_NombreCargo']) && (empty($solic_select) || empty($solic_select["id_NombreCargo"])) ? 'selected' : ''; ?>> </option>
@@ -150,6 +156,7 @@ if ($solic_select) {
                                             id="id_Turno" 
                                             name="id_Turno" 
                                             aria-label="id_Turno" 
+                                            disabled
                                             required>
                                             
                                             <!-- Opción predeterminada -->
@@ -189,6 +196,7 @@ if ($solic_select) {
                                             id="id_Grado" 
                                             name="id_Grado" 
                                             aria-label="id_Grado" 
+                                            disabled
                                             required>
 
                                             <!-- Opción predeterminada -->
@@ -228,6 +236,7 @@ if ($solic_select) {
                                             id="id_Division" 
                                             name="id_Division" 
                                             aria-label="id_Division" 
+                                            disabled
                                             required>
 
                                             <!-- Opción predeterminada -->
@@ -262,7 +271,7 @@ if ($solic_select) {
                                 <div class="col-lg-1">
                                     <div class="form-floating mb-3">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? $solic_select['hsCatedra'] ?? ''); ?>"  placeholder="hsCat">
+                                            <input type="number" class="form-control <?php echo isset($errores['hsCatedra']) ? 'is-invalid' : ''; ?>" id="hsCatedra" name="hsCatedra"  value= "<?php echo htmlspecialchars($_POST['hsCatedra'] ?? $solic_select['hsCatedra'] ?? ''); ?>"  placeholder="hsCat" readonly>
                                             <label for="hsCatedra">Hs. Cát.</label>
                                             <div class="invalid-feedback">
                                                 <?php echo $errores['hsCatedra'] ?? ''; ?>
@@ -496,6 +505,7 @@ if ($solic_select) {
                                             name="gridRadiosComparte" 
                                             id="noComparte" 
                                             value="noComparte" 
+                                            disabled
                                             <?= $checkSeleccionado === 'noComparte' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="noComparte">
                                             No comparte
@@ -508,6 +518,7 @@ if ($solic_select) {
                                             name="gridRadiosComparte" 
                                             id="comparte1" 
                                             value="comparte1" 
+                                            disabled
                                             <?= $checkSeleccionado === 'comparte1' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte1">
                                             Comparte con 1 institución
@@ -520,6 +531,7 @@ if ($solic_select) {
                                             name="gridRadiosComparte" 
                                             id="comparte2" 
                                             value="comparte2" 
+                                            disabled
                                             <?= $checkSeleccionado === 'comparte2' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte2">
                                             Comparte con 2 instituciones
@@ -532,6 +544,7 @@ if ($solic_select) {
                                             name="gridRadiosComparte" 
                                             id="comparte3" 
                                             value="comparte3" 
+                                            disabled
                                             <?= $checkSeleccionado === 'comparte3' ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="comparte3">
                                             Comparte con 3 instituciones
@@ -581,7 +594,7 @@ if ($solic_select) {
                             // Obtener el valor previamente enviado si existe
                             $valorInstitucion = $_POST['institucion' . $i + 1 ] ?? $insti[$i] ?? '';
                             $id_Institucion = $_POST['instituciones'][$i]['id_Institucion'] ?? $id_Insti[$i] ?? '';
-                            
+
                             // Ajusta el array de horarios al ID de la institución
                             $horarios = $horariosOrganizados[$id_Institucion] ?? [];
                         ?>
@@ -595,6 +608,7 @@ if ($solic_select) {
                                     name="instituciones[<?= $i ?>][id_Institucion]" 
                                     placeholder="Escriba para buscar..."
                                     value="<?= htmlspecialchars($valorInstitucion); ?>"
+                                    disabled
                                     oninput="autoSelectBestMatch('institucion<?= $i + 1 ?>', 'OpcionesInstitucion', 'idInstitucion<?= $i + 1 ?>');"
                                 >
                                 <div class="invalid-feedback">
@@ -711,9 +725,26 @@ if ($solic_select) {
 
                 </div>  <!-- col -->
             </div>
+            <?php
+                $estado =NULL;
+                switch ($estado) {
+                    case 1:
+                        # code...
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
+
+            ?>
+            <!-- Campo oculto para estado de suplencia -->
+            <input type="hidden" name="estado" id="estado"  value= "<?php echo $estado ?? $solic_select['id_EstadoSol']?>">
             
             <!-- Campo oculto para estado de suplencia -->
-            <input type="hidden" name="estado" id="estado">
+            <input type="hidden" name="id_sol" id="id_sol"  value= "<?php echo $solic_select['id_SolSuplente']?>">
+            
+
 
             <div class="row">
                 <div class="col-lg-12">
