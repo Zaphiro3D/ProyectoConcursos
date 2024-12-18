@@ -356,40 +356,45 @@ class ControladorAgentes{
     {
         if (isset($_POST["email"])) {
             if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
-            // if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
+            //if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][azA-Z0-9_]+)*[.][a-zAZ]{2,4}$/', $_POST["email"])) {                  
 
                 $encriptar = crypt(trim($_POST["password"]), '$2a$07$tawfdgyaufiusdgopfhgjxerctyuniexrcvrdtfyg$');           
-                // print_r($encriptar);
-                // return;
-                $item = "email";
+                //print_r($encriptar);
+                //echo '<br>';
+                //return;
+               // $item = "email";
 
                 $valor = $_POST["email"];
-                $respuesta = ModeloAgentes::mdlBuscarAgentes($item,$valor);
-
-                    if (is_array($respuesta) && ($respuesta["email"] ==
-                        $_POST["email"] && $respuesta["password"] == $encriptar)) {
-                        
-                        echo '<script>
-                            fncSweetAlert("loading", "Ingresando..", "")
-                            </script>';
-                        
-                        $_SESSION["iniciarSesion"] = "ok";
-                        $_SESSION["id_agente"] = $respuesta["id_agente"];
-                        $_SESSION["nombre"] = $respuesta["nombre"] . ' ' . $respuesta["apellido"];
-                        $_SESSION["autorizacion"] = $respuesta["id_Rol"];
-
-                        echo '<script>
-                        window.location = "inicio";
+                $respuesta = ModeloAgentes::mdlBuscarAgentes($valor);
+                //print_r($respuesta["password"]);
+                //echo '<br>';
+                //print_r($encriptar);
+                //return;
+                //
+                if (is_array($respuesta) && ($respuesta["email"] ==
+                    $_POST["email"] && $respuesta["password"] == $encriptar)) {
+                    
+                    echo '<script>
+                        fncSweetAlert("loading", "Ingresando..", "")
                         </script>';
-                    } else {
-                        echo "<script>
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Error de credenciales. Intente nuevamente',
-                                icon: 'error'
-                            });
-                            </script>";
-                    }
+                    
+                    $_SESSION["iniciarSesion"] = "ok";
+                    $_SESSION["id_agente"] = $respuesta["id_Agente"];
+                    $_SESSION["nombre"] = $respuesta["nombre"] . ' ' . $respuesta["apellido"];
+                    $_SESSION["autorizacion"] = $respuesta["id_Rol"];
+
+                    echo '<script>
+                    window.location = "inicio";
+                    </script>';
+                } else {
+                    echo "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error de credenciales. Intente nuevamente',
+                            icon: 'error'
+                        });
+                        </script>";
+                }
 
             }
         }

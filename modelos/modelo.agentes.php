@@ -147,10 +147,10 @@ class ModeloAgentes{
     // ==============================================================
     // Buscar Agente
     // ==============================================================
-    static public function mdlBuscarAgentes($agente, $valor){
+    static public function mdlBuscarAgentes($valor){
         try {
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes`, `roles`  WHERE agentes.id_Rol = roles.id_Rol and eliminado = 0 and $agente = :$agente;");
-            $stmt->bindParam(":" . $agente, $valor, PDO::PARAM_INT);
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM `agentes` as a , `roles` WHERE a.id_Rol = roles.id_Rol and a.email = :valor and eliminado = 0");
+            $stmt->bindParam(":valor" , $valor, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {

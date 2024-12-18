@@ -1,8 +1,13 @@
 <?php
-    $cargos = ControladorCargos::ctrMostrarCargos(null, null);
-                            
-    $eliminar = new ControladorCargos();
-    $eliminar -> ctrEliminarCargo();
+$cargos = ControladorCargos::ctrMostrarCargos(null, null);
+
+$eliminar = new ControladorCargos();
+$eliminar->ctrEliminarCargo();
+
+if (isset($_SESSION["autorizacion"])) {
+    $rol = $_SESSION["autorizacion"];
+    //print_r($rol);
+}
 ?>
 
 <div class="container-xxl">
@@ -13,7 +18,14 @@
     </div>
     <div class="py-2 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="d-flex flex-wrap gap-2">
-            <a href="nuevo_cargo" class="btn btn-primary"><i class="fas fa-plus"></i> &nbsp; Nuevo Cargo</a>
+            <?php if ($rol == 3 || $rol == 4) { ?>
+                <!-- Mostrar un mensaje informativo -->
+                <button class="btn btn-secondary" disabled>
+                    <i class="fas fa-plus"></i> &nbsp; No tiene permisos para agregar Cargos
+                </button>
+            <?php } else { ?>
+                <a href="nuevo_cargo" class="btn btn-primary"><i class="fas fa-plus"></i> &nbsp; Nuevo Cargo</a>
+            <?php }?>
         </div>
     </div>
 
@@ -35,13 +47,15 @@
                                 <th>Institución 2</th>
                                 <th>Institución 3</th>
                                 <th>Institución 4</th>
-                                <th>Acciones</th>
+                                <?php if ($rol == 3 || $rol == 4) { ?>
+                                <?php } else { ?>
+                                    <th>Acciones</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($cargos as $key => $value) 
-                            {
+                            foreach ($cargos as $key => $value) {
                                 $instituciones = explode(',', $value['instituciones']);
                             ?>
                                 <tr style="background-color:#000888">
@@ -56,18 +70,20 @@
                                     <td><?php echo $instituciones[1] ?? '' ?></td>
                                     <td><?php echo $instituciones[2] ?? '' ?></td>
                                     <td><?php echo $instituciones[3] ?? '' ?></td>
+                                    <?php if ($rol == 3|| $rol == 4) { ?>
 
-                                    <td><a href="editar_cargo/<?php echo $value["id_Cargo"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                        <button 
-                                            class="btn btn-danger btn-sm btnEliminar" 
-                                            id_eliminar="<?php echo $value["id_Cargo"]; ?>" 
-                                            pag="cargos" 
-                                            categoria="Cargo - Plaza N°" 
-                                            valorElim="<?php echo $value["numeroPlaza"]; ?>">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-
+                                    <?php } else { ?>
+                                        <td><a href="editar_cargo/<?php echo $value["id_Cargo"] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                            <button
+                                                class="btn btn-danger btn-sm btnEliminar"
+                                                id_eliminar="<?php echo $value["id_Cargo"]; ?>"
+                                                pag="cargos"
+                                                categoria="Cargo - Plaza N°"
+                                                valorElim="<?php echo $value["numeroPlaza"]; ?>">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    <?php } ?>
                                 </tr>
 
                             <?php } ?>
