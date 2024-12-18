@@ -35,7 +35,7 @@ class ModeloSolSuplente{
                         ) ORDER BY p.sede DESC
                     ) AS instituciones,
                     GROUP_CONCAT(
-                        DISTINCT i.id_Institucion
+                        DISTINCT i.id_Institucion ORDER BY p.sede DESC
                     ) AS id_instituciones,
                     ss.fechaInicio,
                     ss.fechaFin,
@@ -388,40 +388,53 @@ class ModeloSolSuplente{
                 }
             }
 
-            // 2. Obtener las jornadas existentes
-            $sqlJornadasExistentes = "SELECT id_Jornada 
-                                    FROM jornadas 
-                                    WHERE id_Jornada IN (
-                                        SELECT id_Jornada FROM hs_semanal WHERE numeroPlaza = :numeroPlaza
-                                    )";
-            $stmtJornadasExistentes = $conexion->prepare($sqlJornadasExistentes);
-            $stmtJornadasExistentes->bindParam(":numeroPlaza", $datos["numeroPlaza"], PDO::PARAM_INT);
-            $stmtJornadasExistentes->execute();
-            $jornadasExistentes = $stmtJornadasExistentes->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($datos["instituciones"] as $key => $institucion) {
+                $plaza = $datos['numeroPlaza'] + $key;
+                print_r("Plaza: ". $plaza. '<br>');
+                // 2. Obtener las jornadas existentes
+                $sqlJornadasExistentes = "SELECT id_Jornada 
+                FROM jornadas 
+                WHERE id_Jornada IN (
+                    SELECT id_Jornada FROM hs_semanal WHERE numeroPlaza = :numeroPlaza
+                )";
+                $stmtJornadasExistentes = $conexion->prepare($sqlJornadasExistentes);
+                $stmtJornadasExistentes->bindParam(":numeroPlaza", $plaza, PDO::PARAM_INT);
+                $stmtJornadasExistentes->execute();
+                $jornadasExistentes = $stmtJornadasExistentes->fetchAll(PDO::FETCH_ASSOC);
 
-            // Preparar consultas
-            $sqlJornadas = "INSERT INTO jornadas (id_Dia, horaInicio, horaFin) 
-                                VALUES (:id_Dia, :horaInicio, :horaFin)";
-            $stmtJornadas = $conexion->prepare($sqlJornadas);
+                // Preparar consultas
+                $sqlJornadas = "INSERT INTO jornadas (id_Dia, horaInicio, horaFin) 
+                        VALUES (:id_Dia, :horaInicio, :horaFin)";
+                $stmtJornadas = $conexion->prepare($sqlJornadas);
 
 
-            $sqlDeleteJornada = "DELETE FROM jornadas WHERE id_Jornada = :id_Jornada";
-            $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
-            
+                $sqlDeleteJornada = "DELETE FROM jornadas WHERE id_Jornada = :id_Jornada";
+                $stmtDeleteJornada = $conexion->prepare($sqlDeleteJornada);
 
-            // Eliminar las jornadas restantes
-            foreach ($jornadasExistentes as $id_Jornada => $jornada) {
-                $stmtDeleteJornada->bindParam(":id_Jornada", $jornada, PDO::PARAM_INT);
+
+                // Eliminar las jornadas restantes
+                foreach ($jornadasExistentes as $id_Jornada => $jornada) {
+                print_r("Jornada:");
+                var_dump($jornada);
+                print_r("ID: " . $id_Jornada);
+                // die();
+
+                $stmtDeleteJornada->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
                 $stmtDeleteJornada->execute();
 
                 // Eliminar también de hs_semanal
                 $sqlDeleteHsSemanal = "DELETE FROM hs_semanal WHERE id_Jornada = :id_Jornada";
                 $stmtDeleteHsSemanal = $conexion->prepare($sqlDeleteHsSemanal);
-                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $jornada, PDO::PARAM_INT);
+                $stmtDeleteHsSemanal->bindParam(":id_Jornada", $jornada["id_Jornada"], PDO::PARAM_INT);
                 $stmtDeleteHsSemanal->execute();
-            }
+                }
 
+
+            }
+            
             // 3. Insertar en la tabla jornadas
+            print_r($datos["instituciones"] );
+            die();
             foreach ($datos["instituciones"] as $i => $institucion) { 
                 foreach ($institucion['dias'] as $dia) { 
                     if (!empty($dia)) { // Verifica si el valor no está vacío 
@@ -606,12 +619,18 @@ class ModeloSolSuplente{
             j.horaInicio, 
             j.horaFin
         FROM cargos AS c
-        INNER JOIN plazas as p ON p.id_Cargo = c.id_Cargo
+        INNER JOIN plazas AS p ON p.id_Cargo = c.id_Cargo
         INNER JOIN instituciones AS i ON i.id_Institucion = p.id_Institucion
         INNER JOIN hs_semanal AS hs ON hs.numeroPlaza = p.numeroPlaza
         INNER JOIN jornadas AS j ON j.id_Jornada = hs.id_Jornada
         INNER JOIN solicitudes_suplente AS ss ON c.id_Cargo = ss.id_Cargo
-        WHERE c.eliminado = 0 AND ss.id_SolSuplente = :id_SolSuplente");
+        WHERE c.eliminado = 0 
+        AND ss.id_SolSuplente = :id_SolSuplente
+        ORDER BY 
+            p.numeroPlaza ASC, 
+            j.id_Dia ASC, 
+            j.horaInicio ASC;
+        ");
     
         $stmt->bindParam(":id_SolSuplente", $id_SolSuplente, PDO::PARAM_INT);
         $stmt->execute();
